@@ -1,0 +1,384 @@
+{
+  "state": "PAIRED",
+  "error": null,
+  "url": "ws://127.0.0.1:9998",
+  "targetId": "2aebcc78d71b419ba709db8ade332d85",
+  "clientId": "edb61f65bca14d4da2566ad9ddbc8807",
+  "devices": [
+    {
+      "slotId": "probe-slot",
+      "name": "SIMULATED COYOTE",
+      "type": "COYOTE_030",
+      "slotState": {
+        "hasDevice": true
+      },
+      "props": {
+        "power": 79
+      }
+    }
+  ],
+  "pending": 0,
+  "stats": {
+    "requests": 8,
+    "responses": 8,
+    "timeouts": 0,
+    "judgments": 3,
+    "triggered": 3,
+    "skipped": 0
+  },
+  "lastError": null,
+  "history": [
+    {
+      "type": "client_attached",
+      "time": 1792171994459,
+      "data": {
+        "clientId": "edb61f65bca14d4da2566ad9ddbc8807"
+      }
+    },
+    {
+      "type": "response",
+      "time": 1792171994480,
+      "data": {
+        "reqId": "2aebcc78d71b419ba709db8ade332d85-1",
+        "method": "devices.get",
+        "result": {
+          "devices": [
+            {
+              "slotId": "probe-slot",
+              "name": "SIMULATED COYOTE",
+              "type": "COYOTE_030",
+              "slotState": {
+                "hasDevice": true
+              },
+              "props": {
+                "power": 80
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "event",
+      "time": 1792171994561,
+      "data": {
+        "t": "ev",
+        "ev": "slots.patch",
+        "slots": [
+          {
+            "slotId": "probe-slot",
+            "props": {
+              "power": 79
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "response",
+      "time": 1792171994645,
+      "data": {
+        "reqId": "2aebcc78d71b419ba709db8ade332d85-2",
+        "method": "device.op.clear",
+        "result": {
+          "cleared": true
+        }
+      }
+    },
+    {
+      "type": "judgment",
+      "time": 1792171994647,
+      "data": {
+        "grade": "good",
+        "seq": 999,
+        "slotId": "probe-slot",
+        "intensityRequest": "2aebcc78d71b419ba709db8ade332d85-3",
+        "waveformRequest": "2aebcc78d71b419ba709db8ade332d85-4"
+      }
+    },
+    {
+      "type": "response",
+      "time": 1792171994665,
+      "data": {
+        "reqId": "2aebcc78d71b419ba709db8ade332d85-3",
+        "method": "device.op",
+        "result": {
+          "type": 4,
+          "reason": "completed",
+          "slotId": "probe-slot",
+          "channel": 0
+        }
+      }
+    },
+    {
+      "type": "response",
+      "time": 1792171994666,
+      "data": {
+        "reqId": "2aebcc78d71b419ba709db8ade332d85-4",
+        "method": "device.op",
+        "result": {
+          "type": 0,
+          "reason": "completed",
+          "slotId": "probe-slot",
+          "channel": 0
+        }
+      }
+    },
+    {
+      "type": "judgment",
+      "time": 1792171994923,
+      "data": {
+        "grade": "bad",
+        "seq": 999,
+        "slotId": "probe-slot",
+        "intensityRequest": "2aebcc78d71b419ba709db8ade332d85-5",
+        "waveformRequest": "2aebcc78d71b419ba709db8ade332d85-6"
+      }
+    },
+    {
+      "type": "response",
+      "time": 1792171994938,
+      "data": {
+        "reqId": "2aebcc78d71b419ba709db8ade332d85-5",
+        "method": "device.op",
+        "result": {
+          "type": 4,
+          "reason": "completed",
+          "slotId": "probe-slot",
+          "channel": 0
+        }
+      }
+    },
+    {
+      "type": "response",
+      "time": 1792171994939,
+      "data": {
+        "reqId": "2aebcc78d71b419ba709db8ade332d85-6",
+        "method": "device.op",
+        "result": {
+          "type": 0,
+          "reason": "completed",
+          "slotId": "probe-slot",
+          "channel": 0
+        }
+      }
+    },
+    {
+      "type": "judgment",
+      "time": 1792171995199,
+      "data": {
+        "grade": "miss",
+        "seq": 999,
+        "slotId": "probe-slot",
+        "intensityRequest": "2aebcc78d71b419ba709db8ade332d85-7",
+        "waveformRequest": "2aebcc78d71b419ba709db8ade332d85-8"
+      }
+    },
+    {
+      "type": "response",
+      "time": 1792171995208,
+      "data": {
+        "reqId": "2aebcc78d71b419ba709db8ade332d85-7",
+        "method": "device.op",
+        "result": {
+          "type": 4,
+          "reason": "completed",
+          "slotId": "probe-slot",
+          "channel": 0
+        }
+      }
+    },
+    {
+      "type": "response",
+      "time": 1792171995209,
+      "data": {
+        "reqId": "2aebcc78d71b419ba709db8ade332d85-8",
+        "method": "device.op",
+        "result": {
+          "type": 0,
+          "reason": "completed",
+          "slotId": "probe-slot",
+          "channel": 0
+        }
+      }
+    }
+  ],
+  "requestsCaptured": [
+    {
+      "t": "req",
+      "reqId": "2aebcc78d71b419ba709db8ade332d85-1",
+      "m": "devices.get"
+    },
+    {
+      "t": "req",
+      "reqId": "2aebcc78d71b419ba709db8ade332d85-2",
+      "m": "device.op.clear",
+      "data": {}
+    },
+    {
+      "t": "req",
+      "reqId": "2aebcc78d71b419ba709db8ade332d85-3",
+      "m": "device.op",
+      "data": {
+        "s": "probe-slot",
+        "c": 0,
+        "p": 1,
+        "d": 700,
+        "im": true,
+        "t": 4,
+        "v": 5
+      }
+    },
+    {
+      "t": "req",
+      "reqId": "2aebcc78d71b419ba709db8ade332d85-4",
+      "m": "device.op",
+      "data": {
+        "s": "probe-slot",
+        "c": 0,
+        "p": 1,
+        "d": 700,
+        "im": true,
+        "t": 0,
+        "v": [
+          "2D2D2D2D00000000",
+          "2D2D2D2D64646464",
+          "2D2D2D2D00000000",
+          "2D2D2D2D64646464",
+          "2D2D2D2D00000000",
+          "2D2D2D2D64646464",
+          "2D2D2D2D00000000"
+        ],
+        "ver": 3
+      }
+    },
+    {
+      "t": "req",
+      "reqId": "2aebcc78d71b419ba709db8ade332d85-5",
+      "m": "device.op",
+      "data": {
+        "s": "probe-slot",
+        "c": 0,
+        "p": 1,
+        "d": 700,
+        "im": true,
+        "t": 4,
+        "v": 5
+      }
+    },
+    {
+      "t": "req",
+      "reqId": "2aebcc78d71b419ba709db8ade332d85-6",
+      "m": "device.op",
+      "data": {
+        "s": "probe-slot",
+        "c": 0,
+        "p": 1,
+        "d": 700,
+        "im": true,
+        "t": 0,
+        "v": [
+          "2D2D2D2D00000000",
+          "2D2D2D2D64646464",
+          "2D2D2D2D00000000",
+          "2D2D2D2D64646464",
+          "2D2D2D2D00000000",
+          "2D2D2D2D64646464",
+          "2D2D2D2D00000000"
+        ],
+        "ver": 3
+      }
+    },
+    {
+      "t": "req",
+      "reqId": "2aebcc78d71b419ba709db8ade332d85-7",
+      "m": "device.op",
+      "data": {
+        "s": "probe-slot",
+        "c": 0,
+        "p": 1,
+        "d": 700,
+        "im": true,
+        "t": 4,
+        "v": 5
+      }
+    },
+    {
+      "t": "req",
+      "reqId": "2aebcc78d71b419ba709db8ade332d85-8",
+      "m": "device.op",
+      "data": {
+        "s": "probe-slot",
+        "c": 0,
+        "p": 1,
+        "d": 700,
+        "im": true,
+        "t": 0,
+        "v": [
+          "2D2D2D2D00000000",
+          "2D2D2D2D64646464",
+          "2D2D2D2D00000000",
+          "2D2D2D2D64646464",
+          "2D2D2D2D00000000",
+          "2D2D2D2D64646464",
+          "2D2D2D2D00000000"
+        ],
+        "ver": 3
+      }
+    },
+    {
+      "t": "req",
+      "reqId": "2aebcc78d71b419ba709db8ade332d85-9",
+      "m": "device.op.clear",
+      "data": {
+        "s": "probe-slot",
+        "c": 0
+      }
+    },
+    {
+      "t": "req",
+      "reqId": "2aebcc78d71b419ba709db8ade332d85-10",
+      "m": "device.op.clear",
+      "data": {}
+    },
+    {
+      "t": "req",
+      "reqId": "2aebcc78d71b419ba709db8ade332d85-11",
+      "m": "device.op.clear",
+      "data": {}
+    },
+    {
+      "t": "req",
+      "reqId": "2aebcc78d71b419ba709db8ade332d85-12",
+      "m": "device.op.clear",
+      "data": {}
+    },
+    {
+      "t": "req",
+      "reqId": "2aebcc78d71b419ba709db8ade332d85-13",
+      "m": "device.op.clear",
+      "data": {}
+    },
+    {
+      "t": "req",
+      "reqId": "2aebcc78d71b419ba709db8ade332d85-14",
+      "m": "device.op.clear",
+      "data": {}
+    }
+  ],
+  "pairingQR": "https://dungeon-lab.cn/s/?v=1&action=socket&url=ws%3A%2F%2F127.0.0.1%3A9998%2F%3Ftid%3D2aebcc78d71b419ba709db8ade332d85",
+  "frida": "16.7.19",
+  "checks": [
+    "handshake",
+    "one-peer-limit",
+    "discovery",
+    "slot-patch",
+    "three-grades-six-tasks",
+    "clear",
+    "QR-panel",
+    "real-widget-validation-save",
+    "stop-restart",
+    "reconnect-no-replay",
+    "open-dialog-dispose"
+  ]
+}

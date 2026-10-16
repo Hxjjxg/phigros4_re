@@ -1,0 +1,35 @@
+{
+  "game": "Phigros 4.0.1",
+  "frida": "16.7.19",
+  "chart": "Igallta AT Lv.17",
+  "session": "mvb1uyva",
+  "expectedFromResultScreenshot": {
+    "perfect": 224,
+    "good": 188,
+    "bad": 21,
+    "miss": 681
+  },
+  "observed": {
+    "perfect": 224,
+    "good": 188,
+    "bad": 21,
+    "miss": 681
+  },
+  "received": {
+    "good": 188,
+    "bad": 21,
+    "miss": 681
+  },
+  "receivedTotal": 890,
+  "duplicateSessionSequences": 0,
+  "nonPerfectCounterGaps": 0,
+  "perfectMessages": 0,
+  "syntheticMessages": 0,
+  "holdGoodMessages": 18,
+  "dropped": 0,
+  "hookErrors": 0,
+  "connectionAtVerification": "OPEN",
+  "firstTimestamp": 1792160313768,
+  "lastTimestamp": 1792160430863,
+  "scope": "One actual gameplay run; no claim about reconnect delivery or latency."
+}

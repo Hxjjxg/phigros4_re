@@ -1,0 +1,15 @@
+{
+  "frida": "16.7.19",
+  "pid": "15157",
+  "passed": [
+    "open panel and capture default QR",
+    "invalid URL does not change live or saved configuration",
+    "real Save button applies URL, grade filters, disable, Unicode QR",
+    "Close button and reopen retain saved values",
+    "replacement dialogs keep functional callbacks",
+    "Android Back dismisses dialog",
+    "3 open-dialog dispose/unload/reinject cycles, same PID, saved config restored",
+    "initial settings restored; no script error events"
+  ],
+  "errors": []
+}

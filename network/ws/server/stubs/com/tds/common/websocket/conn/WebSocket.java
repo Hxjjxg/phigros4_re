@@ -12,6 +12,9 @@ import java.net.InetSocketAddress;
  */
 public interface WebSocket {
     void send(String text);
+    boolean isOpen();
+    boolean hasBufferedData();
+    void close(int code, String reason);
     InetSocketAddress getRemoteSocketAddress();
     String getResourceDescriptor();
 }

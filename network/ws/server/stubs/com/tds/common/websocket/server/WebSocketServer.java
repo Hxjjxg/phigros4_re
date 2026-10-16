@@ -31,6 +31,10 @@ public abstract class WebSocketServer {
     public void start() {
     }
 
+    public void setConnectionLostTimeout(int seconds) {}
+    public void setReuseAddr(boolean enabled) {}
+    public void setTcpNoDelay(boolean enabled) {}
+
     public void stop() {
     }
 
