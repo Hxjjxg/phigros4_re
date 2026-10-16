@@ -9,8 +9,10 @@
 | jadx | `tools\jadx-1.5.6\bin\jadx.bat` | 1.5.6 | [GitHub Releases](https://github.com/skylot/jadx/releases) |
 | Il2CppDumper | `F:\tool\dumper\Il2CppDumper.exe` | — | [GitHub Releases](https://github.com/Perfare/Il2CppDumper/releases) |
 | aapt2 | `%LOCALAPPDATA%\Android\Sdk\build-tools\36.1.0\aapt2.exe` | 36.1.0 | Android SDK Build-Tools |
-| apktool | `C:\Windows\apktool.bat` | 3.0.2 | [GitHub Releases](https://github.com/iBotPeaches/Apktool/releases) |
-| frida | `%APPDATA%\Python\Python313\Scripts\frida.exe` | 17.9.1 | `pip install frida-tools` |
+| apktool（项目打包） | `tools\apktool_3.0.3.jar` | 3.0.3 | 用户提供，复制自 Downloads |
+| Frida Gadget（项目打包） | `tools\frida-gadget-16.7.19-android-arm64.so` | 16.7.19 | 本机 Downloads；打包脚本校验固定 SHA-256 |
+| frida（本项目使用） | `F:\frida16\Scripts\frida.exe` / `python.exe` | 16.7.19 | 专用 Frida 16 环境 |
+| frida（全局，本项目不使用） | `%APPDATA%\Python\Python313\Scripts\frida.exe` | 17.9.1 | `pip install frida-tools` |
 | adb | PATH | 1.0.41 (36.0.0) | Android Platform-Tools |
 | java | PATH | 17.0.10 | Oracle JDK |
 | python | `C:\Python313\python.exe` | 3.13.1 | python.org |

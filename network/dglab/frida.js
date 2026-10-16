@@ -144,7 +144,13 @@
     Java.perform(function () {
         try {
             pairingId = Java.use('java.util.UUID').randomUUID().toString().replace(/-/g, '');
-            Java.openClassFile('/data/local/tmp/EmbeddedTransport.dex').load();
+            if (globalThis.PHIGROS_STANDALONE) {
+                const app = Java.use('android.app.ActivityThread').currentApplication();
+                const prefs = app.getSharedPreferences('phigros_dglab_v4', 0);
+                const saved = prefs.getString('pairingId', null);
+                if (saved && /^[a-f0-9]{32}$/.test(String(saved))) pairingId = String(saved);
+                else prefs.edit().putString('pairingId', pairingId).apply();
+            } else Java.openClassFile('/data/local/tmp/EmbeddedTransport.dex').load();
             Server = Java.use('re.phigros.dglab.EmbeddedTransport');
             installHandshakeCompatibility();
             update();

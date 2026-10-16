@@ -124,7 +124,7 @@ adb forward tcp:9998 tcp:9998
 - 二维码截图经 OpenCV 解码与目标文本一致。证据在 `evidence/device-probe.json`、
   `evidence/settings-panel.png`；截图中的设备明确是模拟设备。
 - 原有四种原生判定 hook 已有真实游玩对照证据，见 `hooks/judgment/evidence/`。
-  本次新增映射测试通过测试专用入口送入判定队列；未宣称已完成实体设备输出测试。
+  模拟映射测试通过测试专用入口送入判定队列；实体设备验证见下一项。
 - 官方 DG-LAB 4.2.6 已完成同机配对、COYOTE_030 设备发现及实际游玩触发，用户确认实体设备成功输出。
   修复了 APK WS 库回显 `Connection: Upgrade; close` 导致官方 OkHttp 拒绝握手的问题；
   `frida.js` 将服务端响应头规范化为 `Connection: Upgrade`。
@@ -138,4 +138,8 @@ adb forward tcp:9998 tcp:9998
 它通过模拟 App 测试，不代替官方 App 与实体设备验收。该测试需要 27042、9998 转发，
 不需要 8767；官方 App 在同一手机连接时本身不需要 ADB 转发。
 
-当前仍是 Frida 注入式嵌入；不是已重打包到 APK、脱离 Frida 自动启动的发布版本。
+本目录的 host/runner 用于 Frida 外部注入调试。独立 APK 的自动加载与打包入口见
+[`packaging/README.md`](../../packaging/README.md)，采用内嵌 Gadget 16.7.19 的 script 模式，
+不依赖 PC 宿主；真机冷启动验收与已有注入测试分别记录。
+2026-10-17 首个独立 APK 已获用户“正常工作”的实机反馈，产物指纹和验证范围见
+[`packaging/VALIDATION.md`](../../packaging/VALIDATION.md)。

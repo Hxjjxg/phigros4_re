@@ -2704,15 +2704,30 @@ Phi.initRuntime = function () {
         if (P.installSettingsEntry) P.installSettingsEntry();
     }
     // Attach after IL2CPP loads; never fall back to guessed RVAs.
+    const deadline = Date.now() + 120000;
+    let lastInitError = '';
     const wait = setInterval(function () {
+        if (P.disposed) { clearInterval(wait); return; }
+        if (Date.now() >= deadline) {
+            clearInterval(wait);
+            P.initializationError = lastInitError || 'libil2cpp.so did not load';
+            P.log('Initialization timed out: ' + P.initializationError);
+            return;
+        }
         if (!Process.findModuleByName('libil2cpp.so')) return;
-        clearInterval(wait);
-        try { install(); }
-        catch (e) { P.listeners.forEach(h => h.detach()); P.listeners = []; P.log('Initialization failed: ' + e.stack); }
+        try { install(); P.initializationError = null; clearInterval(wait); }
+        catch (e) {
+            P.ready = false;
+            P.listeners.forEach(h => h.detach()); P.listeners = [];
+            const error = String(e);
+            P.initializationError = error;
+            if (error !== lastInitError) P.log('Waiting for game initialization: ' + error);
+            lastInitError = error;
+        }
     }, 250);
     P.waitTimer = wait;
     globalThis.phiStatus = function () {
-        return {ready: P.ready, config: P.config, stats: P.stats,
+        return {ready: P.ready, initializationError: P.initializationError || null, config: P.config, stats: P.stats,
                 connection: P.transport ? P.transport.state() : typeof wsState === 'function' ? wsState() : 'NOT_READY',
                 embedded: P.transport ? P.transport.status() : undefined};
     };

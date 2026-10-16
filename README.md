@@ -2,7 +2,9 @@
 
 对 `com.PigeonGames.Phigros` v4.0.1 (157) 的静态 + 动态逆向工作区。
 
-**当前目标：在游戏进程内与外部服务器主动收发 WebSocket。** ✅ 已跑通。
+**当前进展：Phigros 内置 DG-LAB 服务端与判定联动已跑通，独立 APK 已产出，用户确认正常工作。**
+支持游戏设置面板、配对二维码，以及 Good / Bad / Miss 触发强度和波形任务。
+独立包使用 Frida Gadget 16.7.19 自动加载，无需电脑宿主；见 [打包与使用说明](packaging/README.md)。
 
 | | |
 |---|---|
@@ -24,6 +26,9 @@
 | [`il2cpp/`](il2cpp/) | IL2CPP 层（C# 类型结构、字符串常量） |
 | [`network/`](network/) | **网络层** —— 三条通路的总览 |
 | [`network/ws/`](network/ws/) | **WebSocket 实现** —— Frida 脚本 + 测试服务端 |
+| [`network/dglab/`](network/dglab/) | DG-LAB V4 内置服务端、控制 API、协议测试 |
+| [`hooks/judgment/`](hooks/judgment/) | 四种判定 hook、设置面板、二维码与测试证据 |
+| [`packaging/`](packaging/) | 独立 APK 自动加载、构建、签名、验收记录 |
 | [`docs/`](docs/) | 分析报告 |
 | [`tools/`](tools/) | 工具链说明（二进制不入库） |
 | `work/` | 工作区（APK 提取物、大中间产物）—— 未入库 |
@@ -33,7 +38,18 @@
 
 ## 快速开始
 
-### 网络 / WebSocket（当前主线）
+### 独立 APK（当前主线）
+
+```powershell
+& 'F:\frida16\Scripts\python.exe' packaging\build.py
+```
+
+产物：`out/Phigros_4.0.1-DGLab-arm64.apk`。安装后从游戏 Gameplay 设置中的
+**DG-LAB link** 打开面板，与同机 DG-LAB 4 配对。工具准备、签名密钥备份和使用步骤见
+[`packaging/README.md`](packaging/README.md)，首次构建的验收记录见
+[`packaging/VALIDATION.md`](packaging/VALIDATION.md)。
+
+### 网络 / WebSocket 开发调试
 
 ```powershell
 # 1. 起测试服务端
@@ -43,7 +59,7 @@ python network\ws\ws_server.py
 adb reverse tcp:8765 tcp:8765
 
 # 3. 注入
-frida -U -n Gadget -l network\ws\phigros_ws.js
+& 'F:\frida16\Scripts\frida.exe' -U -n Gadget -l network\ws\phigros_ws.js
 ```
 
 细节见 [`network/ws/README.md`](network/ws/README.md)。
