@@ -22,14 +22,16 @@
 // 推荐走 adb reverse（USB 转发，不依赖 IP / 防火墙）：
 //   adb reverse tcp:8765 tcp:8765   →  用 127.0.0.1
 // 走局域网则改成 PC 的 LAN IP，例如 ws://10.32.20.219:8765
-const WS_URL    = 'ws://127.0.0.1:8765';
-const AUTO_SEND = true;    // 连上后自动发一条 hello，验证出站
+// Optional embedding options; the standalone smoke-test defaults are unchanged.
+const OPTIONS = globalThis.PHIGROS_WS_OPTIONS || {};
+const WS_URL    = OPTIONS.url || 'ws://127.0.0.1:8765';
+const AUTO_SEND = OPTIONS.autoSend !== false;    // 连上后自动发一条 hello，验证出站
 const KEEPALIVE = false;   // 每 10 秒发一条计数心跳。已证明链路可用；
                            // 开着会刷屏 REPL —— 要长时间观察时再打开
 
 const TAG = '[ws]';
 
-let VERBOSE = true;        // 消息流量日志开关，wsMute() / wsUnmute() 控制
+let VERBOSE = OPTIONS.verbose !== false; // 消息流量日志开关
 
 function log(msg) {                        // 系统日志：始终打印
     console.log(TAG + ' ' + msg);
@@ -110,6 +112,8 @@ Java.perform(function () {
                                .heads(heads)
                                .build();
 
+                // setDestUrl is a no-op for the same URL/config, even after disconnect.
+                Svc.getInstance().reset();
                 Svc.getInstance().setDestUrl(target, cfg);
                 log('→ 正在连接 ' + target);
             } catch (e) {
@@ -159,7 +163,7 @@ Java.perform(function () {
 
     // ── 自动建连 ─────────────────────────────────────────────────────
     // 延后 2 秒，等 Unity 起来、避免和启动期抢线程
-    setTimeout(function () {
+    if (OPTIONS.autoConnect !== false) setTimeout(function () {
         globalThis.wsConnect(WS_URL);
 
         if (AUTO_SEND) {

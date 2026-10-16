@@ -1,22 +1,48 @@
-# WebSocket 主动收发测试 — 运行手册
+# WebSocket — 运行手册
 
-用 Phigros 自带的 Java-WebSocket 客户端，从游戏进程内连你自己的服务器收发消息。
+APK 里同时带着**完整可用的客户端和服务端**两套 RFC6455 实现，游戏自己一个都不用。
+这里把两边都接出来。
+
+## 两个方向，别搞混
+
+| | 方向 A：游戏当**客户端** | 方向 B：游戏当**服务端** |
+|---|---|---|
+| 谁连谁 | 游戏 → 你的 PC | 你的 PC → 游戏 |
+| 复用 APK 里的 | `...websocket.WebSocketClient` | `...websocket.server.WebSocketServer` |
+| Frida 脚本 | `phigros_ws.js` | `phigros_ws_server.js` |
+| PC 侧配套 | `ws_server.py`（PC 当服务端） | 随便一个 WS 客户端 |
+| 端口转发 | `adb reverse tcp:8765 tcp:8765` | `adb forward tcp:8767 tcp:8767` |
+| 需要编译 | 否 | **是**（`build-server-dex.ps1`） |
+
+> 命名注意：`ws_server.py` 是 **PC 侧**的服务端（给方向 A 用）；
+> `PhigrosWSServer` 是**游戏侧**的服务端（方向 B）。两个 "server" 不是一回事。
+
+本文档 §1–§7 讲**方向 A**，§8 讲**方向 B**。
 
 | 文件 | 作用 |
 |---|---|
-| `ws_server.py` | PC 侧测试服务端 |
-| `phigros_ws.js` | Frida 注入脚本 |
+| `ws_server.py` | 方向 A：PC 侧测试服务端 |
+| `phigros_ws.js` | 方向 A：Frida 注入脚本 |
+| `server/PhigrosWSServer.java` | 方向 B：子类源码 |
+| `server/stubs/` | 方向 B：编译期桩（不入 dex） |
+| `build-server-dex.ps1` | 方向 B：javac + d8 |
+| `PhigrosWSServer.dex` | 方向 B：编译产物 |
+| `phigros_ws_server.js` | 方向 B：Frida 注入脚本 |
 
 ---
 
 ## 0 · 当前状态
 
-| 环节 | 状态 |
-|---|---|
-| PC 服务端 | ✅ 已验证 |
-| Frida 脚本 | ✅ **已在真机跑通**（frida-gadget 重打包路线） |
-| 双向收发 | ✅ 游戏→服务端、服务端→游戏、服务端控制台推送，全部验证 |
-| header 注入 | ✅ 服务端收到 `x-from: frida` |
+**两个方向都已在真机跑通**（OPPO PGJM10 · frida 16.7.19 · gadget 16.7.19）。
+
+| 方向 | 环节 | 状态 |
+|---|---|---|
+| A · 游戏当客户端 | PC 服务端 / 双向收发 / 控制台推送 | ✅ 2026-10-16 验证 |
+| A · 游戏当客户端 | `heads()` 注入握手 header | ✅ 服务端收到 `x-from: frida` |
+| B · 游戏当服务端 | dex 动态加载 / `start()` / 握手 | ✅ 2026-10-17 验证 |
+| B · 游戏当服务端 | 回声 / 服务端主动推 / RPC 群发 / 关闭码 1000 | ✅ 2026-10-17 验证 |
+
+方向 B 的证据见 [§8.4](#84-注入)。
 
 **2026-10-16 实测结论：整条链路可用。** 以下是当时的验证证据：
 
@@ -213,6 +239,121 @@ sSLContext.init(null, null, null);      // null TrustManager = 走系统默认 �
 `null` TrustManager 意味着使用系统默认信任管理器，而 Android N+ 的默认信任管理器会读取 network security config。
 
 **结论**：把自签证书装进 Android 的**用户**证书库（设置 → 安全 → 安装证书），`wss://` 就能用，**无需 root**。附带好处——抓 HTTPS 包也不再需要 root 改系统证书。
+
+---
+
+## 8 · 方向 B —— 游戏当服务端
+
+APK 里那套 `com.tds.common.websocket.server.WebSocketServer` 是完整可用的服务端
+（**已离线编译实测**：握手 / 收发 / 多客户端并发 / 干净关闭全通过），但它是 `abstract`
+且全项目零子类、零引用。这里补上缺失的子类。
+
+### 8.1 编译 dex
+
+```powershell
+cd E:\phigros4_re\network\ws
+.\build-server-dex.ps1
+```
+
+产出 `PhigrosWSServer.dex`（约 3.4 KB）。改了 `server/PhigrosWSServer.java` 才需要重来。
+
+编译用的是 `server/stubs/` 下的**编译期桩** —— 签名逐个对照 `classes.dex` 字节码核过。
+桩只为让 javac 通过，**不会被打进 dex**；真实基类在设备运行时由 APK 提供。
+
+### 8.2 推到设备
+
+```powershell
+adb push PhigrosWSServer.dex /data/local/tmp/
+adb shell chmod 644 /data/local/tmp/PhigrosWSServer.dex
+```
+
+> `Java.openClassFile()` 读的是**设备侧**路径，不是 PC 的。这一步不能省。
+
+### 8.3 端口转发（PC → 设备）
+
+```powershell
+adb forward tcp:8767 tcp:8767
+```
+
+注意是 **`forward`** —— 方向 A 用的是 `reverse`，两者相反。
+
+不想用 adb 的话，让 PC 直接连设备的局域网 IP:`8767` 也行。
+
+### 8.4 注入
+
+**连接方式用 `-H 127.0.0.1:27042`（走 adb forward），不是 `-U`：**
+
+```powershell
+F:\frida16\Scripts\frida.exe -H 127.0.0.1:27042 -n Gadget -l phigros_ws_server.js
+```
+
+预期：
+
+```
+[wss] 已加载 /data/local/tmp/PhigrosWSServer.dex
+[wss] start() 已调用，端口 8767
+[wss]   日志: adb logcat -s PhigrosWSS
+[wss] 就绪 —— REPL 里敲 wssHelp()
+```
+
+另开窗口看服务端日志：
+
+```powershell
+adb logcat -s PhigrosWSS
+```
+
+### ✅ 2026-10-17 真机验证通过
+
+设备 OPPO PGJM10 / frida 16.7.19 / gadget 16.7.19。两侧日志：
+
+```
+# 设备侧 (adb logcat -s PhigrosWSS)
+00:09:37.898  I PhigrosWSS: onStart  port=8767  addr=::/:::8767
+00:09:40.188  I PhigrosWSS: OPEN  /127.0.0.1:44403  path=/probe  clients=1
+00:09:40.195  I PhigrosWSS: RECV  hello from PC
+00:10:07.957  I PhigrosWSS: CLOSE code=1000 reason= remote=true  clients=0
+
+# PC 侧
+① 欢迎语 : welcome from phigros (server side)
+② 回声   : echo: hello from PC
+③ 推送   : server-push #1 / #2 / #3 from frida
+```
+
+验证覆盖：dex 动态加载 / `$new(InetSocketAddress)` / `start()` / 握手（自定义 path）/
+服务端主动推送 / 客户端→服务端 / `onMessage` 回声 / **Frida RPC 触发广播** / 关闭码 1000。
+
+两个实测细节：
+
+- 绑定结果是 `::/:::8767` —— IPv6 通配地址，Android 双栈会一并接 IPv4
+- 设备看到的客户端地址是 `127.0.0.1:44403` —— `adb forward` 的关系，不是真实 PC IP
+
+### 8.5 REPL 命令
+
+| 命令 | 作用 |
+|---|---|
+| `wssBroadcast("hi")` | 给所有已连客户端群发 |
+| `wssClients()` | 看当前连接数和各自地址 |
+| `wssStop()` | 停服务 |
+| `wssRestart()` | 停 + 重起 |
+| `wssHelp()` | 帮助 |
+
+### 8.6 排障
+
+| 现象 | 原因 |
+|---|---|
+| `openClassFile 失败` | dex 没 push / 权限不是 644 / 没跑 build 脚本 |
+| `$new 失败` | 设备上那个 `WebSocketServer` 的构造器签名和桩对不上（改动过版本？重核 dex） |
+| `start()` 后没反应 | 端口被占，或忘了显式传地址（无参构造绑 **80**，Android 上要 root） |
+| 客户端连不上 | `adb forward` 忘了做；或设备防火墙 |
+| 想看服务端输出 | `adb logcat -s PhigrosWSS` |
+
+### 8.7 为什么用 dex 注入而不是 `Java.registerClass`
+
+`registerClass` 不会按 `superClass` 自动生成构造器 —— 得手写 `$init`，还要在 JS 里
+声明参数类型，而且这套语义在 frida 16 / 17 之间不保证一致（本项目跑在 **16.7.19**）。
+
+dex 注入没有这些不确定性：子类是真的编译过的 Java，构造器、override、签名全是
+编译期确定的。代价是多一步编译 + push。
 
 ---
 

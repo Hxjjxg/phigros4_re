@@ -43,7 +43,12 @@
 | jadx | `E:\phigros4_re\tools\jadx-1.5.6\bin\jadx.bat` | 1.5.6 |
 | Il2CppDumper | `F:\tool\dumper\Il2CppDumper.exe` | — |
 | aapt2 | `…\Android\Sdk\build-tools\36.1.0\aapt2.exe` | 36.1.0 |
-| frida | `%APPDATA%\Python\Python313\Scripts\frida.exe` | 17.9.1 |
+| frida CLI（**本项目用这个**） | `F:\frida16\Scripts\frida.exe` | 16.7.19 |
+| frida gadget（设备侧） | `Downloads\frida-gadget-16.7.19-android-arm64.so` | 16.7.19 ✅ 与 CLI 匹配 |
+
+> 本机 PATH 上另有 frida **17.9.1**（`%APPDATA%\Python\Python313\Scripts\frida.exe`），
+> **不要用它跑本项目** —— 与设备侧 gadget 16.7.19 主版本不匹配，握手会被拒。
+> 一律用 `F:\frida16\Scripts\frida.exe`。
 | java / dotnet | PATH | 17.0.10 / 6·8·9·10 |
 | apktool | `C:\Windows\apktool.bat` | 3.0.2 |
 
@@ -200,6 +205,29 @@ public enum Type { MESSAGE_TYPE_TAP_FRIEND, MESSAGE_TYPE_OTHER }
 ### 4.3 `com.squareup.okhttp` + `retrofit` —— **无 WS**
 
 `retrofit/client/OkClient.java` 引用 OkHttp 2.x，只走 `HttpURLConnection`，超时 15s / 20s。纯 HTTP。
+
+### 4.4 服务端也在，同样没人用 —— **可用**
+
+`com.tds.common.websocket.server.WebSocketServer` 是完整可用的 RFC6455 服务端
+（Selector 模型、`ServerSocketChannel.bind` + `accept`、`Draft_6455.acceptHandshakeAsServer`、
+`postProcessHandshakeResponseAsServer`、`WebSocketWorker` 解码线程池）。
+
+但它 **`abstract`，且全项目零子类、零引用**：
+
+| 检查 | 结果 |
+|---|---|
+| `extends WebSocketServer` | **0 个** |
+| 包外引用 / 反射字符串 | **0 处** |
+| 全 Java 层 `ServerSocketChannel.open()` / `accept()` | **只出现在 `WebSocketServer.java` 自己内部** |
+| Manifest 声明的 Service | **0 个** |
+
+**与客户端完全对称**：APK 里躺着一整套双向 WebSocket 实现，游戏两边都不用。
+
+> ✅ **2026-10-17 真机验证**：补一个子类（编译成 dex，Frida `Java.openClassFile()` 注入）
+> 就能让游戏开监听端口、外部连进来。实现见 `network/ws/`，运行手册见该目录 README §8。
+
+**验证服务端完整性时踩到的一个坑**：`SocketChannelIOHelper.batch()` 里 jadx 丢了两处条件，
+反编译源码看起来"必崩"，实际 dex 是对的。详见 §11。
 
 ---
 
@@ -503,9 +531,74 @@ IL2CPP 方法是编译后的 C++，参数是 `Il2CppObject*`，**没有类型信
 
 ### 可直接运行的实现
 
+方向 A（游戏当客户端）：
+
 | 文件 | 作用 |
 |---|---|
-| `E:\phigros4_re\network\ws\ws_server.py` | PC 侧测试服务端（`websockets` 12.0，已本地验证双向 + 服务端主动推送） |
-| `E:\phigros4_re\network\ws\phigros_ws.js` | Frida 脚本（挂钩子 + 自动连接 + `wsSend`/`wsState`/`wsConnect`/`wsClose` REPL 接口） |
+| `network\ws\ws_server.py` | PC 侧测试服务端（`websockets` 12.0） |
+| `network\ws\phigros_ws.js` | Frida 脚本（挂钩子 + 自动连接 + `wsSend`/`wsState`/`wsConnect`/`wsClose`） |
+
+方向 B（游戏当服务端）：
+
+| 文件 | 作用 |
+|---|---|
+| `network\ws\server\PhigrosWSServer.java` | 补上缺失的子类 |
+| `network\ws\server\stubs\` | 编译期桩（签名对照 dex 核过，不入 dex） |
+| `network\ws\build-server-dex.ps1` | javac + d8 |
+| `network\ws\phigros_ws_server.js` | Frida 脚本（`Java.openClassFile()` 注入 + 启动） |
 
 运行步骤见 `network\ws\README.md`。
+
+---
+
+## 11 · jadx 反编译的可信度 —— 一个必须记住的教训
+
+验证服务端完整性时，我把 jadx 输出的 Java 源码重新编译运行，结果**连续崩了两次**，
+两次都在同一个方法 `SocketChannelIOHelper.batch()` 里。
+
+### 两次错误
+
+| # | jadx 输出 | dex 真实字节码 | 后果 |
+|---|---|---|---|
+| 1 | `if (outQueue.isEmpty()) closeConnection();` | `outQueue.isEmpty() && isFlushAndClose() && getDraft()!=null && getRole()!=null && getRole()==SERVER` | 第一次写响应就 `IllegalStateException` |
+| 2 | `(wrappedByteChannel == null && ((WrappedByteChannel) ch).isNeedWrite())` | `if (wrappedByteChannel != null && ((WrappedByteChannel) ch).isNeedWrite())` | 队列排空时 `ClassCastException` |
+
+第 2 条尤其阴险：**jadx 把 `!= null` 反成了 `== null`**，于是那个裸转型恰好只在
+"对象不是该类型"时执行 —— 一个永远会炸的分支。
+
+而 `wrappedByteChannel` 只在 `instanceof` 通过后才被赋值，**所以 dex 里这个转型永远安全**。
+
+### 怎么确认的
+
+`classes.dex` 用 `dexdump -d` 反汇编（89 MB），直接读字节码：
+
+```
+0039: outQueue.isEmpty()   → 003f: if-eqz → 跳过
+0041: isFlushAndClose()    → 0045: if-eqz → 跳过
+0047/004b: getDraft()!=null
+0051/0055: getRole()!=null
+005b/0061: getRole()==SERVER
+0063: closeConnection()          ← 五个条件全满足才调用
+```
+
+```
+0066: if-eqz v1, 0070       ← wrappedByteChannel == null 就跳过转型
+0068: check-cast v5, WrappedByteChannel   ← 只有非 null 才走到这
+```
+
+### 结论
+
+- **APK 里的代码是好的** —— 之前担心的"latent bug 因为从没被调用而存在"不成立
+- **但 jadx 对同一方法犯了两次语义错误**，都让代码从"正确"变成"必崩"
+- **凡是要基于反编译结果做判断或改代码，关键分支去 dex 核一遍**
+
+核验命令（`dexdump` 就在 Android SDK build-tools 里）：
+
+```powershell
+$DD = "$env:LOCALAPPDATA\Android\Sdk\build-tools\36.1.0\dexdump.exe"
+python -c "import zipfile;z=zipfile.ZipFile(r'..\..\Phigros_4.0.1.apk');open('classes.dex','wb').write(z.read('classes.dex'))"
+& $DD -d classes.dex > disasm.txt     # 约 89 MB
+# 然后按类名/方法名定位，读字节码
+```
+
+这对 native 层（IDA 反编译 `libil2cpp.so`）同样适用 —— 反编译器输出都需要抽样回核。
