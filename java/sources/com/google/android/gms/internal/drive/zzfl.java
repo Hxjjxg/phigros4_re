@@ -1,0 +1,24 @@
+package com.google.android.gms.internal.drive;
+
+import android.os.Parcel;
+import android.os.ParcelFileDescriptor;
+import android.os.Parcelable;
+import com.google.android.gms.common.internal.safeparcel.AbstractSafeParcelable;
+import com.google.android.gms.common.internal.safeparcel.SafeParcelWriter;
+
+/* JADX INFO: loaded from: classes.dex */
+public final class zzfl extends AbstractSafeParcelable {
+    public static final Parcelable.Creator<zzfl> CREATOR = new zzfm();
+    private final ParcelFileDescriptor zzhr;
+
+    public zzfl(ParcelFileDescriptor parcelFileDescriptor) {
+        this.zzhr = parcelFileDescriptor;
+    }
+
+    @Override // android.os.Parcelable
+    public final void writeToParcel(Parcel parcel, int i) {
+        int iBeginObjectHeader = SafeParcelWriter.beginObjectHeader(parcel);
+        SafeParcelWriter.writeParcelable(parcel, 2, this.zzhr, i | 1, false);
+        SafeParcelWriter.finishObjectHeader(parcel, iBeginObjectHeader);
+    }
+}

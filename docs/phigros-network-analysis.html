@@ -1,0 +1,946 @@
+<title>Phigros 网络层解剖</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+  :root {
+    --ground: #F5F6F8;
+    --surface: #FFFFFF;
+    --surface-2: #EDEFF4;
+    --ink: #12161F;
+    --ink-2: #454C5C;
+    --ink-3: #737B8C;
+    --rule: #DCE0E9;
+    --rule-strong: #C2C8D6;
+
+    --accent: #C25A1E;
+    --accent-soft: #FBEEDF;
+
+    --l-java: #2C6E6A;
+    --l-java-soft: #E2EFEE;
+    --l-cs: #4B5AA6;
+    --l-cs-soft: #E6E9F7;
+    --l-native: #8C6239;
+    --l-native-soft: #F2EADF;
+
+    --ok: #2E7D5B;
+    --ok-soft: #E1F0E9;
+    --warn: #8A6A2F;
+    --warn-soft: #F6EFDF;
+
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --disp: "Archivo", "IBM Plex Sans", system-ui, sans-serif;
+
+    --measure: 74ch;
+    --wide: 60rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #0E1116;
+      --surface: #161A21;
+      --surface-2: #1D222B;
+      --ink: #E6E9EF;
+      --ink-2: #A8B0BE;
+      --ink-3: #767E8D;
+      --rule: #262C36;
+      --rule-strong: #38404D;
+
+      --accent: #E8843C;
+      --accent-soft: #2E2013;
+
+      --l-java: #5FB3AE;
+      --l-java-soft: #142725;
+      --l-cs: #8E9BE0;
+      --l-cs-soft: #1A1D2E;
+      --l-native: #C08A55;
+      --l-native-soft: #2A2118;
+
+      --ok: #6FBF8E;
+      --ok-soft: #14261C;
+      --warn: #D6AE5E;
+      --warn-soft: #2A2314;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground: #0E1116;
+    --surface: #161A21;
+    --surface-2: #1D222B;
+    --ink: #E6E9EF;
+    --ink-2: #A8B0BE;
+    --ink-3: #767E8D;
+    --rule: #262C36;
+    --rule-strong: #38404D;
+
+    --accent: #E8843C;
+    --accent-soft: #2E2013;
+
+    --l-java: #5FB3AE;
+    --l-java-soft: #142725;
+    --l-cs: #8E9BE0;
+    --l-cs-soft: #1A1D2E;
+    --l-native: #C08A55;
+    --l-native-soft: #2A2118;
+
+    --ok: #6FBF8E;
+    --ok-soft: #14261C;
+    --warn: #D6AE5E;
+    --warn-soft: #2A2314;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.68;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: var(--wide);
+    margin: 0 auto;
+    padding: 3.5rem 1.5rem 6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3.25rem;
+  }
+
+  /* ---------- masthead ---------- */
+
+  .masthead {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 1.75rem;
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0;
+  }
+
+  h1 {
+    font-family: var(--disp);
+    font-weight: 800;
+    font-size: clamp(2.1rem, 5.5vw, 3.1rem);
+    line-height: 1.05;
+    letter-spacing: -0.022em;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  .standfirst {
+    font-size: 1.06rem;
+    color: var(--ink-2);
+    max-width: var(--measure);
+    margin: 0;
+  }
+
+  .idstrip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .idcell {
+    background: var(--surface);
+    padding: 0.7rem 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .idcell dt {
+    font-family: var(--mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .idcell dd {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--ink);
+    word-break: break-all;
+  }
+
+  /* ---------- sections ---------- */
+
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .shead {
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
+    border-top: 1px solid var(--rule-strong);
+    padding-top: 0.9rem;
+  }
+
+  .snum {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent);
+    flex: none;
+    padding-top: 0.35rem;
+  }
+
+  h2 {
+    font-family: var(--disp);
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: -0.015em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  h3 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 1.02rem;
+    margin: 1rem 0 0;
+    color: var(--ink);
+  }
+
+  p {
+    margin: 0;
+    max-width: var(--measure);
+    color: var(--ink-2);
+  }
+
+  strong { color: var(--ink); font-weight: 600; }
+
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); }
+  a:hover { border-bottom-color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+
+  code {
+    font-family: var(--mono);
+    font-size: 0.86em;
+    background: var(--surface-2);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 0.08em 0.34em;
+    color: var(--ink);
+    word-break: break-word;
+  }
+
+  pre {
+    margin: 0;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    border-radius: 3px;
+    padding: 1rem 1.1rem;
+    overflow-x: auto;
+    font-size: 0.82rem;
+    line-height: 1.62;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 1em;
+    color: var(--ink);
+    white-space: pre;
+  }
+
+  .cmt { color: var(--ink-3); }
+
+  ul, ol { margin: 0; padding-left: 1.15rem; max-width: var(--measure); color: var(--ink-2); display: flex; flex-direction: column; gap: 0.4rem; }
+  li::marker { color: var(--ink-3); }
+
+  /* ---------- tables ---------- */
+
+  .scroll { overflow-x: auto; border: 1px solid var(--rule); border-radius: 3px; background: var(--surface); }
+
+  table { border-collapse: collapse; width: 100%; font-size: 0.85rem; }
+
+  th {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    text-align: left;
+    color: var(--ink-3);
+    font-weight: 500;
+    padding: 0.6rem 0.85rem;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--rule-strong);
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 0.52rem 0.85rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+    color: var(--ink-2);
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  td.m, th.m { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  td.m { color: var(--ink); font-size: 0.8rem; }
+
+  /* ---------- chips ---------- */
+
+  .chip {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 0.14rem 0.44rem;
+    border-radius: 2px;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    vertical-align: 0.06em;
+  }
+
+  .c-java   { background: var(--l-java-soft);   color: var(--l-java);   border-color: color-mix(in srgb, var(--l-java) 30%, transparent); }
+  .c-cs     { background: var(--l-cs-soft);     color: var(--l-cs);     border-color: color-mix(in srgb, var(--l-cs) 30%, transparent); }
+  .c-native { background: var(--l-native-soft); color: var(--l-native); border-color: color-mix(in srgb, var(--l-native) 30%, transparent); }
+  .c-hook   { background: var(--accent-soft);   color: var(--accent);   border-color: color-mix(in srgb, var(--accent) 32%, transparent); }
+
+  /* ---------- callouts ---------- */
+
+  .note {
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--l-cs);
+    background: var(--surface);
+    border-radius: 3px;
+    padding: 0.85rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    max-width: var(--measure);
+  }
+
+  .note.action { border-left-color: var(--accent); }
+  .note.warn   { border-left-color: var(--warn); }
+
+  .note-label {
+    font-family: var(--mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .note p { font-size: 0.9rem; }
+
+  /* ---------- key finding ---------- */
+
+  .finding {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 1.15rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .finding p { max-width: none; }
+
+  /* ---------- diagram ---------- */
+
+  .figure {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 1.25rem;
+    overflow-x: auto;
+  }
+
+  .figure svg { display: block; width: 100%; min-width: 40rem; height: auto; }
+
+  .figcap {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--ink-3);
+    margin-top: 0.85rem;
+    letter-spacing: 0.03em;
+  }
+
+  /* ---------- status marks ---------- */
+
+  .mark {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.1rem 0.36rem;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  .mark.ok   { background: var(--ok-soft);   color: var(--ok); }
+  .mark.todo { background: var(--warn-soft); color: var(--warn); }
+
+  /* ---------- checklist ---------- */
+
+  .checklist { list-style: none; padding: 0; gap: 0.6rem; }
+
+  .checklist li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.7rem;
+    align-items: baseline;
+    font-size: 0.9rem;
+  }
+
+  .checklist .q {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--warn);
+    padding-top: 0.1rem;
+  }
+
+  footer {
+    border-top: 1px solid var(--rule-strong);
+    padding-top: 1.1rem;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--ink-3);
+    letter-spacing: 0.03em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+
+<div class="page">
+
+  <header class="masthead">
+    <p class="eyebrow">逆向分析报告 · 2026-10-16</p>
+    <h1>Phigros 网络层解剖</h1>
+    <p class="standfirst">
+      三层执行栈的完整拆解：Java 壳里躺着两套可用的 WebSocket 实现，游戏真正的实时通道却在 C#/IL2CPP 层的 LeanCloud Realtime。附两条 Frida 主动收发方案。
+    </p>
+
+    <dl class="idstrip">
+      <div class="idcell"><dt>Package</dt><dd>com.PigeonGames.Phigros</dd></div>
+      <div class="idcell"><dt>Version</dt><dd>4.0.1 (157)</dd></div>
+      <div class="idcell"><dt>Engine</dt><dd>Unity IL2CPP v31</dd></div>
+      <div class="idcell"><dt>ABI</dt><dd>arm64-v8a / armv7</dd></div>
+      <div class="idcell"><dt>APK</dt><dd>3.33 GB</dd></div>
+      <div class="idcell"><dt>min / target SDK</dt><dd>26 / 30</dd></div>
+    </dl>
+  </header>
+
+  <!-- ================= 0 ================= -->
+  <section>
+    <div class="shead"><span class="snum">00</span><h2>结论先行</h2></div>
+
+    <div class="finding">
+      <p><strong>Java 层确实有两套完整的 WebSocket 收发栈，但没有一个被游戏自身调用。</strong>它们分别是 TapTap TDS 自带的 Java-WebSocket（RFC6455 全实现），以及被 shade 重打包进防沉迷模块的 OkHttp 3。两者在 <code>classes.dex</code> 里都是零调用点。</p>
+      <p><strong>游戏真正的实时通道在 C#/IL2CPP 层</strong>：LeanCloud Realtime（<code>LeanCloud-CSharp-SDK/1.0.3</code>），底层包 <code>System.Net.WebSockets.ClientWebSocket</code>。</p>
+      <p><strong>但这对你是个好消息</strong>——那套 Java-WebSocket 是自包含的、可独立驱动的。要跟自己的外部服务器收发 WS，直接复用它即可，零移植成本。走 <a href="#s7">方案 A</a>。</p>
+    </div>
+  </section>
+
+  <!-- ================= 1 ================= -->
+  <section>
+    <div class="shead"><span class="snum">01</span><h2>事实基线与产物</h2></div>
+
+    <p>以下全部为本机实测产出，非推测。</p>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>产物</th><th class="m">路径</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>Java 源码</td><td class="m">E:\phigros4_re\java\sources\</td><td>3928 个 .java，4 个反编译错误</td></tr>
+          <tr><td>Manifest 树</td><td class="m">E:\phigros4_re\apk\AndroidManifest_tree.txt</td><td>aapt2 导出的完整 XML 树</td></tr>
+          <tr><td>IL2CPP 二进制</td><td class="m">E:\phigros4_re\work\il2cpp\libil2cpp_arm64.so</td><td>71.7 MB（arm64）</td></tr>
+          <tr><td>元数据</td><td class="m">E:\phigros4_re\work\il2cpp\global-metadata.dat</td><td>11.3 MB，Metadata Version 31</td></tr>
+          <tr><td>C# 类型结构</td><td class="m">E:\phigros4_re\il2cpp\dump.cs</td><td>27.8 MB，含 RVA / offset / VA</td></tr>
+          <tr><td>符号脚本</td><td class="m">E:\phigros4_re\work\il2cpp\dump\script.json</td><td>76 MB，喂 IDA / Ghidra</td></tr>
+          <tr><td>字符串常量</td><td class="m">E:\phigros4_re\il2cpp\stringliteral.json</td><td>16696 条，带地址</td></tr>
+          <tr><td>程序集桩</td><td class="m">E:\phigros4_re\il2cpp\DummyDll\</td><td>97 个 .dll，供 dnSpy 读</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>工具链</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>工具</th><th class="m">路径</th><th class="m">版本</th></tr></thead>
+        <tbody>
+          <tr><td>jadx</td><td class="m">E:\phigros4_re\tools\jadx-1.5.6\bin\jadx.bat</td><td class="m">1.5.6</td></tr>
+          <tr><td>Il2CppDumper</td><td class="m">F:\tool\dumper\Il2CppDumper.exe</td><td class="m">—</td></tr>
+          <tr><td>aapt2</td><td class="m">…\Android\Sdk\build-tools\36.1.0\aapt2.exe</td><td class="m">36.1.0</td></tr>
+          <tr><td>frida</td><td class="m">%APPDATA%\Python\Python313\Scripts\frida.exe</td><td class="m">17.9.1</td></tr>
+          <tr><td>java / dotnet</td><td class="m">PATH</td><td class="m">17.0.10 / 6·8·9·10</td></tr>
+          <tr><td>apktool</td><td class="m">C:\Windows\apktool.bat</td><td class="m">3.0.2</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <span class="note-label">Il2CppDumper 输出摘要</span>
+      <p><code>Metadata Version: 31</code> · <code>Il2Cpp Version: 31</code> · <code>CodeRegistration = 0x3e98c68</code> · <code>MetadataRegistration = 0x4021ae8</code>。日志里的 <code>WARNING: find JNI_OnLoad / ERROR: This file may be protected</code> 是误报，dump 完整产出无缺失。</p>
+    </div>
+  </section>
+
+  <!-- ================= 2 ================= -->
+  <section>
+    <div class="shead"><span class="snum">02</span><h2>APK 解剖</h2></div>
+
+    <p>2928 个 zip 条目，其中 2694 个是 <code>assets/aa/</code>（Unity Addressables 资源包），占了几乎全部体积。代码只占极小一部分——真正的攻击面在这里：</p>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>文件</th><th class="m">解压后</th><th>角色</th></tr></thead>
+        <tbody>
+          <tr><td class="m">classes.dex</td><td class="m">5.86 MB</td><td><span class="chip c-java">Java</span> 纯 SDK 壳</td></tr>
+          <tr><td class="m">lib/arm64-v8a/libil2cpp.so</td><td class="m">71.7 MB</td><td><span class="chip c-cs">C#</span> 全部游戏逻辑 + 网络栈</td></tr>
+          <tr><td class="m">lib/arm64-v8a/libunity.so</td><td class="m">20.3 MB</td><td><span class="chip c-native">Native</span> Unity 运行时</td></tr>
+          <tr><td class="m">lib/arm64-v8a/libmain.so</td><td class="m">6.7 KB</td><td><span class="chip c-native">Native</span> JNI 入口</td></tr>
+          <tr><td class="m">lib/arm64-v8a/libtapsdkcore.so</td><td class="m">4.2 MB</td><td><span class="chip c-native">Native</span> TapTap SDK core</td></tr>
+          <tr><td class="m">lib/arm64-v8a/libnativeaudioe7.so</td><td class="m">106 KB</td><td><span class="chip c-native">Native</span> Exceed7 NativeAudio</td></tr>
+          <tr><td class="m">assets/bin/Data/Managed/Metadata/global-metadata.dat</td><td class="m">11.3 MB</td><td>IL2CPP 元数据（类名/方法名/字符串）</td></tr>
+          <tr><td class="m">assets/bin/Data/data.unity3d</td><td class="m">176 MB</td><td>Unity 序列化资源</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Manifest 要点</h3>
+    <ul>
+      <li>入口：<code>com.unity3d.player.UnityPlayerActivity</code>（exported=true，launchMode=singleTask，screenOrientation=11）</li>
+      <li>权限只有两个：<code>INTERNET</code>、<code>ACCESS_NETWORK_STATE</code>。没有存储、没有定位——<strong>网络是它唯一的对外能力</strong></li>
+      <li><code>android:extractNativeLibs="true"</code> → .so 会解到 <code>/data/app/…/lib/arm64/</code>，Frida 可直接 <code>Module.findBaseAddress</code></li>
+      <li><code>android:networkSecurityConfig=@0x7f0d0000</code> → <code>res/8G.xml</code>，<strong>明确放行明文 + 信任用户 CA</strong>，见 §7</li>
+      <li>Activity：<code>com.taptap.sdk.TapTapActivity</code>、<code>com.taptap.sdk.ui.TapTapActivity</code>、<code>com.taptap.sdk.TapLoginHelperActivity</code>、<code>com.google.android.gms.common.api.GoogleApiActivity</code></li>
+      <li>Provider：<code>com.tds.common.provider.CurrentConfigProvider</code>（authority <code>com.PigeonGames.Phigros.tap_config.provider</code>）、<code>com.taptap.sdk.internal.user.CurrentUserProvider</code></li>
+      <li>meta-data：<code>com.google.android.gms.games.APP_ID = 358918849784</code>、<code>com.tapsdk.antiaddiction.loader = true</code></li>
+    </ul>
+  </section>
+
+  <!-- ================= 3 ================= -->
+  <section>
+    <div class="shead"><span class="snum">03</span><h2>三层执行栈</h2></div>
+
+    <div class="figure">
+      <svg viewBox="0 0 780 268" role="img" aria-label="Phigros 三层网络栈结构图">
+        <!-- 顶层：C# / IL2CPP -->
+        <rect x="16" y="14" width="748" height="88" rx="3" fill="var(--l-cs-soft)" stroke="var(--l-cs)" stroke-width="1.2"/>
+        <text x="34" y="40" font-family="var(--mono)" font-size="12" font-weight="600" fill="var(--l-cs)">C# / IL2CPP 层</text>
+        <text x="34" y="58" font-family="var(--mono)" font-size="11" fill="var(--ink-3)">libil2cpp.so · 游戏逻辑与网络栈所在</text>
+        <rect x="34" y="68" width="150" height="22" rx="2" fill="var(--surface)" stroke="var(--rule-strong)"/>
+        <text x="44" y="83" font-family="var(--mono)" font-size="10.5" fill="var(--ink)">LeanCloud.Realtime</text>
+        <rect x="194" y="68" width="132" height="22" rx="2" fill="var(--surface)" stroke="var(--rule-strong)"/>
+        <text x="204" y="83" font-family="var(--mono)" font-size="10.5" fill="var(--ink)">LCWebSocketClient</text>
+        <rect x="336" y="68" width="176" height="22" rx="2" fill="var(--surface)" stroke="var(--rule-strong)"/>
+        <text x="346" y="83" font-family="var(--mono)" font-size="10.5" fill="var(--ink)">ClientWebSocket (BCL)</text>
+        <text x="640" y="83" font-family="var(--mono)" font-size="10.5" font-weight="600" fill="var(--l-cs)">← 真实通道</text>
+
+        <!-- 桥 -->
+        <line x1="150" y1="106" x2="150" y2="156" stroke="var(--accent)" stroke-width="1.6" stroke-dasharray="4 3"/>
+        <polygon points="150,162 145,152 155,152" fill="var(--accent)"/>
+        <text x="166" y="128" font-family="var(--mono)" font-size="10.5" fill="var(--accent)">JNI · AndroidPluginUtility.GetSingletonInstance()</text>
+        <text x="166" y="144" font-family="var(--mono)" font-size="10.5" fill="var(--accent)">com.tds.common.bridge.Bridge / CommonBridge</text>
+
+        <!-- 底层：Java -->
+        <rect x="16" y="166" width="748" height="88" rx="3" fill="var(--l-java-soft)" stroke="var(--l-java)" stroke-width="1.2"/>
+        <text x="34" y="192" font-family="var(--mono)" font-size="12" font-weight="600" fill="var(--l-java)">Android / Java 层</text>
+        <text x="34" y="210" font-family="var(--mono)" font-size="11" fill="var(--ink-3)">classes.dex · 全部为第三方 SDK，无游戏业务代码</text>
+        <rect x="34" y="220" width="222" height="22" rx="2" fill="var(--surface)" stroke="var(--rule-strong)"/>
+        <text x="44" y="235" font-family="var(--mono)" font-size="10.5" fill="var(--ink)">com.tds.common.websocket ★</text>
+        <rect x="266" y="220" width="200" height="22" rx="2" fill="var(--surface)" stroke="var(--rule-strong)"/>
+        <text x="276" y="235" font-family="var(--mono)" font-size="10.5" fill="var(--ink)">shaded okhttp3 (防沉迷)</text>
+        <rect x="476" y="220" width="150" height="22" rx="2" fill="var(--surface)" stroke="var(--rule-strong)"/>
+        <text x="486" y="235" font-family="var(--mono)" font-size="10.5" fill="var(--ink)">okhttp2 + retrofit</text>
+        <text x="640" y="235" font-family="var(--mono)" font-size="10.5" font-weight="600" fill="var(--l-java)">★ 可复用</text>
+      </svg>
+      <p class="figcap">图 1 — 两条互不相干的网络路径。虚线为唯一的 Java↔C# 通路。</p>
+    </div>
+
+    <p><strong>关键认知</strong>：这两条路径彼此独立。Java 层的 WS 栈不依赖游戏状态就能工作，这正是方案 A 成立的前提。</p>
+  </section>
+
+  <!-- ================= 4 ================= -->
+  <section>
+    <div class="shead"><span class="snum">04</span><h2>Java 层：两套 WebSocket</h2></div>
+
+    <h3>4.1 <span class="chip c-java">可用</span> com.tds.common.websocket</h3>
+    <p>这是完整移植的 <strong>Java-WebSocket</strong>（RFC6455），客户端和服务端都在。</p>
+
+    <ul>
+      <li>协议栈齐全：<code>drafts/Draft_6455</code>、<code>framing/</code>（Text / Binary / Ping / Pong / Close / Continuous）、<code>handshake/</code>、<code>extensions/permessage_deflate</code>（压缩扩展）、<code>conn/SSLSocketChannel</code>（wss）</li>
+      <li>二进制帧支持完整：<code>onMessage(ByteBuffer)</code>、<code>send(ByteBuffer)</code>、<code>sendFragmentedFrame</code></li>
+      <li>服务端实现：<code>server/WebSocketServer</code>、<code>DefaultWebSocketServerFactory</code></li>
+    </ul>
+
+    <p>上层是单例 <code>TDSWebSocketService</code>（<code>com/tds/common/websocket/TDSWebSocketService.java</code>），自带断线重连和心跳：</p>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>成员</th><th class="m">行号</th><th>作用</th></tr></thead>
+        <tbody>
+          <tr><td class="m">TRIM_MAX_TIMES = 60</td><td class="m">19</td><td>重连上限 60 次</td></tr>
+          <tr><td class="m">STATE_OPEN / CLOSING / CLOSED</td><td class="m">17–19</td><td>1 / 3 / 2</td></tr>
+          <tr><td class="m">setDestUrl(String, WebSocketConfig)</td><td class="m">49</td><td><strong>注入 URL 与 header，并立即 connect()</strong></td></tr>
+          <tr><td class="m">checkConnection()</td><td class="m">64</td><td>断线补连</td></tr>
+          <tr><td class="m">sendMessage(String)</td><td class="m">241</td><td>出站</td></tr>
+          <tr><td class="m">registerMessageListener(Type, Listener)</td><td class="m">89</td><td>按消息类型注册监听</td></tr>
+          <tr><td class="m">addConnectionStateListener(Listener)</td><td class="m">97</td><td>连接状态回调</td></tr>
+          <tr><td class="m">getConnectionState()</td><td class="m">229</td><td>查询状态</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><code>WebSocketConfig</code>（内部类，L248）只有两个字段：<code>int connectionTimeout</code> 和 <code>Map&lt;String,String&gt; heads</code>——<strong>header 就是鉴权 token 的载体</strong>。<code>WebSocketConfigBuilder</code>（L280）默认 <code>connectionTimeout = 45</code> 秒。</p>
+
+    <p>消息类型枚举只有两个值：<code>MESSAGE_TYPE_TAP_FRIEND</code> / <code>MESSAGE_TYPE_OTHER</code>——说明原始用途是 <strong>TapTap 好友服务</strong>。</p>
+
+    <div class="note warn">
+      <span class="note-label">为什么它现在是休眠的</span>
+      <p>我做了三重验证：<code>grep TDSWebSocketService</code> 在整个 dex 内除自身包外<strong>零引用</strong>（连反射所需的字符串都没有）；<code>setDestUrl</code> 只出现在定义处；C# 侧字符串常量里也没有这个类名。</p>
+      <p>结论：它由 Unity 运行时通过 JNI 桥按需唤醒，静态拿不到 URL 和 token。<strong>但类本身是完整可用的</strong>——这正是方案 A 的立足点。</p>
+    </div>
+
+    <h3>4.2 <span class="chip c-java">死代码</span> shaded okhttp3</h3>
+    <p><code>com.tapsdk.antiaddiction.skynet.okhttp3.*</code> 是一份被重打包的 <strong>OkHttp 3</strong>，WS 部分完整存在（<code>OkHttpClient.newWebSocket()</code> 见 L335、<code>internal/ws/RealWebSocket</code>、<code>WebSocketReader</code>、<code>WebSocketWriter</code>、<code>WebSocketProtocol</code>），但同模块实际调用路径是旁边的 <code>retrofit2</code> + <code>rest/utils/HttpUtil</code>。</p>
+    <p>调用者是 <code>AntiAddictionImpl</code>、<code>AntiAddictionUIImpl</code>、<code>MockDataInterceptor</code>——全是防沉迷的 HTTP 接口。<strong>WS 部分是死代码。</strong></p>
+
+    <h3>4.3 <span class="chip c-java">无 WS</span> okhttp2 + retrofit</h3>
+    <p><code>retrofit/client/OkClient.java</code> 引用 <code>com.squareup.okhttp</code>（OkHttp 2.x），只走 <code>HttpURLConnection</code>，超时 15s / 20s。纯 HTTP。</p>
+  </section>
+
+  <!-- ================= 5 ================= -->
+  <section>
+    <div class="shead"><span class="snum">05</span><h2>C#/IL2CPP 层：LeanCloud Realtime</h2></div>
+
+    <p>这才是游戏在跑的实时通道。相关命名空间：</p>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>命名空间</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td class="m">LeanCloud.Realtime</td><td>LCRealtime、LCIMClient</td></tr>
+          <tr><td class="m">LeanCloud.Realtime.Internal.WebSocket</td><td><strong>LCWebSocketClient</strong> ← 核心</td></tr>
+          <tr><td class="m">LeanCloud.Realtime.Internal.Router</td><td>LCRTMRouter（服务器寻址）</td></tr>
+          <tr><td class="m">LeanCloud.Realtime.Internal.Connection</td><td>LCConnection、LCRTMHeartBeat</td></tr>
+          <tr><td class="m">LeanCloud.Realtime.Internal.Protocol</td><td>协议编解码</td></tr>
+          <tr><td class="m">LeanCloud.LiveQuery</td><td>LCLiveQueryConnection（查询结果订阅）</td></tr>
+          <tr><td class="m">LeanCloud.Storage</td><td>对象存储 / 文件 / 查询</td></tr>
+          <tr><td class="m">LeanCloud.Push</td><td>推送</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>LCWebSocketClient 内部结构</h3>
+    <p>TypeDefIndex 9985，自身不实现协议，而是包装 BCL 的 <code>System.Net.WebSockets.ClientWebSocket</code>：</p>
+
+    <pre><code><span class="cmt">// 常量（TypeDefIndex 9985）</span>
+SEND_BUFFER_SIZE = 5120      RECV_BUFFER_SIZE = 8192
+MSG_BUFFER_SIZE  = 10240     CLOSE_TIMEOUT    = 5000
+CONNECT_TIMEOUT  = 10000
+
+<span class="cmt">// 字段</span>
+Action&lt;byte[], int&gt;                 OnMessage   @ 0x10   <span class="cmt">← 入站回调</span>
+Action                              OnClose     @ 0x18
+ClientWebSocket                     ws          @ 0x20
+ConcurrentQueue&lt;LCWebSocketClient.SendTask&gt; sendQueue @ 0x28</code></pre>
+
+    <h3>可 Hook 的地址（arm64，VA）</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>方法</th><th class="m">VA</th><th class="m">文件偏移</th></tr></thead>
+        <tbody>
+          <tr><td class="m">LCWebSocketClient..ctor()</td><td class="m">0x354FC94</td><td class="m">0x354BC94</td></tr>
+          <tr><td class="m">LCWebSocketClient.Connect(string, string, Dictionary&lt;string,string&gt;, TimeSpan)</td><td class="m">0x3551378</td><td class="m">0x354D378</td></tr>
+          <tr><td class="m">LCWebSocketClient.Close()</td><td class="m">0x3550150</td><td class="m">0x354C150</td></tr>
+          <tr><td class="m">LCWebSocketClient.Send(byte[], WebSocketMessageType)</td><td class="m">0x3552190</td><td class="m">0x354E190</td></tr>
+          <tr><td class="m">LCWebSocketClient.Send(string)</td><td class="m">0x3552F54</td><td class="m">0x354EF54</td></tr>
+          <tr><td class="m">LCWebSocketClient.StartSend()</td><td class="m">0x3553028</td><td class="m">0x354F028</td></tr>
+          <tr><td class="m">LCWebSocketClient.StartReceive()</td><td class="m">0x35530EC</td><td class="m">0x354F0EC</td></tr>
+          <tr><td class="m">LCRTMHeartBeat.SendPing()</td><td class="m">0x3552AF4</td><td class="m">0x354EAF4</td></tr>
+          <tr><td class="m">LCRealtime.Pause() / Resume()</td><td class="m">0x3501BE4 / 0x3501D78</td><td class="m">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><code>Connect()</code> 的四个参数——<code>server</code>、<code>subProtocol</code>、<code>headers</code>、<code>keepAliveInterval</code>——<strong>hook 这一个函数就能拿到完整连接上下文</strong>，包括鉴权 header。</p>
+
+    <h3>字符串常量证据</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th class="m">字面量</th><th>含义</th></tr></thead>
+        <tbody>
+          <tr><td class="m">LeanCloud-CSharp-SDK/1.0.3</td><td>SDK 版本</td></tr>
+          <tr><td class="m">https://app-router.com/2/route?appId=</td><td>服务器路由发现（国际版）</td></tr>
+          <tr><td class="m">/v1/route?appId=</td><td>路由接口另一形态</td></tr>
+          <tr><td class="m">.api.lncldglobal.com</td><td>API 域名后缀</td></tr>
+          <tr><td class="m">.engine.lncldglobal.com</td><td>实时引擎域名后缀</td></tr>
+          <tr><td class="m">.push.lncldglobal.com</td><td>推送域名后缀</td></tr>
+          <tr><td class="m">Only Uris starting with 'ws://' or 'wss://' are supported.</td><td>协议校验</td></tr>
+          <tr><td class="m">&lt;RTMServer&gt;k__BackingField</td><td>运行时记录的服务端地址</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <span class="note-label">寻址链路</span>
+      <p>appId → <code>app-router.com/2/route?appId=…</code> → 返回 <code>{appid}.engine.lncldglobal.com</code> → 该域名即 WS 服务端。<strong>appId 是唯一需要提前知道的东西</strong>，它藏在 IL2CPP 字符串常量或初始化代码里。</p>
+    </div>
+  </section>
+
+  <!-- ================= 6 ================= -->
+  <section>
+    <div class="shead"><span class="snum">06</span><h2>JNI 桥：C# 如何驱动 Java</h2></div>
+
+    <p>C# 侧调用 Java 的唯一入口是 Unity 的 <code>AndroidJavaObject</code>，封装在两个工具函数里（<code>dump.cs</code> TypeDefIndex 9987）：</p>
+
+    <pre><code>AndroidPluginUtility.GetSingletonInstance(string _className,
+                                          string _methodName = "getInstance")   <span class="cmt">// RVA 0x1C67934</span>
+AndroidPluginUtility.CreateClassObject(string _className)                        <span class="cmt">// RVA 0x1C67BD0</span></code></pre>
+
+    <p>C# 侧字符串常量里出现的 Java 类名，证实了桥的形态：</p>
+    <ul>
+      <li><code>com.tds.common.bridge.Bridge</code> / <code>CommonBridge</code> / <code>BridgeCallback</code> — 通用命令分发</li>
+      <li><code>com.taptap.sdk.wrapper.TDSLoginService</code> / <code>TDSLoginServiceImpl</code> — 登录</li>
+    </ul>
+    <p>Java 侧对应实现位于 <code>com/tds/common/bridge/</code>（含 <code>command/</code>、<code>result/</code>、<code>annotation/</code> 子包）。</p>
+
+    <div class="note">
+      <span class="note-label">观察桥的价值</span>
+      <p>Hook <code>AndroidPluginUtility.GetSingletonInstance</code> 是<strong>发现所有 Java 侧 SDK 被唤醒时机</strong>的捷径——其中就包括 <code>TDSWebSocketService</code>。如果你想知道游戏是否真的启用了 Java WS，这是最直接的探针。</p>
+    </div>
+  </section>
+
+  <!-- ================= 7 ================= -->
+  <section id="s7">
+    <div class="shead"><span class="snum">07</span><h2><span class="chip c-hook">方案 A</span> 复用 Java-WebSocket</h2></div>
+
+    <p><strong>推荐路径。</strong>不去碰游戏的 LeanCloud 连接，而是把 APK 里已经躺着的那套 RFC6455 实现当成一个通用 WS 库，从 Frida 直接驱动它连你自己的服务器。零移植、零编译、不依赖游戏是否启用了它。</p>
+
+    <div class="note action">
+      <span class="note-label">✅ 2026-10-16 已真机验证通过</span>
+      <p>frida-gadget 路线注入。双向收发、服务端主动推送、<code>heads()</code> 注入的 <code>x-from: frida</code> 握手 header —— 全部实测成功。</p>
+      <p>实现：<code>network\ws\phigros_ws.js</code> · 服务端：<code>network\ws\ws_server.py</code> · 手册：<code>network\ws\README.md</code></p>
+    </div>
+
+    <h3>接口签名（已从源码坐实）</h3>
+
+    <pre><code><span class="cmt">// WebSocketConfigBuilder</span>
+public static WebSocketConfigBuilder getBuilder();
+public WebSocketConfigBuilder connectTimeOut(int i);
+public WebSocketConfigBuilder heads(Map&lt;String, String&gt; map);   <span class="cmt">// ← 是 heads()，不是 setHeads()</span>
+public WebSocketConfig build();
+
+<span class="cmt">// WebSocketEventListener（注册监听器时实现这 4 个）</span>
+void onOpen();   void onMessage(String str);
+void onClose(int i, String str, boolean z);   void onError(Exception exc);</code></pre>
+
+    <div class="note">
+      <span class="note-label">两条已确认的关键行为</span>
+      <p><strong>header 注入链路</strong>：<code>WebSocketClient</code> 构造器遍历 <code>config.heads</code> 逐个 <code>addHeader(k, v)</code>，并 <code>setConnectionLostTimeout(config.connectionTimeout)</code>——默认 45 秒自动 ping。</p>
+      <p><strong>收包安全、发包静默</strong>：<code>onMessage</code> 在无监听器时直接 return，不会 NPE；但 <code>sendMessage</code> 在非 OPEN 状态<strong>静默丢弃</strong>，必须先查 <code>getConnectionState()</code>。</p>
+    </div>
+
+    <h3>建连 + 发送</h3>
+    <pre><code><span class="cmt">// frida -U -f com.PigeonGames.Phigros -l ws_out.js</span>
+Java.perform(function () {
+  var Svc     = Java.use("com.tds.common.websocket.TDSWebSocketService");
+  var Bld     = Java.use("com.tds.common.websocket.TDSWebSocketService$WebSocketConfigBuilder");
+  var HashMap = Java.use("java.util.HashMap");
+
+  var heads = HashMap.$new();
+  heads.put("X-From", "frida");              <span class="cmt">// 鉴权 header 走这里</span>
+
+  var cfg = Bld.getBuilder()
+               .connectTimeOut(45)
+               .heads(heads)                  <span class="cmt">// ← heads()，不是 setHeads()</span>
+               .build();
+
+  var svc = Svc.getInstance();
+  svc.setDestUrl("wss://your.host/ws", cfg); <span class="cmt">// 内部立即 connect()</span>
+
+  setTimeout(function () {
+    Java.perform(function () {
+      Svc.getInstance().sendMessage(JSON.stringify({ t: "ping", n: 1 }));
+    });
+  }, 3000);
+});</code></pre>
+
+    <h3>接收</h3>
+    <p>两条路，任选：</p>
+
+    <pre><code><span class="cmt">// ① 直接挂单例的回调（文本帧）</span>
+var Svc = Java.use("com.tds.common.websocket.TDSWebSocketService");
+Svc.onMessage.overload("java.lang.String").implementation = function (m) {
+  console.log("[WS in] " + m);
+  return this.onMessage(m);                  <span class="cmt">// 转调原实现</span>
+};
+
+<span class="cmt">// ② 挂底层二进制帧</span>
+var Base = Java.use("com.tds.common.websocket.client.WebSocketClient");
+Base.onMessage.overload("java.nio.ByteBuffer").implementation = function (buf) {
+  console.log("[WS bin] " + Java.array("byte", buf.array()));
+  return this.onMessage(buf);
+};</code></pre>
+
+    <p>若要注册自己的监听器，用 <code>Java.registerClass</code> 实现 <code>WebSocketEventListener</code>，再 <code>registerMessageListener(Type, listener)</code>。签名以上面前置脚本的输出为准。</p>
+
+    <h3>注意事项</h3>
+    <ul>
+      <li><strong><code>ws://</code> 明文可用</strong>。NSC（<code>res/8G.xml</code>）里 <code>cleartextTrafficPermitted="true"</code> 明确放行，不受 targetSdk 30 默认限制。<strong>实测已通</strong>。</li>
+      <li><strong>自签名 <code>wss://</code> 也能用</strong>。NSC 信任用户 CA（<code>&lt;certificates src="user"/&gt;</code>），且 <code>WebSocketClient</code> 建 SSL 上下文用的是 <code>SSLContext.init(null, null, null)</code>——null TrustManager 走系统默认，会读 NSC。把证书装进 Android <strong>用户</strong>证书库即可，无需 root。</li>
+      <li><strong>线程</strong>：WS 回调发生在 Java 子线程，Unity API 只能在主线程调。要回灌游戏需 <code>runOnUiThread</code> 或 <code>UnityPlayer.currentActivity</code> 转发。</li>
+      <li><strong>生命周期</strong>：<code>sendMessage</code> 前确认 <code>getConnectionState() == 1</code>，否则消息会被静默丢弃。重连由 <code>tryTimes</code> 控制，上限 60 次。</li>
+      <li><strong>不干扰游戏</strong>：<code>setDestUrl</code> 会 <code>reset()</code> 掉已有的 client。目前游戏没用这个单例，所以安全；但如果哪天发现它被激活了，用独立的类实例而不是单例。</li>
+    </ul>
+  </section>
+
+  <!-- ================= 8 ================= -->
+  <section>
+    <div class="shead"><span class="snum">08</span><h2><span class="chip c-hook">方案 B</span> Hook IL2CPP 的 LeanCloud</h2></div>
+
+    <p>方案 A 是「用游戏里的库」，方案 B 是「<strong>接管游戏自己的连接</strong>」。观察和改写在跑的 LeanCloud 流量走这条。</p>
+
+    <h3>用 frida-il2cpp-bridge（推荐）</h3>
+    <p>比裸地址稳，不怕版本偏移，直接按类名方法名定位：</p>
+
+    <pre><code>import "frida-il2cpp-bridge";
+
+Il2Cpp.perform(() =&gt; {
+  <span class="cmt">// 程序集名：DummyDll 显示为 Realtime.dll（待确认）</span>
+  const k = Il2Cpp.domain
+    .assembly("Realtime")
+    .image.class("LeanCloud.Realtime.Internal.WebSocket.LCWebSocketClient");
+
+  <span class="cmt">// 出站</span>
+  k.method("Send").overload("System.String").implementation = function (text) {
+    console.log("[LC →] " + text);
+    return this.method("Send").overload("System.String").invoke(text);
+  };
+
+  <span class="cmt">// 建连上下文：server / subProtocol / headers / keepAliveInterval</span>
+  k.method("Connect").implementation = function (server, subProto, headers, keepAlive) {
+    console.log("[LC connect] " + server + "  proto=" + subProto);
+    console.log("[LC headers] " + headers.toString());
+    return this.method("Connect").invoke(server, subProto, headers, keepAlive);
+  };
+});</code></pre>
+
+    <div class="note">
+      <span class="note-label">程序集名待定</span>
+      <p><code>DummyDll</code> 里唯一与 LeanCloud 相关的是 <code>Realtime.dll</code>，但命名空间是 <code>LeanCloud.Realtime.*</code>，两者是否对应需要实际加载时确认。用 <code>Il2Cpp.domain.assemblies</code> 遍历一次即可定论。</p>
+    </div>
+
+    <h3>裸 Interceptor（不依赖第三方库）</h3>
+    <pre><code>const base = Module.findBaseAddress("libil2cpp.so");
+
+<span class="cmt">// IL2CPP 字符串：klass(8) monitor(8) length(4) chars(2×len)</span>
+function readIl2CppString(p) {
+  if (p.isNull()) return null;
+  const len = p.add(0x10).readS32();
+  return p.add(0x14).readUtf16String(len);
+}
+
+Interceptor.attach(base.add(0x3552F54), {          <span class="cmt">// Send(string)</span>
+  onEnter(args) {
+    <span class="cmt">// args[0]=this  args[1]=Il2CppString*  args[2]=MethodInfo*</span>
+    console.log("[LC →] " + readIl2CppString(args[1]));
+  }
+});
+
+Interceptor.attach(base.add(0x35530EC), {          <span class="cmt">// StartReceive()</span>
+  onEnter() { console.log("[LC] StartReceive 触发"); }
+});</code></pre>
+
+    <p><strong>地址校验</strong>：<code>0x3552F54</code> 是 ELF 虚拟地址，运行时地址 = <code>libil2cpp.so</code> 基址 + VA（前提是首个 PT_LOAD 的 vaddr 为 0）。挂之前先 <code>base.add(0x3552F54).readU32()</code> 看是否是合理指令字，别盲挂。</p>
+
+    <h3>入站怎么拿</h3>
+    <p><code>StartReceive()</code> 是一个异步循环，读 <code>OnMessage</code> 字段（<code>@0x10</code>）更直接——它是 <code>Action&lt;byte[], int&gt;</code>，挂在实例上。先用 bridge 拿到 <code>LCWebSocketClient</code> 的实例，再读字段：</p>
+
+    <pre><code>const inst = k.<span class="cmt">/* 从 Connect 的 this 捕获 */</span>;
+const cb = inst.field("OnMessage").value;   <span class="cmt">// Action&lt;byte[], int&gt;</span>
+<span class="cmt">// 或将 callback 替换为自己的实现，转发原始调用</span></code></pre>
+
+    <div class="note warn">
+      <span class="note-label">风险</span>
+      <p>IL2CPP 方法是编译后的 C++，参数是 <code>Il2CppObject*</code>，<strong>没有类型信息</strong>。<code>Send(string)</code> 这种简单签名没问题；一旦涉及泛型共享（generic sharing）或值类型参数，裸 hook 极易读错。复杂场景请用 bridge。</p>
+    </div>
+  </section>
+
+  <!-- ================= 9 ================= -->
+  <section>
+    <div class="shead"><span class="snum">09</span><h2>未确认清单</h2></div>
+
+    <p>文档里标 <span class="mark todo">?</span> 的地方，都是我没有实地验证的。按重要性排序：</p>
+
+    <ul class="checklist">
+      <li><span class="mark ok">✓</span><span><s><code>WebSocketConfigBuilder</code> 方法名</s> —— 已确认：<code>heads(Map)</code> / <code>build()</code> / <code>connectTimeOut(int)</code></span></li>
+      <li><span class="mark ok">✓</span><span><s><code>WebSocketEventListener</code> 方法签名</s> —— 已确认：<code>onOpen()</code> / <code>onMessage(String)</code> / <code>onClose(int,String,boolean)</code> / <code>onError(Exception)</code></span></li>
+      <li><span class="q">?</span><span><code>Realtime.dll</code> 是否就是 <code>LeanCloud.Realtime</code> 的宿主程序集——影响方案 B 的 bridge 写法</span></li>
+      <li><span class="q">?</span><span>LeanCloud <strong>appId</strong> 的具体值——决定能否直连引擎服务器</span></li>
+      <li><span class="mark ok">✓</span><span><s><code>networkSecurityConfig</code> 内容</s> —— 已确认：<code>res/8G.xml</code>，<code>cleartextTrafficPermitted="true"</code> + 信任 user CA</span></li>
+      <li><span class="q">?</span><span>游戏运行时是否真的唤醒了 <code>TDSWebSocketService</code>——用 §6 的桥探针可以验证</span></li>
+      <li><span class="q">?</span><span>arm64 的 VA→运行时地址映射是否真的以 0 为基——挂 hook 前必须验</span></li>
+    </ul>
+  </section>
+
+  <!-- ================= 10 ================= -->
+  <section>
+    <div class="shead"><span class="snum">10</span><h2>路径速查</h2></div>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>要找什么</th><th class="m">去哪</th></tr></thead>
+        <tbody>
+          <tr><td>Java 层全部源码</td><td class="m">E:\phigros4_re\java\sources\</td></tr>
+          <tr><td>可复用的 WS 客户端</td><td class="m">com\tds\common\websocket\WebSocketClient.java</td></tr>
+          <tr><td>WS 单例与服务封装</td><td class="m">com\tds\common\websocket\TDSWebSocketService.java</td></tr>
+          <tr><td>WS 抽象基类</td><td class="m">com\tds\common\websocket\client\WebSocketClient.java</td></tr>
+          <tr><td>C# 类型结构 + 地址</td><td class="m">E:\phigros4_re\il2cpp\dump.cs</td></tr>
+          <tr><td>IDA / Ghidra 符号</td><td class="m">E:\phigros4_re\work\il2cpp\dump\script.json</td></tr>
+          <tr><td>字符串常量（带地址）</td><td class="m">E:\phigros4_re\il2cpp\stringliteral.json</td></tr>
+          <tr><td>dnSpy 可读程序集</td><td class="m">E:\phigros4_re\il2cpp\DummyDll\</td></tr>
+          <tr><td>Manifest 完整树</td><td class="m">E:\phigros4_re\apk\AndroidManifest_tree.txt</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note action">
+      <span class="note-label">可直接运行的实现</span>
+      <p><code>E:\phigros4_re\network\ws\ws_server.py</code> —— PC 侧测试服务端（已本地验证：握手 / 收 / 发 / 服务端主动推送全通）。</p>
+      <p><code>E:\phigros4_re\network\ws\phigros_ws.js</code> —— Frida 脚本（挂钩子 + 自动连接 + <code>wsSend</code>/<code>wsState</code>/<code>wsConnect</code>/<code>wsClose</code>）。</p>
+      <p>运行步骤见 <code>network\ws\README.md</code>。</p>
+    </div>
+  </section>
+
+  <footer>
+    Phigros 4.0.1 (157) · com.PigeonGames.Phigros · Unity IL2CPP v31 · 分析时间 2026-10-16
+  </footer>
+
+</div>

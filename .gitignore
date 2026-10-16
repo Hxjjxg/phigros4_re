@@ -1,0 +1,29 @@
+# ── 目标 APK（3.33 GB，永不入库）────────────────────────────────
+Phigros_*.apk
+*.apk
+*.xapk
+
+# ── 逆向工具二进制（自行下载，见 tools/README.md）──────────────
+tools/jadx-*/
+tools/*.jar
+tools/*.exe
+
+# ── 从 APK 提取的原始件 + IL2CPP 大中间产物 ────────────────────
+# 全部可由 build.ps1 从 APK 重生成，不入库
+work/
+*.so
+*.dylib
+*.dll
+global-metadata.dat
+
+# ── 日志与临时文件 ─────────────────────────────────────────────
+*.log
+*.tmp
+out/
+
+# ── 编辑器 / 系统 ──────────────────────────────────────────────
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+.DS_Store
