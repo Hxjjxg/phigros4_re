@@ -55,10 +55,14 @@ Java 层有**两套** WebSocket 实现，**游戏自身都不调用**：
 
 ## 重新生成
 
+在仓库根目录执行：
+
 ```powershell
-.\..\tools\jadx-1.5.6\bin\jadx.bat --no-res -d ..\java\sources ..\Phigros_4.0.1.apk
+.\build.ps1 -SkipAapt -SkipIl2cpp
 ```
 
 `--no-res` 跳过资源解码（资源走 `aapt2`，见 `apk/`）。
 
-> `sources/` 已入库。嫌仓库大的话可以移出 `.gitignore`，代价是每次都要重跑 jadx（几分钟）。
+`sources/` 已加入 `.gitignore`，仅供本地分析，不再跟踪其中的 3,928 个反编译文件。
+现有本地文件无需删除；新克隆仓库需要先运行上述命令生成。历史提交仍保留原始收录内容。
+手写 Java 和编译桩位于 `network/`、`packaging/`，不受此规则影响。

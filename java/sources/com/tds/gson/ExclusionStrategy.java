@@ -1,8 +1,0 @@
-package com.tds.gson;
-
-/* JADX INFO: loaded from: classes.dex */
-public interface ExclusionStrategy {
-    boolean shouldSkipClass(Class<?> cls);
-
-    boolean shouldSkipField(FieldAttributes fieldAttributes);
-}

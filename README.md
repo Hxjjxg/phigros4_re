@@ -22,7 +22,7 @@
 | 目录 | 内容 |
 |---|---|
 | [`apk/`](apk/) | APK 解剖：Manifest、资源表、包结构 |
-| [`java/`](java/) | Java 层（`classes.dex` → jadx 反编译产物） |
+| [`java/`](java/) | Java 层分析说明；jadx 反编译产物仅保留在本地 `java/sources/` |
 | [`il2cpp/`](il2cpp/) | IL2CPP 层（C# 类型结构、字符串常量） |
 | [`network/`](network/) | **网络层** —— 三条通路的总览 |
 | [`network/ws/`](network/ws/) | **WebSocket 实现** —— Frida 脚本 + 测试服务端 |
@@ -121,12 +121,17 @@ Java 层          classes.dex       ← 全部第三方 SDK，无游戏业务代
 
 ## 版本管理说明
 
-**已入库**：分析文档、脚本、`java/sources/`（jadx 产物）、`il2cpp/dump.cs`、`il2cpp/stringliteral.json`
+**已入库**：分析文档、脚本、手写 Java、测试证据、`il2cpp/dump.cs`、`il2cpp/stringliteral.json`
 
 **未入库**（可重生成，见 `build.ps1`）：
 - `Phigros_4.0.1.apk`（3.33 GB）
 - `tools/jadx-1.5.6/`（工具二进制）
+- `java/sources/`（jadx 反编译输出；取消 Git 跟踪，本地文件保留）
 - `work/`——`libil2cpp.so`、`global-metadata.dat`、`il2cpp.h`、`script.json`
 - `il2cpp/DummyDll/`（dnSpy 用桩程序集）
 
-要精简仓库的话，把 `.gitignore` 里的 `java/sources/` 和 `il2cpp/dump.cs` 加进去，仓库从 ~70 MB 降到 ~2 MB，代价是每次读代码前得先跑 `build.ps1`。
+仅重新生成 Java 分析代码：`.\build.ps1 -SkipAapt -SkipIl2cpp`。
+`network/` 和 `packaging/` 中的手写 Java、编译桩仍然入库，独立 APK 构建不依赖 `java/sources/`。
+
+首次提交曾收录 3,928 个反编译 Java 文件；后续清理只取消当前版本跟踪，不删除本地文件，
+也不改写已有提交。因此旧版本仍包含这些文件，Git 历史体积不会因这次清理立即缩小。

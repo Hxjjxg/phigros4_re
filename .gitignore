@@ -16,6 +16,14 @@ work/
 *.dll
 global-metadata.dat
 
+# jadx 反编译输出：仅本地分析使用，保留 java/README.md 与手写 Java
+/java/sources/
+
+# Python 缓存和 Java 编译中间产物
+__pycache__/
+*.py[cod]
+*.class
+
 # ── 构建中间产物（最终 dex 会入库，中间目录不入）───────────────
 network/ws/build/
 

@@ -152,5 +152,5 @@ for src, dst in items:
 } else { Head '3-4  IL2CPP —— 已跳过' }
 
 Head '全部完成'
-Say '入库: java\sources\, il2cpp\dump.cs, il2cpp\stringliteral.json, apk\*.txt'
-Say '未入库（可重生成）: work\ 下的 .so / .dat / il2cpp.h / script.json / DummyDll'
+Say '入库: il2cpp\dump.cs, il2cpp\stringliteral.json, apk\*.txt'
+Say '未入库（可重生成）: java\sources\，work\ 下的 .so / .dat / il2cpp.h / script.json / DummyDll'
