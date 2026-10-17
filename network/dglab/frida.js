@@ -150,7 +150,8 @@
                 const saved = prefs.getString('pairingId', null);
                 if (saved && /^[a-f0-9]{32}$/.test(String(saved))) pairingId = String(saved);
                 else prefs.edit().putString('pairingId', pairingId).apply();
-            } else Java.openClassFile('/data/local/tmp/EmbeddedTransport.dex').load();
+            } else Java.openClassFile(globalThis.PHIGROS_EMBEDDED_TRANSPORT_PATH ||
+                '/data/local/tmp/EmbeddedTransport.dex').load();
             Server = Java.use('re.phigros.dglab.EmbeddedTransport');
             installHandshakeCompatibility();
             update();
