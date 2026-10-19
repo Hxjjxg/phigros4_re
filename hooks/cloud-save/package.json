@@ -1,0 +1,17 @@
+{
+  "name": "phigros-4-cloud-save-hooks",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc --noEmit && node build.mjs",
+    "check": "node --check cloud_sync_version_bypass_bridge_RVA.js"
+  },
+  "devDependencies": {
+    "@types/frida-gum": "19.0.0",
+    "esbuild": "0.25.5",
+    "frida-il2cpp-bridge": "0.13.0",
+    "typescript": "5.8.3"
+  }
+}

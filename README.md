@@ -28,6 +28,7 @@
 | [`network/ws/`](network/ws/) | **WebSocket 实现** —— Frida 脚本 + 测试服务端 |
 | [`network/dglab/`](network/dglab/) | DG-LAB V4 内置服务端、控制 API、协议测试 |
 | [`hooks/judgment/`](hooks/judgment/) | 四种判定 hook、设置面板、二维码与测试证据 |
+| [`hooks/cloud-save/`](hooks/cloud-save/) | 云存档版本比较补丁、4.0.1 arm64 偏移与独立 JS 构建 |
 | [`packaging/`](packaging/) | 独立 APK 自动加载、构建、签名、验收记录 |
 | [`docs/`](docs/) | 分析报告 |
 | [`tools/`](tools/) | 工具链说明（二进制不入库） |
