@@ -29,6 +29,7 @@
 | [`network/dglab/`](network/dglab/) | DG-LAB V4 内置服务端、控制 API、协议测试 |
 | [`hooks/judgment/`](hooks/judgment/) | 四种判定 hook、设置面板、二维码与测试证据 |
 | [`hooks/cloud-save/`](hooks/cloud-save/) | 云存档版本比较补丁、4.0.1 arm64 偏移与独立 JS 构建 |
+| [`hooks/cloud-login/`](hooks/cloud-login/) | 强制 TapSDK WebView 登录脚本、签名定位探针与实机验证记录 |
 | [`packaging/`](packaging/) | 独立 APK 自动加载、构建、签名、验收记录 |
 | [`docs/`](docs/) | 分析报告 |
 | [`tools/`](tools/) | 工具链说明（二进制不入库） |
@@ -117,6 +118,7 @@ Java 层          classes.dex       ← 全部第三方 SDK，无游戏业务代
 
 - [`docs/network-analysis.md`](docs/network-analysis.md) —— 网络层完整分析（三层拆解 + 两套 Frida 方案 + 未确认清单）
 - [`docs/network-analysis.html`](docs/network-analysis.html) —— 同上，浏览器阅读版
+- [`docs/cloud-login/DEBUG.md`](docs/cloud-login/DEBUG.md) —— 云存档登录错误定位、WebView 选路与服务解绑崩溃修复
 
 ---
 
