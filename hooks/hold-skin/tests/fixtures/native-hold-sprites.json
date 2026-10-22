@@ -1,0 +1,11 @@
+{
+  "source": "Phigros_4.0.1.apk: assets/bin/Data/data.unity3d, sharedassets12.assets (UnityPy static inspection)",
+  "sprites": [
+    {"slot":"head_single","name":"Hold_Head","pathId":71,"width":989,"height":50,"pivot":[0.5,1],"ppu":100},
+    {"slot":"body_single","name":"Hold","pathId":61,"width":989,"height":1900,"pivot":[0.5,0],"ppu":100},
+    {"slot":"tail_single","name":"Hold_End","pathId":69,"width":989,"height":50,"pivot":[0.5,0],"ppu":100},
+    {"slot":"head_multi","name":"Hold2HL_0","pathId":55,"width":1062,"height":97.52381134033203,"pivot":[0.5,1],"ppu":97.52066040039062},
+    {"slot":"body_multi","name":"Hold2HL_1","pathId":76,"width":1062,"height":1852.952392578125,"pivot":[0.5,0],"ppu":97.52066040039062},
+    {"slot":"tail_multi","name":"Hold_End","pathId":69,"width":989,"height":50,"pivot":[0.5,0],"ppu":100}
+  ]
+}
