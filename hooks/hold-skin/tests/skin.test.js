@@ -4,184 +4,239 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
 const C = require('../src/core');
+const profile = require('../native-profile.json');
 
-function fixture(options, nativeGeometry) {
-    let next = 1, failDecode = -1, decodes = 0, missing = null, rejectSetter = false;
-    const objects = [], handles = new Map(), hooks = new Map(), intervals = new Set(), writes = [], blits = [];
+function fixture(controls = {}) {
+    let next=1, decodes=0, failDecode=-1, missing=null, corrupt=null, rejectSetter=false;
+    const objects=[], handles=new Map(), hooks=new Map(), intervals=new Set(), immediates=[], writes=[], nativeCalls=[], opened=[];
     class P {
-        constructor(data = {}, offset = 0, base) { this.data = data; this.offset = offset; this.base = base || this; this.id = base ? base.id : next++; }
-        isNull() { return this.id === 0; }
-        equals(p) { return this.id === p.id && this.offset === p.offset; }
-        toString() { return '0x' + this.id.toString(16); }
-        add(n) { return new P(this.data, this.offset+n, this.base); }
-        readU8() { return this.data.fields.chordSupport ? 1 : 0; }
+        constructor(data={}, offset=0, base) { this.data=data; this.offset=offset; this.base=base||this; this.id=base?base.id:next++; }
+        isNull() { return this.id===0; }
+        equals(p) { return this.id===p.id && this.offset===p.offset; }
+        toString() { return '0x'+(this.id*4096+this.offset).toString(16); }
+        add(n) { return new P(this.data,this.offset+n,this.base); }
+        writeByteArray(bytes) { this.data.bytes=Buffer.from(bytes); return this; }
         readS32() { return this.data.fields.type; }
-        readFloat() { return this.data.values[this.offset / 4]; }
-        writeByteArray() { return this; }
     }
-    const nil = new P(); nil.id = 0;
-    const p = data => { const v = new P({alive:true, fields:{}, ...data}); objects.push(v); return v; };
-    const array = items => p({items});
-    const sprite = (name, w=64, h=32, py=16) => p({name, geometry:{w,h,px:w/2,py,ppu:100}});
-    const normal = [sprite('head'),sprite('body',64,512,0),sprite('shared-tail')];
-    const multi = [sprite('multi-head'),sprite('multi-body',64,512,0),normal[2]];
-    if (nativeGeometry) [...normal, ...multi].forEach((s, i) => {
-        const g = nativeGeometry[i];
-        s.data.geometry = {w:g.width, h:g.height, px:g.pivot[0]*g.width, py:g.pivot[1]*g.height, ppu:g.ppu};
-    });
-    const prefabArray = array(normal.slice()), prefab = p({fields:{noteImages:prefabArray}});
-    const holds = array([]), notesAbove = array([]), notesBelow = array([]), manager = p({fields:{holdControls:holds}});
-    const line = p({fields:{Hold:prefab, HoldHL0:multi[0], HoldHL1:multi[1], _noteUpdateManager:manager, notesAbove, notesBelow, chordSupport:true}});
-    const retain = (o, pinned) => { assert.equal(pinned, 0, 'Frida native bool argument must be integer 0'); const h=next++; handles.set(h,o); return h; };
-    const r = {
+    class Code {
+        constructor(name,offset=0) { this.name=name; this.offset=offset; }
+        add(n) { return new Code(this.name,this.offset+n); }
+        toString() { return this.name+(this.offset?'+'+this.offset:''); }
+        readByteArray() {
+            const hex=this.offset?profile.sites.find(s=>s.offset===this.offset).signature:profile.entrySignature;
+            const bytes=Buffer.from(hex,'hex');
+            if(controls.corruptSite===this.offset) bytes[0]^=1;
+            return bytes;
+        }
+    }
+    const nil=new P(); nil.id=0;
+    const p=data=>{const v=new P({alive:true,fields:{},...data});objects.push(v);return v;};
+    const array=items=>p({items});
+    const sprite=name=>p({name});
+    const normal=[sprite('head'),sprite('body'),sprite('shared-tail')];
+    const multi=[sprite('multi-head'),sprite('multi-body'),normal[2]];
+    const prefabArray=array(normal.slice());
+    const line=p({fields:{HoldHL0:multi[0],HoldHL1:multi[1],chordSupport:true,notesAbove:array([]),notesBelow:array([])}});
+    const dimensions=Object.fromEntries(C.slots.map(slot=>[slot,slot.startsWith('body_')?[20,512]:[400,120]]));
+    Object.assign(dimensions,controls.dimensions||{});
+    const retain=(o,flag)=>{assert.equal(flag,0,'Frida native bool requires integer 0');const h=next++;handles.set(h,o);return h;};
+    const r={
         a:{gchandle_new:retain,gchandle_new_weakref:retain,gchandle_get_target:h=>handles.get(h)||nil,
-            gchandle_free:h=>handles.delete(h), object_unbox:o=>o, object_new:()=>p({}), array_new:()=>array([])},
-        scope:fn=>fn(), pin:o=>o, game:n=>n, unity:n=>n, klass:(a,ns,n)=>n,
-        method:(k,name,argc,signature)=>{
-            if(k==='SettingItemsManager'&&name==='Update')throw Error('No SettingItemsManager.Update in 4.0.1');
+            gchandle_free:h=>handles.delete(h),object_new:k=>p({klass:k}),
+            array_new:(k,n)=>array(Array(n).fill(nil)),object_get_class:o=>({equals:k=>o.data.klass===k})},
+        scope:fn=>fn(),pin:o=>o,game:n=>n,unity:n=>n,klass:(a,ns,n)=>n,
+        method(k,name,argc,signature) {
+            if(k==='JudgeLineControl'&&name==='Start')throw Error('Must not hook chart Start for preparation');
+            if(k==='HoldControl'&&name==='NoteMove')throw Error('No per-frame hold hook');
             if(k==='Texture2D'&&name==='.ctor')assert.equal(Array.from(signature).join(','),'System.Int32,System.Int32,UnityEngine.TextureFormat,System.Boolean');
-            return {k,name,argc,signature,readPointer:()=>k+'.'+name};
+            return {k,name,argc,readPointer:()=>new Code(k+'.'+name)};
         },
-        offset:(k,n)=>({noteImages:0x50,_holdSpriteRenderer:0xa0,HoldHL0:0x48}[n] || 0),
+        offset:(k,n)=>({noteImages:0x50,_holdSpriteRenderer:0xa0,HoldHL0:0x48}[n]||0),
         field:(o,k,n)=>o.data.fields[n]||nil,
-        put:(o,k,n,v)=>{o.data.fields[n]=v; writes.push([o,n,v]);},
-        item:(o,i)=>{if(!o.data.items || i>=o.data.items.length)throw Error('array bounds');return o.data.items[i];},
-        setItem:(o,i,v)=>{o.data.items[i]=v;},
-        int:n=>{assert.ok(Number.isInteger(n), 'Native integer argument must not truncate a fractional rect');return n;}, floats:values=>p({values}), str:s=>s, bool:b=>b, number:n=>n,
-        alive:o=>!o.isNull()&&o.data.alive,
-        destroy:o=>{o.data.alive=false;}, component:o=>o,
-        listCount:o=>o.data.items.length, listItem:(o,i)=>o.data.items[i],
+        put:(o,k,n,v)=>{o.data.fields[n]=v;writes.push([o,n,v]);},
+        item:(o,i)=>{assert.ok(i>=0&&i<o.data.items.length);return o.data.items[i];},
+        setItem:(o,i,v)=>{assert.ok(i>=0&&i<o.data.items.length);o.data.items[i]=v;},
+        int:n=>{assert.ok(Number.isInteger(n));return n;},floats:values=>p({values}),str:s=>s,bool:b=>b,number:n=>n,
+        alive:o=>!o.isNull()&&o.data.alive,destroy:o=>{o.data.alive=false;},
+        listItemRaw:(list,i)=>list.data.items[i],
         call(o,name,args=[]) {
-            if (name==='get_rect') return p({values:[0,0,o.data.geometry.w,o.data.geometry.h]});
-            if (name==='get_pivot') return p({values:[o.data.geometry.px,o.data.geometry.py]});
-            if (name==='get_pixelsPerUnit') return p({values:[o.data.geometry.ppu]});
-            if (name==='get_width') return o.data.width;
-            if (name==='get_height') return o.data.height;
-            if (name==='set_name') {o.data.name=args[0]; return nil;}
-            if (name==='set_sprite') {
-                if (rejectSetter) { rejectSetter=false; throw Error('setter failure'); }
-                o.data.current=args[0]; return nil;
+            nativeCalls.push(name);
+            if(name==='get_width')return o.data.width;
+            if(name==='get_height')return o.data.height;
+            if(name==='set_name'){o.data.name=args[0];return nil;}
+            if(name==='set_sprite'){
+                if(rejectSetter){rejectSetter=false;throw Error('setter failure');}
+                o.data.current=args[0];return nil;
             }
-            if (name==='get_sprite') return o.data.current;
+            if(name==='get_sprite')return o.data.current;
+            if(['get_rect','get_pivot','get_pixelsPerUnit','ReadPixels','Apply','get_Count','get_Item'].includes(name))
+                throw Error('Unexpected expensive/obsolete call: '+name);
             return nil;
         },
         invoke(m,o,args=[]) {
-            if(m.name==='.ctor') {o.data.width=args[0];o.data.height=args[1];return nil;}
-            if(m.name==='LoadImage') {args[0].data.width=64;args[0].data.height=32; return decodes++ !== failDecode;}
-            if(m.name==='Clone') return array(o.data.items.slice());
-            if(m.name==='GetTemporary') return p({});
-            if(m.name==='get_active') return nil;
-            if(m.name==='Blit') {blits.push({signature:m.signature, args});return nil;}
-            if(m.name==='Create') return p({texture:args[0],geometry:{w:args[1].data.values[2],h:args[1].data.values[3],px:args[2].data.values[0],py:args[2].data.values[1],ppu:args[3].data.values[0]}});
-            return nil;
+            nativeCalls.push(m.name);
+            if(m.name==='.ctor'){o.data.width=args[0];o.data.height=args[1];return nil;}
+            if(m.name==='LoadImage'){
+                const header=args[1].data.bytes;
+                args[0].data.width=header.readUInt32BE(16);args[0].data.height=header.readUInt32BE(20);
+                return decodes++!==failDecode;
+            }
+            if(m.name==='Create')return p({texture:args[0],geometry:{width:args[1].data.values[2],height:args[1].data.values[3],
+                pivot:args[2].data.values,ppu:args[3].data.values[0]}});
+            throw Error('Unexpected managed invocation: '+m.name);
         }
     };
-    const header=Buffer.alloc(33); Buffer.from([137,80,78,71,13,10,26,10]).copy(header);
-    header.writeUInt32BE(13,8); header.write('IHDR',12); header.writeUInt32BE(64,16); header.writeUInt32BE(32,20);
-    const context = {PHI_HOLD_SKIN_OPTIONS:options,PhiHoldCore:C,createPhiHoldRuntime:()=>r,NULL:nil,rpc:{exports:{}},console:{log(){}},
+    const context={PhiHoldCore:C,PhiHoldProfile:profile,PHI_HOLD_SKIN_OPTIONS:controls.options,createPhiHoldRuntime:()=>r,
+        NULL:nil,rpc:{exports:{}},console:{log(){}},
         Process:{findModuleByName:()=>true,findRangeByAddress:()=>({protection:'r-x'})},
-        File:class {constructor(path){if(path===missing)throw Error('missing image');} readBytes(){return header;} close(){}},
-        Interceptor:{attach(address,cb){hooks.set(address,cb);return {detach:()=>hooks.delete(address)};}},
+        File:class {
+            constructor(path){this.path=path;opened.push(path);if(path===missing)throw Error('missing image');}
+            readBytes(){
+                if(this.path===corrupt)return Buffer.from('bad PNG');
+                const config=C.config(controls.options),slot=C.slots.find(s=>this.path===config.directory+'/'+config.files[s]);
+                assert.ok(slot,'Unexpected image path: '+this.path);
+                const b=Buffer.alloc(33);Buffer.from([137,80,78,71,13,10,26,10]).copy(b);
+                b.writeUInt32BE(13,8);b.write('IHDR',12);b.writeUInt32BE(dimensions[slot][0],16);b.writeUInt32BE(dimensions[slot][1],20);
+                return b;
+            }
+            close(){}
+        },
+        Interceptor:{attach(address,cb){
+            if(address.offset)assert.equal(typeof cb,'function','Interior PCs must use instruction probes');
+            const key=String(address);hooks.set(key,cb);return {detach:()=>hooks.delete(key)};
+        }},
         setInterval:fn=>{intervals.add(fn);return fn;},clearInterval:fn=>intervals.delete(fn),
-        setTimeout,clearTimeout,setImmediate};
+        setImmediate:fn=>immediates.push(fn),setTimeout,clearTimeout};
     vm.runInNewContext(fs.readFileSync(require.resolve('../src/skin.js'),'utf8'),context);
-    for(const fn of intervals)fn();
-    function preload(){const cb=hooks.get('JudgeLineControl.Start'),ctx={};cb.onEnter.call(ctx,[line]);cb.onLeave.call(ctx);}
-    function create({highlight=false,above=true,renderers=false,type=3}={}) {
-        const note=p({fields:{type}}), list=above?notesAbove:notesBelow; list.data.items.push(note);
-        const cb=hooks.get('JudgeLineControl.CreateNote'),ctx={};
-        cb.onEnter.call(ctx,[line,{toInt32:()=>list.data.items.length-1},{toInt32:()=>above?1:0}]);
-        const originals = highlight ? multi : normal;
-        const hold=p({fields:{noteInfor:note,judgeLine:line,noteImages:array(originals.slice())}});
+    for(const fn of Array.from(intervals))fn();
+    function flush(){while(immediates.length)immediates.shift()();}
+    function menuFrame(){hooks.get('SongSelector.Update').onLeave();flush();}
+    function gameFrame(){hooks.get('LevelInformation.Update').onLeave();flush();}
+    function warm(){for(let i=0;i<12&&!['ready','failed'].includes(context.PhiHoldSkin.status().phase);i++)menuFrame();}
+    function create({highlight=false,above=true,renderers=false,type=3,threadId=7,nested,foreignPair=false,wrongLine=false}={}){
+        const entry=hooks.get('JudgeLineControl.CreateNote'),entrySp=p({}),ctx={threadId,context:{sp:entrySp}};
+        const list=line.data.fields[above?'notesAbove':'notesBelow'];
+        const index=list.data.items.length;list.data.items.push(p({fields:{type}}));
+        entry.onEnter.call(ctx,[line,{toInt32:()=>index},{toInt32:()=>above?1:0}]);
+        const originals=(highlight&&line.data.fields.chordSupport?multi:normal).slice();
+        if(foreignPair){originals[0]=sprite('foreign-head');originals[1]=sprite('foreign-body');}
+        const original=array(originals),hold=p({klass:'HoldControl',fields:{judgeLine:line,noteImages:original}});
         if(renderers)['_holdHeadSpriteRenderer','_holdSpriteRenderer','_holdEndSpriteRenderer1'].forEach((key,i)=>hold.data.fields[key]=p({current:originals[i]}));
-        if(type===3)holds.data.items.push(hold);
-        cb.onLeave.call(ctx);
+        const sites=profile.sites.filter(s=>s.name.endsWith(above?'above':'below'));
+        const cpu={sp:entrySp.add(-profile.stackFrameSize),x19:wrongLine?p({}):line,[sites[0].holdRegister]:hold};
+        if(type===3&&highlight&&line.data.fields.chordSupport)
+            hooks.get('JudgeLineControl.CreateNote+'+sites[0].offset).call({threadId,context:cpu});
+        if(nested)nested();
+        if(type===3)hooks.get('JudgeLineControl.CreateNote+'+sites[1].offset).call({threadId,context:cpu});
+        hold.data.original=original;
         return hold;
     }
-    return {api:context.PhiHoldSkin, hooks, handles, objects, writes, blits, preload, create, prefabArray, line, normal, multi,
-        failDecode:n=>failDecode=n, missing:path=>missing=path,rejectSetter:()=>rejectSetter=true,
-        pump:()=>hooks.get('LevelInformation.Update').onLeave(),
-        decodes:()=>decodes};
+    return {api:context.PhiHoldSkin,hooks,handles,objects,writes,nativeCalls,opened,menuFrame,gameFrame,warm,create,line,normal,multi,prefabArray,
+        decodes:()=>decodes,failDecode:n=>failDecode=n,missing:path=>missing=path,corrupt:path=>corrupt=path,rejectSetter:()=>rejectSetter=true};
 }
-test('both directions select six sprites, isolate shared tail, and preserve native classification sources', async () => {
-    const f=fixture(); f.preload();
-    const single=f.create(), multi=f.create({highlight:true,above:false,renderers:true});
-    assert.deepEqual(single.data.fields.noteImages.data.items.map(p=>p.data.name), ['PhiHoldSkin/head_single','PhiHoldSkin/body_single','PhiHoldSkin/tail_single']);
-    assert.deepEqual(multi.data.fields.noteImages.data.items.map(p=>p.data.name), ['PhiHoldSkin/head_multi','PhiHoldSkin/body_multi','PhiHoldSkin/tail_multi']);
-    assert.equal(multi.data.fields._holdEndSpriteRenderer1.data.current.data.name, 'PhiHoldSkin/tail_multi');
-    assert.equal(f.prefabArray.data.items[2],f.normal[2]);
-    assert.equal(f.line.data.fields.HoldHL0,f.multi[0]);
-    assert.equal(f.decodes(),6);
-    assert.equal(f.api.status().single,1); assert.equal(f.api.status().multi,1);
-    const done=f.api.dispose(); f.pump(); await done;
-    assert.equal(single.data.fields.noteImages.data.items[2],f.normal[2]);
+const names=hold=>hold.data.fields.noteImages.data.items.map(s=>s.data.name);
+
+test('one image per menu frame; chart callbacks never load/decode assets',()=>{
+    const f=fixture();assert.equal(f.api.status().phase,'waiting-menu');
+    f.create();f.gameFrame();assert.equal(f.opened.length,0);assert.equal(f.decodes(),0);
+    f.menuFrame();assert.equal(f.opened.length,6);assert.equal(f.decodes(),0);
+    for(let i=1;i<=6;i++){f.menuFrame();assert.equal(f.decodes(),i);}
+    assert.equal(f.api.status().phase,'ready');assert.equal(f.api.status().prepared,6);
+    assert.equal(f.api.status().spriteSets,2);
+    const before=f.nativeCalls.length;f.create({highlight:true});
+    assert.equal(f.decodes(),6);assert.equal(f.opened.length,6);
+    assert.deepEqual(f.nativeCalls.slice(before),[]);
+    assert.equal(f.hooks.has('JudgeLineControl.Start'),false);assert.equal(f.hooks.has('HoldControl.NoteMove'),false);
+    assert.equal(f.hooks.get('JudgeLineControl.CreateNote').onLeave,undefined);
+});
+test('native decisions select all three sprites on both sides and preserve shared native sources',async()=>{
+    const f=fixture();f.warm();
+    const single=f.create(),multi=f.create({highlight:true,above:false,renderers:true});
+    assert.deepEqual(names(single),['PhiHoldSkin/head_single','PhiHoldSkin/body_single','PhiHoldSkin/tail_single']);
+    assert.deepEqual(names(multi),['PhiHoldSkin/head_multi','PhiHoldSkin/body_multi','PhiHoldSkin/tail_multi']);
+    assert.equal(multi.data.fields._holdEndSpriteRenderer1.data.current.data.name,'PhiHoldSkin/tail_multi');
+    assert.equal(f.prefabArray.data.items[2],f.normal[2]);assert.equal(f.line.data.fields.HoldHL0,f.multi[0]);
+    const done=f.api.dispose();f.gameFrame();await done;
+    assert.equal(single.data.fields.noteImages,single.data.original);
     assert.equal(multi.data.fields._holdEndSpriteRenderer1.data.current,f.normal[2]);
-    assert.equal(f.handles.size,0); assert.equal(f.hooks.size,0);
+    assert.equal(f.handles.size,0);assert.equal(f.hooks.size,0);
 });
-test('partial image decode rolls back all assets and can retry without leaving partial skins', () => {
-    const f=fixture(); f.failDecode(4); f.preload();
-    assert.equal(f.api.status().phase,'failed'); assert.equal(f.api.status().assets,0);
-    assert.equal(f.handles.size,0);
-    const untouched=f.create({highlight:true});
-    assert.equal(untouched.data.fields.noteImages.data.items[2],f.normal[2]);
-    f.failDecode(-1); f.api.retry(); f.preload();
-    const hold=f.create({highlight:true});
-    assert.equal(hold.data.fields.noteImages.data.items[2].data.name,'PhiHoldSkin/tail_multi');
+test('native branch result is independent of head/body sprite identities',()=>{
+    const f=fixture();f.warm();
+    const hold=f.create({highlight:true,foreignPair:true});
+    assert.equal(names(hold)[2],'PhiHoldSkin/tail_multi');assert.equal(f.api.status().classifier,'native-branch');
+    assert.equal(f.api.status().skipped,0);
 });
-test('missing sixth file causes no Unity allocation or note changes', () => {
-    const f=fixture(); f.missing('/local/data/tmp/tail_multi.png'); f.preload();
-    assert.equal(f.decodes(),0); assert.equal(f.api.status().assets,0);
-    assert.equal(f.api.status().phase,'failed');
-    assert.ok(f.api.status().error.includes('/local/data/tmp/tail_multi.png'));
-    assert.match(f.api.status().error, /missing image/);
+test('prepared immutable arrays are shared per variant with one array binding per hold',()=>{
+    const f=fixture();f.warm();const first=f.create(),second=f.create();
+    assert.equal(first.data.fields.noteImages,second.data.fields.noteImages);
+    assert.equal(f.writes.filter(([o,n])=>(o===first||o===second)&&n==='noteImages').length,2);
+    assert.equal(first.data.original.data.items[2],f.normal[2]);
 });
-test('shipped mapping loads the observed head_single filename rather than the nonexistent typo', () => {
-    const files = JSON.parse(fs.readFileSync(require.resolve('../files.example.json'), 'utf8'));
-    const f = fixture({directory:'/data/local/tmp', files});
-    f.missing('/data/local/tmp/head_sigle.png');
-    f.preload();
-    assert.equal(f.api.status().phase, 'loaded');
-    assert.equal(f.api.status().files.head_single, 'head_single.png');
-    assert.equal(f.decodes(), 6);
-});
-test('actual fractional native sprites use integer buffers while retaining exact head/body/tail geometry', () => {
-    const native = require('./fixtures/native-hold-sprites.json').sprites;
-    const f = fixture(undefined, native); f.preload();
-    const hold = f.create({highlight:true, above:false, renderers:true});
-    const sprites = hold.data.fields.noteImages.data.items;
-    assert.equal(f.api.status().error, null);
-    assert.equal(f.api.status().multi, 1);
-    for (let i=0; i<3; i++) {
-        const original = native[i+3], s = sprites[i].data;
-        assert.equal(s.geometry.w, original.width);
-        assert.equal(s.geometry.h, original.height);
-        assert.equal(s.geometry.ppu, original.ppu);
-        assert.equal(s.geometry.py, original.pivot[1]);
-        assert.equal(s.texture.data.width, Math.ceil(original.width));
-        assert.equal(s.texture.data.height, Math.ceil(original.height));
+test('art keeps natural aspect, thin body and native length basis without GPU resampling',()=>{
+    const f=fixture();f.warm();const hold=f.create({highlight:true}),items=hold.data.fields.noteImages.data.items;
+    for(let i=0;i<3;i++){
+        const g=items[i].data.geometry,ref=profile.geometry[i+3];
+        assert.equal(g.width/g.height,i===1?20/512:400/120);
+        if(i===1){assert.equal(g.height/g.ppu,ref.height/ref.ppu);assert.ok(g.width/g.ppu<ref.width/ref.ppu);}
+        else assert.ok(Math.abs(g.width/g.ppu-ref.width/ref.ppu)<1e-12);
+        assert.equal(items[i].data.texture.data.width,g.width);assert.equal(items[i].data.texture.data.height,g.height);
     }
-    assert.equal(f.blits.length, 6);
-    f.blits.forEach(call => {
-        // This build retains the two-argument Blit; the scale/offset overload is stripped.
-        assert.equal(call.args.length, 2);
-        assert.equal(call.signature, 'UnityEngine.Texture');
-    });
+    assert.equal(f.nativeCalls.includes('Blit'),false);assert.equal(f.nativeCalls.includes('ReadPixels'),false);
 });
-test('invalid template reports native values and slot before changing a hold', () => {
-    const f=fixture(); f.normal[0].data.geometry.w=NaN; f.preload();
-    assert.match(f.api.status().error, /head_single/);
-    assert.match(f.api.status().error, /NaN/);
-    assert.equal(f.api.status().tracked, 0);
-    assert.equal(f.api.status().spriteSets, 0);
+test('nested creation on one thread retains each native decision',()=>{
+    const f=fixture();f.warm();let inner;
+    const outer=f.create({highlight:true,nested:()=>{inner=f.create();}});
+    assert.equal(names(outer)[2],'PhiHoldSkin/tail_multi');assert.equal(names(inner)[2],'PhiHoldSkin/tail_single');
+    assert.equal(f.api.status().activeCalls,0);
 });
-test('existing renderer setter failure restores native array and records cleanup state', async () => {
-    const f=fixture(); f.preload(); f.rejectSetter(); const hold=f.create({highlight:true,renderers:true});
-    assert.equal(hold.data.fields.noteImages.data.items[2],f.normal[2]);
-    assert.equal(f.api.status().skipped,1);
-    const done=f.api.dispose();f.pump();await done;assert.equal(f.handles.size,0);
+test('interleaved native calls on different threads cannot leak highlight decisions',()=>{
+    const f=fixture();f.warm();let inner;
+    const outer=f.create({nested:()=>{inner=f.create({highlight:true,threadId:11});}});
+    assert.equal(names(outer)[2],'PhiHoldSkin/tail_single');assert.equal(names(inner)[2],'PhiHoldSkin/tail_multi');
+    assert.equal(f.api.status().activeCalls,0);
 });
-test('highlight-off and non-hold notes are handled without changing native timing logic', () => {
-    const f=fixture(); f.preload(); f.line.data.fields.chordSupport=false;
-    const hold=f.create({above:false}); assert.equal(hold.data.fields.noteImages.data.items[2].data.name,'PhiHoldSkin/tail_single');
-    const tap=f.create({type:1});assert.equal(tap.data.fields.noteImages.data.items[0],f.normal[0]);
+test('highlight disabled and non-hold notes follow native execution',()=>{
+    const f=fixture();f.warm();f.line.data.fields.chordSupport=false;
+    assert.equal(names(f.create({highlight:true,above:false}))[2],'PhiHoldSkin/tail_single');
+    const tap=f.create({type:1});assert.equal(tap.data.fields.noteImages,tap.data.original);
+});
+test('changed native instructions fail closed before installing any hooks',()=>{
+    const f=fixture({corruptSite:profile.sites[0].offset});
+    assert.equal(f.api.status().phase,'failed');assert.match(f.api.status().error,/Unsupported native hold code/);
+    assert.equal(f.hooks.size,0);assert.equal(f.opened.length,0);assert.equal(f.handles.size,0);
+});
+test('native line/context mismatch leaves original sprites untouched',()=>{
+    const f=fixture();f.warm();const hold=f.create({wrongLine:true});
+    assert.equal(hold.data.fields.noteImages,hold.data.original);assert.equal(f.api.status().skipped,1);
+    assert.match(f.api.status().error,/context mismatch/);
+});
+test('partial image decode rolls back assets and retry warms safely in menus',()=>{
+    const f=fixture();f.failDecode(4);f.warm();
+    assert.equal(f.api.status().phase,'failed');assert.equal(f.api.status().assets,0);assert.equal(f.handles.size,0);
+    const untouched=f.create({highlight:true});assert.equal(untouched.data.fields.noteImages,untouched.data.original);
+    f.failDecode(-1);f.api.retry();f.warm();assert.equal(f.api.status().phase,'ready');
+    assert.equal(names(f.create({highlight:true}))[2],'PhiHoldSkin/tail_multi');
+});
+test('missing or corrupt file reports exact path and allocates no Unity assets',()=>{
+    for(const corrupt of [false,true]){
+        const f=fixture(),path='/local/data/tmp/tail_multi.png';
+        if(corrupt)f.corrupt(path);else f.missing(path);
+        f.warm();assert.equal(f.decodes(),0);assert.equal(f.api.status().assets,0);
+        assert.equal(f.api.status().phase,'failed');assert.ok(f.api.status().error.includes(path));
+    }
+});
+test('shipped mapping loads head_single spelling',()=>{
+    const files=require('../files.example.json'),f=fixture({options:{directory:'/data/local/tmp',files}});
+    f.missing('/data/local/tmp/head_sigle.png');f.warm();assert.equal(f.api.status().phase,'ready');
+});
+test('renderer setter failure restores original array and cleanup releases handles',async()=>{
+    const f=fixture();f.warm();f.rejectSetter();const hold=f.create({highlight:true,renderers:true});
+    assert.equal(hold.data.fields.noteImages,hold.data.original);assert.equal(f.api.status().skipped,1);
+    const done=f.api.dispose();f.gameFrame();await done;assert.equal(f.handles.size,0);
+});
+test('menu pruning releases destroyed hold records without gameplay scans',()=>{
+    const f=fixture();f.warm();const hold=f.create();hold.data.alive=false;
+    assert.equal(f.api.status().tracked,1);f.gameFrame();assert.equal(f.api.status().tracked,1);
+    f.menuFrame();assert.equal(f.api.status().tracked,0);
 });

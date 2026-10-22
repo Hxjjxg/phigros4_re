@@ -142,3 +142,84 @@ The exact-integer guard rejects valid native highlighted sprites.
 - All 16 host tests pass; the generated Frida script is rebuilt and syntax valid.
 - No device access or injection in this geometry investigation. Rendering after
   reload remains unverified; quit/relaunch is required to replace loaded code.
+
+# Aspect, startup stalls and native classification (2026-10-22)
+
+Baseline committed as 696bd46 before further changes, as requested.
+
+## Observations and hypotheses
+
+- resized() fits every image into its native template dimensions using a full
+  Graphics.Blit. This changes aspect whenever source/template aspect differ.
+  H1: anisotropic resampling causes the reported wide body and flat caps.
+- prepare() reads 18 native sprite properties plus liveness on every hold
+  before even checking its geometry cache. Startup also decodes six PNGs and
+  synchronously reads GPU render targets on the chart-loading thread.
+  H2: synchronous warmup and repeated bridge calls cause extra loading stalls.
+- CreateNote changes only highlighted head/body slots. NoteMove later binds
+  head/body/tail to three separate renderers; no three-material setter exists.
+  H3: observe the existing native highlighted hold blocks to receive the
+  decision directly, then assign the whole three-sprite array in one operation.
+
+## Experiments
+
+- Static source proves H1: scaling 64x32 to 989x50 changes width/height ratio.
+- The hot path and native NoteMove decompile confirm H2 and separate renderers.
+- Investigate verified CreateNote branch-entry instructions for H3. Require
+  version/instruction guards and reentrant per-thread context if used.
+- Phone is currently absent from adb. No attach or injection is performed.
+
+## Native probe investigation
+
+Observation: local Windows Frida 16.7.19 synthetic function calls access-violate
+when entry and interior callbacks are combined. Android has not been tested.
+
+Hypotheses:
+1. Interior sites use function-entry callbacks instead of instruction probes
+   (ROOT). Test identical native bytes with object versus function callback.
+2. NOP relocation overlaps interior hook sites. Test replacing only padding
+   bytes with harmless two-byte mov instructions.
+3. Hook patching is not flushed before direct NativeFunction invocation. Test
+   an explicit Interceptor.flush with otherwise identical code.
+4. The synthetic function or stack normalization is incorrect. Test the same
+   function without interior hooks and record raw entry/interior SP.
+
+Experiment: isolate each combination in a fresh local Python child; preserve
+all native bytes and vary callback shape first. Never attach to the game.
+
+Result: on identical synthetic x64 bytes with explicit Interceptor.flush, the
+object-form interior onEnter callback reproduces an access violation. Replacing
+only its shape with a bare function instruction probe succeeds for both paths:
+single reaches common only; multi reaches multi then common; interior SP is
+entry SP minus 8. Local Frida 16.7.19. H1 confirmed; neither NOP replacement nor
+a native onLeave is required. Production interior hooks must be instruction
+probes; function-entry hooks remain object-form. Android ABI is still untested.
+
+## Fix and final validation (2026-10-23)
+
+- Root cause of distortion: fitting source pixels to native rectangles changes
+  aspect. Keep source rects and a single uniform PPU. Preserve body world height
+  for native duration scaling and cap world width for the native size anchor.
+- Root cause of added loading stalls: six synchronous decodes/GPU readbacks and
+  repeated geometry getters in chart creation. Stage file reads on the script
+  thread, prepare one image per menu callback and cache both Sprite[3] sets.
+  Chart creation does no image IO, decoding, GPU readback or geometry getters.
+- Replace head/body identity inference with guarded native branch probes. At
+  the common post-selection point bind one complete array, including tail.
+  Do not mutate the shared original sprites or the prepared immutable arrays.
+- Correct interior probes to bare functions; preserve function-entry onEnter
+  only at entry. Correlate by thread and normalized native SP, not onLeave.
+- All 24 Node regressions pass, including aspect, no chart-time decoding,
+  branch decisions independent of sprite identity, both sides, nested calls,
+  different threads, guards, rollback, independent tails and restoration.
+- Both Python ELF profile tests pass against the original local ARM64 binary.
+  Build and Node syntax checks pass; generated script includes the new profile
+  and current sources. Python source compilation also passes.
+- Optional Windows x64 Frida 16.7.19 smoke: 1,000 native invocations produce
+  500 single and 500 multi decisions, zero errors and zero remaining call
+  records. Return registers are preserved. It attaches only to its own child.
+- Android ARM64 probe behavior, actual image shape/tail alignment and removal
+  of chart/music desynchronization remain device verification items. No phone
+  attachment, injection or modification was performed for this revision.
+- Reload: quit the old script, rebuild and relaunch. Remain in song selection
+  or Settings until Ready, then start a new chart. retry does not reload code.

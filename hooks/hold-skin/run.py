@@ -28,7 +28,7 @@ def main():
     script = session.create_script(source)
     script.on('message', lambda msg, data: print(json.dumps(msg, ensure_ascii=False), flush=True))
     script.load()
-    print('Commands: status | retry | quit. Start a new chart after loading the script.')
+    print('Commands: status | retry | quit. Stay in song selection/Settings until [hold-skin] Ready, then start a new chart.')
     while True:
         try:
             command = input('hold-skin> ').strip()

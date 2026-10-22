@@ -11,14 +11,6 @@
         }
         return {directory: directory.replace(/\/+$/, ''), files};
     }
-    // Classify BEFORE replacing any references. Both native HL slots must agree.
-    function classify(chordSupport, current, normal, highlighted) {
-        if (!chordSupport) return 'single';
-        const match = pair => pair.every((value, i) => value != null && value === current[i]);
-        const single = match(normal), multi = match(highlighted);
-        if (single === multi) throw Error('Ambiguous native hold sprites; refusing to guess the tail variant');
-        return multi ? 'multi' : 'single';
-    }
     function geometry(rect, pivot, ppu) {
         const [w, h] = rect, [x, y] = pivot;
         if (![w, h, x, y, ppu].every(Number.isFinite) || w <= 0 || h <= 0 || ppu <= 0 ||
@@ -38,7 +30,16 @@
         if (!width || !height || width > 4096 || height > 4096 || width * height > 8388608) throw Error('PNG exceeds image size limit');
         return {width, height};
     }
-    const api = {slots, config, classify, geometry, pngSize};
+    function artGeometry(source, reference, slot) {
+        const body = slot.startsWith('body_');
+        const axis = body ? 'height' : 'width';
+        const ppu = source[axis] * reference.ppu / reference[axis];
+        // One PPU value scales both axes uniformly. Body height must match the
+        // native length basis; caps use the native width and their own aspect.
+        return geometry([source.width, source.height],
+            [reference.pivot[0] * source.width, reference.pivot[1] * source.height], ppu);
+    }
+    const api = {slots, config, geometry, artGeometry, pngSize};
     root.PhiHoldCore = api;
     if (typeof module !== 'undefined') module.exports = api;
 })(globalThis);

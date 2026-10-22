@@ -1,112 +1,132 @@
 # Six-sprite hold skin (Phigros 4.0.1, Android arm64)
 
-Standalone Frida 16 hook for single/multi hold heads, bodies, and tails. The
-generated script is `phigros_hold_skin.js`. It uses exported IL2CPP APIs, with
-no npm/bridge dependency and no APK rebuild. It is independent of the chart
-editor and DG-LAB hooks.
+Standalone Frida 16 hook for single/multi hold heads, bodies and tails.
+The generated script is phigros_hold_skin.js; edit src/ and rebuild.
+No bridge/npm dependency, APK rebuild or device file transfer is required.
 
-**Status: the user confirms six-image loading; final rendering remains pending.**
-Host tests include the actual APK's fractional hold sprite geometry. A read-only
-directory listing confirms all six canonical filenames in `/data/local/tmp`.
-This debugging pass does not inject another script or modify the phone.
+**Status: static checks and local host tests pass; Android rendering and
+chart/music synchronization after this revision still require device testing.**
+Development checks attach only to isolated local test processes, never the game.
 
 ## Images and launch
 
-Default directory: `/local/data/tmp` (the path in the request).
-Default filenames:
+Default image directory: /local/data/tmp, as in the original request.
+Use --directory /data/local/tmp for the directory shown in the user's command.
 
-| Slot | Default file |
+| Logical slot | Default PNG |
 |---|---|
-| Single head | `head_single.png` |
-| Single body | `body_single.png` |
-| Single tail | `tail_single.png` |
-| Multi head | `head_multi.png` |
-| Multi body | `body_multi.png` |
-| Multi tail | `tail_multi.png` |
+| head_single | head_single.png |
+| body_single | body_single.png |
+| tail_single | tail_single.png |
+| head_multi | head_multi.png |
+| body_multi | body_multi.png |
+| tail_multi | tail_multi.png |
 
-Pass `--directory /data/local/tmp` if that is the intended Android directory.
-The example mapping now uses the observed `head_single.png` spelling. If a file
-really is named `head_sigle.png`, explicitly map head_single to that filename.
-The mapping also accepts filenames such as `hold_head.png`, `hold_body.png`,
-`hold_tail.png`/`hold_end.png`, and their multi equivalents when explicitly set.
-Files must already be readable by the game process. The runner never changes
-permissions, pushes files, restarts the game, or establishes port forwarding.
+Use --files with a UTF-8 JSON mapping to override filenames. The example now
+uses head_single.png. If the actual image is head_sigle.png, map head_single
+to that spelling explicitly. Filenames must not contain directory separators.
+Each PNG is limited to 4096 pixels per axis, 8,388,608 pixels and 16 MiB.
+All files must already be readable by the game process. The runner never pushes
+files, changes permissions, forwards ports or restarts the game.
 
-After the device is available and a development listener is ready:
-
-```powershell
+~~~powershell
 python hooks/hold-skin/build.py
-& 'F:\frida16\Scripts\python.exe' hooks/hold-skin/run.py --host 127.0.0.1:27042 --process Gadget --directory /data/local/tmp --files hooks/hold-skin/files.example.json
-```
+& 'F:/frida16/Scripts/python.exe' hooks/hold-skin/run.py --host 127.0.0.1:27042 --process Gadget --directory /data/local/tmp --files hooks/hold-skin/files.example.json
+~~~
 
-Start a new chart after injection. Holds that already existed before injection
-are not scanned. Runner commands: `status`, `retry`, `quit`. Correct missing or
-invalid files, run `retry`, then restart the chart. A successful image set is
-cached until orderly disposal; reload the script to use changed images.
+**Remain in song selection or Settings until the log says Ready, then start a
+new chart.** Injecting during a chart leaves its existing holds untouched.
+If warmup is incomplete when a hold is created, native sprites are retained;
+chart loading does not wait for the skin or decode images on demand.
 
-If an older build reports `expected an integer` at `pin`, rebuild and reload
-the script. Frida 16 requires integer `0` for the native GC-handle Boolean
-arguments; the sources now use it at every strong/weak handle creation site.
-Use `quit`, rerun the launch command, and start a new chart. `retry` alone
-does not reload code.
+Runner commands: status, retry, quit. On an image error, fix the file and use
+retry while in song selection/Settings. Images are cached after successful
+warmup. To change source code or successfully loaded images, quit and rerun;
+retry does not reload either. Rebuild after every source/profile change.
 
-For embedding, define `globalThis.PHI_HOLD_SKIN_OPTIONS = {directory, files}` before
-the generated script. RPC exports are `holdstatus`, `holdretry`, `holddispose`.
-In the Frida REPL use `PhiHoldSkin.status()` and `await PhiHoldSkin.dispose()`.
-Await disposal before unloading; native restoration/destruction needs a ticking
-gameplay, song-selection, or Settings frame. On timeout, the hook stays loaded
-with new replacement work disabled so cleanup can be retried.
+## Geometry and loading cost
 
-## Tail strategy
+Images retain their original PNG dimensions. One pixels-per-unit value scales
+both axes uniformly; there is no Graphics.Blit, RenderTexture or ReadPixels.
 
-The native game assigns only the highlighted head/body in `CreateNote`, so the
-shared tail cannot identify whether a hold is highlighted. This hook reads the
-native head/body pair after `CreateNote` returns, compares both to that judge
-line's original prefab and `HoldHL0/HoldHL1`, and picks all three images together.
-It clones the instance's `noteImages` array and replaces **index 2 with the
-selected single or multi tail**. Any already-created renderers are synchronized
-immediately, including `_holdEndSpriteRenderer1`.
+- Body height in world units matches the native body length basis. Its width
+  follows the PNG aspect ratio instead of being forced to the native width.
+  Native animation still stretches the body vertically for hold duration.
+- Head and tail use the corresponding native width as a uniform size anchor;
+  their heights follow their own PNG aspect ratios, so caps are not flattened.
+- Native normalized pivots are retained: head (0.5, 1), body/tail (0.5, 0).
+  Source canvas size includes transparent padding; art content is not cropped.
+- Geometry anchors come from this APK's static sprite metadata in
+  native-profile.json, including fractional highlighted dimensions.
 
-This follows the game's cross-line and cross-side multi-press decision and its
-highlight setting. Ambiguous pairs are reported and left untouched. The original
-prefab and highlight fields remain the classification sources. There is no
-shared-material mutation, timestamp reimplementation, mid-function assembly
-patch, or `HoldControl.NoteMove` hook. Both native creation paths are covered by
-the same function-return hook. No persistent raw-pointer `seen` set is used.
+File reads and header validation are scheduled on the script thread. Unity
+textures and sprites are prepared one image per song-selection/Settings Update
+callback. Two complete Sprite[3] sets are built once, after all six succeed.
+No PNG loading, GPU readback, sprite property queries or array cloning occurs
+in the chart creation callback. Per-hold interception and GC handles still
+have a cost; this is not a guarantee of zero loading latency.
 
-Images become new Texture2D/Sprite objects on Unity's thread. All six files and
-textures must load successfully before any hold is changed. Sprites use each
-native template's rect dimensions, pixels-per-unit, and normalized pivot. Images
-of different dimensions are resampled into that rect using a temporary render
-texture, restoring the previous render target afterward. This fits art to the
-native shape; artwork with deliberate transparent padding should account for
-that fit. `FullRect` meshes retain the body endpoints. Textures use clamp wrapping.
-Both tails use the native tail's geometry but separate images and Sprite objects.
-Native multi head/body rect heights are fractional in this APK. They remain
-fractional in Sprite.Create; only texture/RenderTexture allocation and ReadPixels
-use ceiling integer dimensions. The sprite samples its exact native rect inside
-that buffer (less than one pixel at the top/right buffer edge can be excluded).
-Native pivot, PPU, world extents and the shared tail template stay unchanged.
+Status includes prepared, phase, classifier, spriteSets, tracked, single,
+multi, skipped, activeCalls, lastStepMs and maxStepMs. A ready skin has six
+prepared images, two sprite sets and classifier native-branch. Timing values
+measure individual Unity warmup steps, not end-to-end chart loading.
 
-Managed GC handles and `DontUnloadUnusedAsset` retain owned sprites/textures.
-Weak hold handles and rooted original arrays support restoration. Dead records
-are pruned at chart-line startup and periodically at hold creation. Disposal
-restores surviving holds before destroying owned assets and releasing handles.
-Host tests exercise rollback after missing/corrupt images and renderer failure.
+## Native selection and independent tails
+
+The game does not assign three highlighted materials together. CreateNote
+changes only noteImages[0] and [1] in its highlighted hold branches. Later,
+HoldControl.NoteMove binds slots 0/1/2 to three separate SpriteRenderers.
+
+This revision observes the actual highlighted branch execution in CreateNote;
+**it does not compare head/body sprites or reimplement chord timing**.
+At the common point immediately after native selection, it replaces the hold's
+noteImages field once with the prepared single or multi Sprite[3] set.
+Both sets contain an independent index-2 tail, regardless of the shared native
+tail. Existing renderer fields, if populated, are synchronized as well.
+
+Both above/below paths and the game's highlight setting are followed. Entry
+context is correlated by thread ID and native entry stack pointer, with the
+verified 96-byte ARM64 frame normalized at instruction probes. No CreateNote
+return hook or per-frame HoldControl.NoteMove hook is installed. Interior sites
+use bare function instruction probes, not function-entry onEnter objects.
+
+The profile is specific to the original 4.0.1 arm64 binary. The entry and all
+four interior instruction windows are checked before any hook is installed;
+layout/code mismatch fails closed. Other patches touching those sites are not
+supported. Build-time checks also compare the profile against the original
+local ELF when it is present. See NATIVE_NOTES.md for addresses and evidence.
+
+## Lifecycle
+
+Managed handles and DontUnloadUnusedAsset retain owned sprites/textures.
+Prepared arrays are shared per variant and never modified after creation.
+Weak hold handles and rooted original arrays support safe restoration. Up to
+eight dead records are pruned per menu callback, avoiding gameplay scans.
+Disposal restores surviving holds before destroying assets and freeing handles.
+
+For embedding, set globalThis.PHI_HOLD_SKIN_OPTIONS = {directory, files} before
+loading. RPC methods: holdstatus, holdretry, holddispose. Await disposal before
+unloading. Cleanup needs a ticking gameplay, song-selection or Settings frame.
+If cleanup times out, the script remains loaded with new replacement disabled;
+return to a ticking scene and retry quit. Do not force unload owned assets.
 
 ## Verification
 
-```powershell
+~~~powershell
 node --test hooks/hold-skin/tests/*.test.js
+python -m unittest discover -s hooks/hold-skin/tests -p test_*.py -v
 python hooks/hold-skin/build.py
-```
+& 'F:/frida16/Scripts/python.exe' hooks/hold-skin/tests/smoke_frida_probes.py
+~~~
 
-Tests use a simulated Unity/Frida runtime; they cannot establish Android ABI,
-GPU readback, colour-space, or real rendering correctness. Device verification
-still needs ordinary and multi holds above/below lines, cross-line hold+tap and
-hold+hold chords, highlight off, restarts/scene changes, short/long holds,
-tail alignment, and orderly unload/reinjection. The status counts should show
-both variants with zero skips and no error. No device test is claimed here.
+The last command is optional and Windows x64 only. It attaches to its own
+Python child and exercises 1,000 synthetic native calls, checking branch
+correlation, stack normalization and unchanged return registers. It does not
+validate Android ARM64 interception, Unity rendering or chart/music timing.
+Model tests cover native branch selection independent of head/body identity,
+both sides, reentrancy, independent tails, aspect handling, transactional
+warmup, error rollback and orderly restoration.
 
-See `NATIVE_NOTES.md` for current-binary evidence and why older hold scripts
-must not be used as offsets or slot-order authority.
+Device checks still needed: ordinary/multi holds on both sides, cross-line
+chords, highlighting off, different artwork ratios, long/short holds, tail
+alignment, repeated scene changes, quit/reinjection and chart/audio timing.

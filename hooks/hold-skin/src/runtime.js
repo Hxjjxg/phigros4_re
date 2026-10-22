@@ -117,7 +117,13 @@ globalThis.createPhiHoldRuntime = function () {
         destroy(p) { if (R.alive(p)) R.invoke(R.method(R.unity('Object'), 'Destroy', 1), NULL, [p]); },
         component(go, k) { return R.invoke(R.method(R.unity('GameObject'), 'GetComponent', 1, 'System.Type'), go, [R.type(k)]); },
         listCount(p) { return R.number(R.call(p, 'get_Count')); },
-        listItem(p, i) { return R.call(p, 'get_Item', [R.int(i)]); }
+        listItem(p, i) { return R.call(p, 'get_Item', [R.int(i)]); },
+        listItemRaw(p, i) {
+            if (p.isNull()) throw Error('Missing managed list');
+            const k = a.object_get_class(p);
+            if (i < 0 || i >= p.add(R.offset(k, '_size')).readS32()) throw Error('Invalid managed list index');
+            return R.item(R.field(p, k, '_items'), i);
+        }
     };
     return R;
 };

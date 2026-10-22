@@ -13,18 +13,31 @@ test('actual APK hold rectangles retain fractional extents, pivots and PPU', () 
     }
 });
 
-test('native head/body classification selects independent tails regardless of shared tail identity', () => {
-    const normal = ['h', 'b'], multi = ['H', 'B'];
-    assert.equal(C.classify(true, normal, normal, multi), 'single');
-    assert.equal(C.classify(true, multi, normal, multi), 'multi');
-    assert.equal(C.classify(false, normal, normal, multi), 'single');
-    // A different note on another line/side has already been considered by native CreateNote.
-    assert.equal(C.classify(true, ['H','B'], normal, multi), 'multi');
+test('native profile geometry matches the static APK evidence', () => {
+    const profile = require('../native-profile.json');
+    profile.geometry.forEach((g, i) => {
+        const {width,height,pivot,ppu} = nativeSprites[i];
+        assert.deepEqual(g, {width,height,pivot,ppu});
+    });
+    assert.deepEqual(profile.sites.map(s=>s.offset), [0x8e4,0x918,0x105c,0x1090]);
 });
-test('ambiguous or partially replaced head/body pairs cannot silently select a wrong tail', () => {
-    assert.throws(() => C.classify(true, ['H','b'], ['h','b'], ['H','B']), /Ambiguous/);
-    assert.throws(() => C.classify(true, ['h','b'], ['h','b'], ['h','b']), /Ambiguous/);
-    assert.throws(() => C.classify(true, [null,null], [null,null], [null,null]), /Ambiguous/);
+test('thin body keeps its original aspect and native hold length basis', () => {
+    const reference = require('../native-profile.json').geometry[1];
+    const g = C.artGeometry({width:20,height:512}, reference, 'body_single');
+    assert.equal(g.width, 20); assert.equal(g.height, 512);
+    assert.equal(g.height / g.ppu, reference.height / reference.ppu);
+    assert.equal((g.width / g.ppu) / (g.height / g.ppu), 20 / 512);
+    assert.ok(g.width / g.ppu < reference.width / reference.ppu);
+});
+test('caps retain their artwork aspect with a uniform scale and native anchors', () => {
+    const references = require('../native-profile.json').geometry;
+    for (const i of [0,2,3,5]) {
+        const slot = C.slots[i], reference = references[i];
+        const g = C.artGeometry({width:400,height:120}, reference, slot);
+        assert.equal(g.width / g.height, 400 / 120);
+        assert.ok(Math.abs(g.width / g.ppu - reference.width / reference.ppu) < 1e-12);
+        assert.deepEqual(g.pivot, reference.pivot);
+    }
 });
 test('geometry retains off-centre body origin and native endpoint extents', () => {
     const g = C.geometry([300,1900], [150,0], 100);

@@ -1,10 +1,13 @@
 'use strict';
 globalThis.PhiHoldSkin = (() => {
-    const C = PhiHoldCore, options = C.config(globalThis.PHI_HOLD_SKIN_OPTIONS);
-    const listeners = [], assets = [], textures = {}, spriteSets = new Map(), tracked = new Map();
-    const state = {phase: 'waiting', error: null, single: 0, multi: 0, skipped: 0};
+    const C = PhiHoldCore, P = PhiHoldProfile, options = C.config(globalThis.PHI_HOLD_SKIN_OPTIONS);
+    const listeners = [], assets = [], arrays = [], tracked = new Map(), calls = new Map();
+    const textures = {}, sprites = [], sets = {};
+    const state = {phase:'waiting', error:null, prepared:0, single:0, multi:0, skipped:0,
+        classifier:'native-branch', lastStepMs:0, maxStepMs:0};
     const rendererFields = ['_holdHeadSpriteRenderer', '_holdSpriteRenderer', '_holdEndSpriteRenderer1'];
-    let r, H, J, M, stopped = false, pendingDispose = null, disposed = false;
+    let r, H, J, N, files = null, reading = false, stopped = false, disposed = false;
+    let pendingDispose = null, pruneCursor = null, warnedUnready = false;
     const log = s => console.log('[hold-skin] ' + s);
     function fail(e) {
         const message = String(e.stack || e);
@@ -14,231 +17,226 @@ globalThis.PhiHoldSkin = (() => {
     function own(p) {
         if (p.isNull()) throw Error('Unity returned a null asset');
         const handle = r.a.gchandle_new(p, 0);
-        assets.push({pointer: p, handle});
-        r.call(p, 'set_hideFlags', [r.int(32)]); // Strong GC handle + native asset lifetime.
+        assets.push({pointer:p, handle});
+        r.call(p, 'set_hideFlags', [r.int(32)]);
         return p;
     }
-    function releaseFrom(index) {
-        while (assets.length > index) {
+    function releaseAssets() {
+        while (assets.length) {
             const item = assets[assets.length - 1];
             r.destroy(item.pointer); r.a.gchandle_free(item.handle); assets.pop();
         }
     }
-    function texture(width, height) {
+    function releaseArrays() {
+        while (arrays.length) r.a.gchandle_free(arrays.pop().handle);
+        delete sets.single; delete sets.multi;
+    }
+    // Stage files on the script thread, then decode at most one per menu frame.
+    function stageFiles() {
+        if (stopped) return;
+        try {
+            files = C.slots.map(slot => {
+                const path = options.directory + '/' + options.files[slot];
+                let file;
+                try {
+                    file = new File(path, 'rb');
+                    const bytes = new Uint8Array(file.readBytes(16 * 1024 * 1024 + 1));
+                    if (bytes.length > 16 * 1024 * 1024) throw Error('PNG exceeds 16 MiB');
+                    return {slot, bytes, ...C.pngSize(bytes)};
+                } catch (e) { throw Error('Cannot load PNG ' + slot + ' at ' + path + ': ' + String(e.message || e)); }
+                finally { if (file) file.close(); }
+            });
+            state.phase = 'warming';
+        } catch (e) { files = null; state.phase = 'failed'; fail(e); }
+        finally { reading = false; }
+    }
+    function texture() {
         const k = r.unity('Texture2D'), p = r.pin(r.a.object_new(k));
-        r.invoke(r.method(k, '.ctor', 4, ['System.Int32', 'System.Int32', 'UnityEngine.TextureFormat', 'System.Boolean']),
-            p, [r.int(width), r.int(height), r.int(4), r.int(0)]);
-        own(p); // RGBA32, no mipmaps.
-        r.call(p, 'set_wrapMode', [r.int(1)]); // Clamp prevents seams at hold endpoints.
+        r.invoke(r.method(k, '.ctor', 4, ['System.Int32','System.Int32','UnityEngine.TextureFormat','System.Boolean']),
+            p, [r.int(2), r.int(2), r.int(4), r.int(0)]);
+        own(p);
+        r.call(p, 'set_wrapMode', [r.int(1)]);
         r.call(p, 'set_filterMode', [r.int(1)]);
         return p;
     }
-    function loadImages() {
-        if (state.phase === 'loaded') return;
-        if (state.phase === 'failed') throw Error('Image load failed; use holdretry after correcting files');
-        const base = assets.length, staged = {};
-        try {
-            // Validate all files before allocating Unity textures. No device shell or permissions changes.
-            const files = C.slots.map(slot => {
-                const path = options.directory + '/' + options.files[slot];
-                let f;
-                try {
-                    f = new File(path, 'rb');
-                    const bytes = new Uint8Array(f.readBytes(16 * 1024 * 1024 + 1));
-                    if (bytes.length > 16 * 1024 * 1024) throw Error('PNG exceeds 16 MiB: ' + path);
-                    return {slot, bytes, size: C.pngSize(bytes)};
-                } catch (e) {
-                    throw Error('Cannot load PNG ' + slot + ' at ' + path + ': ' + String(e.message || e));
-                } finally { if (f) f.close(); }
-            });
-            for (const f of files) {
-                const bytes = r.pin(r.a.array_new(r.klass('mscorlib.dll', 'System', 'Byte'), f.bytes.length));
-                bytes.add(32).writeByteArray(f.bytes);
-                const p = texture(2, 2);
-                const loaded = r.invoke(r.method(r.unity('ImageConversion', 'ImageConversion'), 'LoadImage', 3), NULL, [p, bytes, r.int(1)]);
-                if (!r.bool(loaded)) throw Error('Unity rejected ' + options.files[f.slot]);
-                if (r.number(r.call(p, 'get_width')) !== f.size.width || r.number(r.call(p, 'get_height')) !== f.size.height) throw Error('Decoded PNG dimensions differ from IHDR');
-                staged[f.slot] = {pointer: p, ...f.size};
-            }
-            Object.assign(textures, staged); state.phase = 'loaded'; state.error = null;
-            log('Loaded six PNG textures from ' + options.directory);
-        } catch (e) { releaseFrom(base); state.phase = 'failed'; throw e; }
+    function spriteArray(items) {
+        const p = r.pin(r.a.array_new(r.unity('Sprite'), 3));
+        if (p.isNull()) throw Error('Sprite array allocation failed');
+        arrays.push({pointer:p, handle:r.a.gchandle_new(p, 0)});
+        items.forEach((item, i) => r.setItem(p, i, item));
+        return p;
     }
-    function spriteGeometry(p, slot) {
-        if (!r.alive(p)) throw Error('Missing native sprite template');
-        const rect = r.a.object_unbox(r.call(p, 'get_rect'));
-        const pivot = r.a.object_unbox(r.call(p, 'get_pivot'));
-        try {
-            return C.geometry([rect.add(8).readFloat(), rect.add(12).readFloat()],
-                [pivot.readFloat(), pivot.add(4).readFloat()], r.a.object_unbox(r.call(p, 'get_pixelsPerUnit')).readFloat());
-        } catch (e) { throw Error('Native sprite ' + slot + ' (' + p + '): ' + String(e.message || e)); }
-    }
-    function resized(source, g) {
-        if (source.width === g.width && source.height === g.height) return source.pointer;
-        const width = Math.ceil(g.width), height = Math.ceil(g.height);
-        // Fit the art to the native rect so the game's hard-coded hold length and
-        // child tail position remain consistent even with a different source aspect ratio.
-        const rt = r.unity('RenderTexture');
-        const target = r.invoke(r.method(rt, 'GetTemporary', 3), NULL, [r.int(width), r.int(height), r.int(0)]);
-        if (target.isNull()) throw Error('RenderTexture allocation failed');
-        const previous = r.invoke(r.method(rt, 'get_active', 0), NULL);
-        try {
-            const output = texture(width, height);
-            r.invoke(r.method(r.unity('Graphics'), 'Blit', 2, 'UnityEngine.Texture'), NULL, [source.pointer, target]);
-            r.invoke(r.method(rt, 'set_active', 1), NULL, [target]);
-            r.call(output, 'ReadPixels', [r.floats([0, 0, width, height]), r.int(0), r.int(0)]);
-            r.call(output, 'Apply', [r.int(0), r.int(1)]);
-            return output;
-        } finally {
-            try { r.invoke(r.method(rt, 'set_active', 1), NULL, [previous]); }
-            finally { r.invoke(r.method(rt, 'ReleaseTemporary', 1), NULL, [target]); }
+    function warmStep() {
+        if (stopped || state.phase === 'failed' || state.phase === 'ready') return;
+        if (!files) {
+            if (!reading) { reading = true; state.phase = 'reading'; setImmediate(stageFiles); }
+            return;
         }
-    }
-    function templates(line) {
-        const prefab = r.component(r.field(line, J, 'Hold'), H);
-        if (prefab.isNull()) throw Error('Hold prefab has no HoldControl');
-        const array = r.field(prefab, H, 'noteImages');
-        const single = [0,1,2].map(i => r.item(array, i));
-        return {single, multi: [r.field(line, J, 'HoldHL0'), r.field(line, J, 'HoldHL1'), single[2]]};
-    }
-    function prepare(t) {
-        loadImages();
-        const geometry = [...t.single, ...t.multi].map((p, i) => spriteGeometry(p, C.slots[i]));
-        const key = JSON.stringify(geometry);
-        if (spriteSets.has(key)) return spriteSets.get(key);
-        if (spriteSets.size >= 16) throw Error('Too many distinct native hold geometries');
-        const start = assets.length;
+        const started = Date.now(), index = state.prepared, image = files[index];
         try {
-            const sprites = C.slots.map((slot, i) => {
-                const g = geometry[i], tex = resized(textures[slot], g);
-                const sprite = own(r.invoke(r.method(r.unity('Sprite'), 'Create', 6, 'UnityEngine.Texture2D'), NULL,
-                    [tex, r.floats([0,0,g.width,g.height]), r.floats(g.pivot), r.floats([g.ppu]), r.int(0), r.int(0)]));
-                r.call(sprite, 'set_name', [r.str('PhiHoldSkin/' + slot)]);
-                return sprite;
-            });
-            const set = {single: sprites.slice(0,3), multi: sprites.slice(3)};
-            spriteSets.set(key, set); return set;
-        } catch (e) { releaseFrom(start); throw e; }
-    }
-    function prune() {
-        for (const [key, item] of tracked) {
-            const p = r.a.gchandle_get_target(item.weak);
-            if (r.alive(p)) continue;
-            r.a.gchandle_free(item.weak); r.a.gchandle_free(item.original); r.a.gchandle_free(item.replacement);
-            tracked.delete(key);
+            const bytes = r.pin(r.a.array_new(r.klass('mscorlib.dll', 'System', 'Byte'), image.bytes.length));
+            bytes.add(32).writeByteArray(image.bytes);
+            const tex = texture();
+            const loaded = r.invoke(r.method(r.unity('ImageConversion', 'ImageConversion'), 'LoadImage', 3),
+                NULL, [tex, bytes, r.int(1)]);
+            if (!r.bool(loaded)) throw Error('Unity rejected ' + options.files[image.slot]);
+            if (r.number(r.call(tex, 'get_width')) !== image.width || r.number(r.call(tex, 'get_height')) !== image.height)
+                throw Error('Decoded PNG dimensions differ from IHDR: ' + image.slot);
+            const g = C.artGeometry(image, P.geometry[index], image.slot);
+            const sprite = own(r.invoke(r.method(r.unity('Sprite'), 'Create', 6, 'UnityEngine.Texture2D'), NULL,
+                [tex, r.floats([0,0,g.width,g.height]), r.floats(g.pivot), r.floats([g.ppu]), r.int(0), r.int(0)]));
+            r.call(sprite, 'set_name', [r.str('PhiHoldSkin/' + image.slot)]);
+            textures[image.slot] = {width:image.width, height:image.height};
+            sprites.push(sprite); image.bytes = null; state.prepared++;
+            if (state.prepared === C.slots.length) {
+                sets.single = spriteArray(sprites.slice(0,3));
+                sets.multi = spriteArray(sprites.slice(3));
+                state.phase = 'ready'; state.error = null; files = null;
+                log('Ready: six sprites prepared in menu; start a new chart');
+            }
+        } catch (e) {
+            releaseArrays(); releaseAssets(); sprites.length = 0; files = null;
+            Object.keys(textures).forEach(key => delete textures[key]);
+            state.prepared = 0; state.phase = 'failed'; fail(e);
+        } finally {
+            state.lastStepMs = Date.now() - started;
+            state.maxStepMs = Math.max(state.maxStepMs, state.lastStepMs);
         }
     }
     function restore(item, hold) {
         const original = r.a.gchandle_get_target(item.original);
-        const replacement = r.a.gchandle_get_target(item.replacement);
-        if (r.field(hold, H, 'noteImages').equals(replacement)) r.put(hold, H, 'noteImages', original);
+        if (r.field(hold, H, 'noteImages').equals(item.replacement)) r.put(hold, H, 'noteImages', original);
         rendererFields.forEach((field, i) => {
             const renderer = r.field(hold, H, field);
-            if (r.alive(renderer) && r.call(renderer, 'get_sprite').equals(r.item(replacement, i))) {
+            if (r.alive(renderer) && r.call(renderer, 'get_sprite').equals(r.item(item.replacement, i)))
                 r.call(renderer, 'set_sprite', [r.item(original, i)]);
-            }
         });
     }
-    function apply(hold, line, t, set) {
-        const key = hold.toString();
-        if (tracked.has(key)) {
-            const entry = tracked.get(key);
-            if (r.a.gchandle_get_target(entry.weak).equals(hold)) return;
-            prune();
+    function forget(key, item) {
+        r.a.gchandle_free(item.weak); r.a.gchandle_free(item.original); tracked.delete(key);
+    }
+    function pruneSome() {
+        if (!pruneCursor) pruneCursor = tracked.entries();
+        for (let i = 0; i < 8; i++) {
+            const next = pruneCursor.next();
+            if (next.done) { pruneCursor = null; break; }
+            const [key, item] = next.value;
+            if (!r.alive(r.a.gchandle_get_target(item.weak))) forget(key, item);
         }
-        const original = r.field(hold, H, 'noteImages');
-        const ids = list => list.map(p => p.isNull() ? null : p.toString());
-        const variant = C.classify(line.add(r.offset(J, 'chordSupport')).readU8() !== 0,
-            ids([r.item(original, 0), r.item(original, 1)]), ids(t.single.slice(0,2)), ids(t.multi.slice(0,2)));
-        // Never mutate the prefab's array, even if Unity or another hook shared it.
-        const copy = r.invoke(r.method(r.klass('mscorlib.dll', 'System', 'Array'), 'Clone', 0), original);
-        set[variant].forEach((sprite, i) => r.setItem(copy, i, sprite));
-        const entry = {weak: r.a.gchandle_new_weakref(hold, 0), original: r.a.gchandle_new(original, 0), replacement: r.a.gchandle_new(copy, 0)};
-        tracked.set(key, entry); // Keep restoration information even if a setter throws.
+    }
+    function apply(hold, variant) {
+        const key = hold.toString(), previous = tracked.get(key);
+        if (previous) {
+            if (r.a.gchandle_get_target(previous.weak).equals(hold)) return;
+            forget(key, previous);
+        }
+        const original = r.field(hold, H, 'noteImages'), replacement = sets[variant];
+        if (original.isNull()) throw Error('Hold has no original sprite array');
+        const item = {weak:r.a.gchandle_new_weakref(hold, 0), original:r.a.gchandle_new(original, 0), replacement};
+        tracked.set(key, item);
         try {
-            r.put(hold, H, 'noteImages', copy);
+            // Bind a complete, immutable head/body/tail set with one field write.
+            r.put(hold, H, 'noteImages', replacement);
             rendererFields.forEach((field, i) => {
                 const renderer = r.field(hold, H, field);
-                if (r.alive(renderer)) r.call(renderer, 'set_sprite', [set[variant][i]]);
+                if (r.alive(renderer)) r.call(renderer, 'set_sprite', [r.item(replacement, i)]);
             });
             state[variant]++;
-        } catch (e) { restore(entry, hold); throw e; }
+        } catch (e) { restore(item, hold); throw e; }
     }
     function cleanup() {
         for (const item of tracked.values()) {
             const p = r.a.gchandle_get_target(item.weak);
             if (r.alive(p)) restore(item, p);
         }
-        for (const item of tracked.values()) {
-            r.a.gchandle_free(item.weak); r.a.gchandle_free(item.original); r.a.gchandle_free(item.replacement);
-        }
-        tracked.clear(); releaseFrom(0); spriteSets.clear();
+        for (const [key, item] of tracked) forget(key, item);
+        pruneCursor = null; releaseArrays(); releaseAssets(); sprites.length = 0;
+        files = null; calls.clear();
         listeners.splice(0).forEach(l => l.detach()); disposed = true; state.phase = 'disposed';
     }
-    function pump() {
+    function pumpDispose() {
         if (!pendingDispose) return;
         const job = pendingDispose; pendingDispose = null; clearTimeout(job.timer);
-        try { r.scope(cleanup); setImmediate(() => job.resolve({disposed: true})); }
+        try { r.scope(cleanup); setImmediate(() => job.resolve({disposed:true})); }
         catch (e) { fail(e); setImmediate(() => job.reject(e)); }
     }
-    function hook(k, name, count, callbacks) {
-        const address = r.method(k, name, count).readPointer();
+    function menuFrame() {
+        pumpDispose(); if (stopped) return;
+        try { r.scope(() => { warmStep(); if (state.phase === 'ready') pruneSome(); }); }
+        catch (e) { fail(e); }
+    }
+    function executable(address) {
         const range = Process.findRangeByAddress(address);
-        if (!range || !range.protection.includes('x')) throw Error('No code for ' + name);
-        listeners.push(Interceptor.attach(address, callbacks));
+        if (!range || !range.protection.includes('x')) throw Error('No executable code at ' + address);
+        return address;
+    }
+    function verify(address, expected, label) {
+        executable(address);
+        const actual = Array.from(new Uint8Array(address.readByteArray(expected.length / 2)),
+            b => b.toString(16).padStart(2, '0')).join('');
+        if (actual !== expected) throw Object.assign(Error('Unsupported native hold code at ' + label +
+            '; expected ' + P.game + ' with unmodified probe sites'), {fatal:true});
+    }
+    function hook(k, name, count, callbacks) {
+        listeners.push(Interceptor.attach(executable(r.method(k, name, count).readPointer()), callbacks));
+    }
+    function callKey(invocation, inside) {
+        return invocation.threadId + ':' + invocation.context.sp.add(inside ? P.stackFrameSize : 0);
     }
     function install() {
-        r = createPhiHoldRuntime(); H = r.game('HoldControl'); J = r.game('JudgeLineControl'); M = r.game('NoteUpdateManager');
-        // Reject old layouts instead of applying the misleading body/head mapping in old scripts.
+        r = createPhiHoldRuntime(); H = r.game('HoldControl'); J = r.game('JudgeLineControl'); N = r.game('ChartNote');
         if (r.offset(H, 'noteImages') !== 0x50 || r.offset(H, '_holdSpriteRenderer') !== 0xa0 ||
-            r.offset(J, 'HoldHL0') !== 0x48) throw Error('Unsupported game layout; expected Phigros 4.0.1 arm64');
+            r.offset(J, 'HoldHL0') !== 0x48) throw Object.assign(Error('Unsupported game layout: ' + P.game), {fatal:true});
+        r.offset(H, 'judgeLine'); rendererFields.forEach(field => r.offset(H, field));
+        r.offset(N, 'type'); r.offset(J, 'notesAbove'); r.offset(J, 'notesBelow');
+        const address = r.method(J, 'CreateNote', 2).readPointer();
+        // Verify all probes before attaching any. No cross-version guessing.
+        verify(address, P.entrySignature, 'CreateNote entry');
+        P.sites.forEach(site => verify(address.add(site.offset), site.signature, site.name));
         try {
-            hook(J, 'Start', 0, {onEnter(args) { this.line = args[0]; }, onLeave() {
-                pump(); if (stopped) return;
-                // Start is only a preload opportunity; classification happens after CreateNote.
-                if (state.phase === 'failed') return;
-                try { r.scope(() => { prune(); prepare(templates(this.line)); }); } catch (e) { fail(e); }
-            }});
-            hook(J, 'CreateNote', 2, {
+            listeners.push(Interceptor.attach(address, {
                 onEnter(args) {
-                    this.contextData = null;
-                    if (stopped || state.phase === 'failed') return;
-                    try { r.scope(() => {
-                        const line = args[0], index = args[1].toInt32(), above = args[2].toInt32() !== 0;
+                    if (stopped || state.phase !== 'ready') return;
+                    const key = callKey(this, false);
+                    calls.delete(key); // Also discard a prior call that threw before its binding block.
+                    try {
+                        const line = args[0], above = args[2].toInt32() !== 0;
                         const list = r.field(line, J, above ? 'notesAbove' : 'notesBelow');
-                        if (index < 0 || index >= r.listCount(list)) return;
-                        const note = r.listItem(list, index);
-                        if (note.add(r.offset(r.game('ChartNote'), 'type')).readS32() !== 3) return;
-                        const manager = r.field(line, J, '_noteUpdateManager');
-                        const holds = r.field(manager, M, 'holdControls');
-                        const t = templates(line), set = prepare(t);
-                        // Native objects can cross the original call (and its allocations).
-                        this.roots = [line, note, holds, ...t.single, ...t.multi].map(p => r.a.gchandle_new(p, 0));
-                        this.contextData = {line, note, holds, before: r.listCount(holds), t, set};
-                    }); } catch (e) { state.skipped++; fail(e); }
-                },
-                onLeave() {
-                    const c = this.contextData; if (!c) return;
-                    try { r.scope(() => {
-                        if (stopped) return;
-                        const end = r.listCount(c.holds);
-                        let found = false;
-                        for (let i = c.before; i < end; i++) {
-                            const hold = r.listItem(c.holds, i);
-                            if (r.field(hold, H, 'noteInfor').equals(c.note) && r.field(hold, H, 'judgeLine').equals(c.line)) {
-                                apply(hold, c.line, c.t, c.set); found = true;
-                            }
-                        }
-                        if (!found) throw Error('CreateNote did not append the expected HoldControl');
-                        if ((state.single + state.multi) % 128 === 0) prune();
-                    }); } catch (e) { state.skipped++; fail(e); }
-                    finally { this.roots.forEach(h => r.a.gchandle_free(h)); }
+                        const note = r.listItemRaw(list, args[1].toInt32());
+                        if (note.add(r.offset(N, 'type')).readS32() !== 3) return;
+                        if (calls.size >= 256) throw Error('Too many incomplete native hold calls');
+                        calls.set(key, {line, variant:'single', hold:null});
+                    } catch (e) { state.skipped++; fail(e); }
                 }
-            });
-            // These callbacks only drain explicit disposal work; no per-hold frame hook.
-            for (const name of ['SongSelector', 'Setting', 'LevelInformation']) hook(r.game(name), 'Update', 0, {onLeave: pump});
-            state.phase = 'ready';
-            log('Ready; six-image loading occurs on Unity thread at next chart');
+            }));
+            // Interior PCs require instruction probes, not function-entry callbacks.
+            for (const site of P.sites) listeners.push(Interceptor.attach(address.add(site.offset), function () {
+                if (stopped) return;
+                const key = callKey(this, true), frame = calls.get(key);
+                try {
+                    if (state.phase !== 'ready') {
+                        if (site.kind === 'assign') {
+                            state.skipped++;
+                            if (!warnedUnready) { warnedUnready = true; log('Skin not ready; return to song selection/Settings and wait for Ready'); }
+                        }
+                        return;
+                    }
+                    if (!frame || !this.context.x19.equals(frame.line)) throw Error('Native hold context mismatch: ' + site.name);
+                    const hold = this.context[site.holdRegister];
+                    if (site.kind === 'multi') { frame.variant = 'multi'; frame.hold = hold; return; }
+                    if (frame.hold && !frame.hold.equals(hold)) throw Error('Native hold identity changed before binding');
+                    r.scope(() => {
+                        if (hold.isNull() || !r.a.object_get_class(hold).equals(H) ||
+                            !r.field(hold, H, 'judgeLine').equals(frame.line)) throw Error('Unexpected native HoldControl at ' + site.name);
+                        apply(hold, frame.variant);
+                    });
+                } catch (e) { state.skipped++; fail(e); }
+                finally { if (site.kind === 'assign') calls.delete(key); }
+            }));
+            for (const name of ['SongSelector','Setting']) hook(r.game(name), 'Update', 0, {onLeave:menuFrame});
+            hook(r.game('LevelInformation'), 'Update', 0, {onLeave:pumpDispose});
+            state.phase = 'waiting-menu';
+            log('Installed native hold probes; preparing one image per song-selection/Settings frame');
         } catch (e) { listeners.splice(0).forEach(l => l.detach()); throw e; }
     }
     const deadline = Date.now() + 120000;
@@ -249,28 +247,27 @@ globalThis.PhiHoldSkin = (() => {
             return;
         }
         try { install(); clearInterval(timer); }
-        catch (e) { fail(e); if (Date.now() > deadline) { state.phase = 'failed'; clearInterval(timer); } }
+        catch (e) { fail(e); if (e.fatal || Date.now() > deadline) { state.phase = 'failed'; clearInterval(timer); } }
     }, 250);
     return {
-        status() { return {...state, directory: options.directory, files: {...options.files}, tracked: tracked.size,
-            assets: assets.length, spriteSets: spriteSets.size,
-            images: Object.fromEntries(Object.entries(textures).map(([key, t]) => [key, {width:t.width, height:t.height}]))}; },
+        status() { return {...state, directory:options.directory, files:{...options.files}, tracked:tracked.size,
+            assets:assets.length, spriteSets:arrays.length, activeCalls:calls.size, images:{...textures}}; },
         retry() {
             if (stopped || !r || !listeners.length) throw Error('Hook not active');
-            if (state.phase === 'failed') state.phase = 'ready';
+            if (state.phase === 'failed') { files = null; state.phase = 'waiting-menu'; }
             state.error = null;
-            return 'Will retry loading at next JudgeLineControl.Start/CreateNote';
+            return 'Will prepare in song selection/Settings; wait for Ready before starting a chart';
         },
         dispose() {
-            if (disposed) return Promise.resolve({disposed: true});
+            if (disposed) return Promise.resolve({disposed:true});
             if (pendingDispose) return pendingDispose.promise;
             stopped = true; clearInterval(timer);
-            if (!assets.length && !tracked.size) {
-                listeners.splice(0).forEach(l => l.detach()); disposed = true; state.phase = 'disposed';
-                return Promise.resolve({disposed: true});
+            if (!assets.length && !tracked.size && !arrays.length) {
+                listeners.splice(0).forEach(l => l.detach()); files = null; calls.clear();
+                disposed = true; state.phase = 'disposed'; return Promise.resolve({disposed:true});
             }
             const job = {};
-            job.promise = new Promise((resolve, reject) => { job.resolve = resolve; job.reject = reject; });
+            job.promise = new Promise((resolve,reject) => { job.resolve = resolve; job.reject = reject; });
             job.timer = setTimeout(() => {
                 if (pendingDispose === job) pendingDispose = null;
                 job.reject(Error('Unity is not ticking; return to gameplay, song selection, or Settings and retry holddispose'));

@@ -1,0 +1,20 @@
+{
+  "game": "Phigros 4.0.1 Android arm64",
+  "createNoteRva": "0x1d74334",
+  "stackFrameSize": 96,
+  "entrySignature": "eb2bba6de923016dfe6702a9f85f03a9",
+  "sites": [
+    {"name":"multi_above","kind":"multi","offset":2276,"holdRegister":"x21","signature":"a82a40f9886400b4091940b969640034"},
+    {"name":"assign_above","kind":"assign","offset":2328,"holdRegister":"x21","signature":"689640f9e86200b4002540f9a06200b4"},
+    {"name":"multi_below","kind":"multi","offset":4188,"holdRegister":"x22","signature":"c82a40f9c82800b4091940b9a9280034"},
+    {"name":"assign_below","kind":"assign","offset":4240,"holdRegister":"x22","signature":"689640f9282700b4002540f9e02600b4"}
+  ],
+  "geometry": [
+    {"width":989,"height":50,"pivot":[0.5,1],"ppu":100},
+    {"width":989,"height":1900,"pivot":[0.5,0],"ppu":100},
+    {"width":989,"height":50,"pivot":[0.5,0],"ppu":100},
+    {"width":1062,"height":97.52381134033203,"pivot":[0.5,1],"ppu":97.52066040039062},
+    {"width":1062,"height":1852.952392578125,"pivot":[0.5,0],"ppu":97.52066040039062},
+    {"width":989,"height":50,"pivot":[0.5,0],"ppu":100}
+  ]
+}
