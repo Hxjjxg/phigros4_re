@@ -1,0 +1,286 @@
+{
+  "save0": {
+    "addr": "0x1D63CF8",
+    "code": "void GameProgressSaveModule___Apply_g__SaveChapter8Keys_36_5(GameProgressSaveModule_o *this, const MethodInfo *method)\n{\n  float v2; // s0\n  float v3; // s1\n  float v4; // s2\n  __int64 v6; // x1\n  __int64 v7; // x1\n  __int64 v8; // x1\n  __int64 v9; // x1\n  __int64 v10; // x1\n  __int64 v11; // x1\n  __int64 v12; // x1\n  __int64 v13; // x1\n  __int64 v14; // x1\n  __int64 v15; // x1\n  __int64 v16; // x1\n  __int64 v17; // x1\n  __int64 v18; // x1\n  _BOOL4 chapter8UnlockBegin; // w22\n  __int64 object__32951596; // x0\n  __int64 v21; // x1\n  float v22; // s0\n  float v23; // s1\n  float v24; // s2\n  struct GameInformation_o *main; // x8\n  System_Collections_Generic_IEnumerable_TSource__o *chapters; // x20\n  GameProgressSaveModule___c_c *GameProgressSaveModule.__c_TypeInfo; // x0\n  System_Func_object__bool__o *_9__36_8; // x21\n  Il2CppObject *_; // x22\n  float v30; // s0\n  float v31; // s1\n  float v32; // s2\n  __int64 v33; // x8\n  GameProgressSaveModule___c_c *GameProgressSaveModule.__c_TypeInfo_1; // x0\n  System_Collections_Generic_IEnumerable_TSource__o *source; // x20\n  System_Func_object__object__o *_9__36_9; // x21\n  Il2CppObject *__1; // x22\n  System_Collections_Generic_IEnumerable_TSource__o *source_1; // x0\n  __int64 v39; // x2\n  __int64 v40; // x8\n  __int64 object__32951596_1; // x20\n  unsigned __int64 v42; // x22\n  float v43; // s0\n  float v44; // s1\n  float v45; // s2\n  struct System_Boolean_array *chapter8SongUnlocked; // x8\n  System_String_o *object__32951596_2; // x21\n  _BOOL4 value; // w27\n\n  if ( (byte_446E98C & 1) == 0 ) /*0x1d63d20*/\n  {\n    sub_1B622A0(&Method_System_Linq_Enumerable_First_Chapter___, method); /*0x1d63d2c*/\n    sub_1B622A0(&Method_System_Linq_Enumerable_Select_ChapterSongItem__string___, v6); /*0x1d63d38*/\n    sub_1B622A0(&Method_System_Linq_Enumerable_ToArray_string___, v7); /*0x1d63d44*/\n    sub_1B622A0(&System_Func_ChapterSongItem__string__TypeInfo, v8); /*0x1d63d50*/\n    sub_1B622A0(&System_Func_Chapter__bool__TypeInfo, v9); /*0x1d63d5c*/\n    sub_1B622A0(&SaveManagement_TypeInfo, v10); /*0x1d63d68*/\n    sub_1B622A0(&Method_GameProgressSaveModule___c__Apply_b__36_8__, v11); /*0x1d63d74*/\n    sub_1B622A0(&Method_GameProgressSaveModule___c__Apply_b__36_9__, v12); /*0x1d63d80*/\n    sub_1B622A0(&GameProgressSaveModule___c_TypeInfo, v13); /*0x1d63d8c*/\n    sub_1B622A0(&StringLiteral_11900, v14); /*0x1d63d98*/\n    sub_1B622A0(&StringLiteral_11902, v15); /*0x1d63da4*/\n    sub_1B622A0(&StringLiteral_2560, v16); /*0x1d63db0*/\n    sub_1B622A0(&StringLiteral_9940, v17); /*0x1d63dbc*/\n    sub_1B622A0(&StringLiteral_11903, v18); /*0x1d63dc8*/\n    byte_446E98C = 1; /*0x1d63dd0*/\n  }\n  chapter8UnlockBegin = this->fields.chapter8UnlockBegin; /*0x1d63de8*/\n  if ( !SaveManagement_TypeInfo->_2.cctor_finished ) /*0x1d63de4*/\n    j_il2cpp_runtime_class_init_0(v2, v3, v4); /*0x1d63dfc*/\n  SaveManagement__SaveBool((System_String_o *)StringLiteral_11902, chapter8UnlockBegin, 0); /*0x1d63e10*/\n  SaveManagement__SaveBool((System_String_o *)StringLiteral_11903, this->fields.chapter8UnlockSecondPhase, 0); /*0x1d63e20*/\n  SaveManagement__SaveBool((System_String_o *)StringLiteral_11900, this->fields.chapter8Passed, 0); /*0x1d63e30*/\n  if ( !byte_446E372 ) /*0x1d63e3c*/\n  {\n    object__32951596 = sub_1B622A0(&GameInformation_TypeInfo, v21); /*0x1d63e48*/\n    byte_446E372 = 1; /*0x1d63e50*/\n  }\n  main = GameInformation_TypeInfo->static_fields->_main; /*0x1d63e64*/\n  if ( !main ) /*0x1d63e68*/\n    goto LABEL_33; /*0x1d63e68*/\n  chapters = (System_Collections_Generic_IEnumerable_TSource__o *)main->fields.chapters; /*0x1d63e74*/\n  GameProgressSaveModule.__c_TypeInfo = GameProgressSaveModule___c_TypeInfo; /*0x1d63e78*/\n  if ( !GameProgressSaveModule___c_TypeInfo->_2.cctor_finished ) /*0x1d63e7c*/\n  {\n    j_il2cpp_runtime_class_init_0(v22, v23, v24); /*0x1d63e84*/\n    GameProgressSaveModule.__c_TypeInfo = GameProgressSaveModule___c_TypeInfo; /*0x1d63e88*/\n  }\n  _9__36_8 = (System_Func_object__bool__o *)GameProgressSaveModule.__c_TypeInfo->static_fields->__9__36_8; /*0x1d63e94*/\n  if ( !_9__36_8 ) /*0x1d63e9c*/\n  {\n    if ( !GameProgressSaveModule.__c_TypeInfo->_2.cctor_finished ) /*0x1d63ea0*/\n    {\n      j_il2cpp_runtime_class_init_0(v22, v23, v24); /*0x1d63ea8*/\n      GameProgressSaveModule.__c_TypeInfo = GameProgressSaveModule___c_TypeInfo; /*0x1d63eac*/\n    }\n    _ = (Il2CppObject *)GameProgressSaveModule.__c_TypeInfo->static_fields->__9; /*0x1d63ebc*/\n    _9__36_8 = (System_Func_object__bool__o *)sub_1B624E8(System_Func_Chapter__bool__TypeInfo); /*0x1d63ed8*/\n    System_Func_object__bool____ctor(_9__36_8, _, Method_GameProgressSaveModule___c__Apply_b__36_8__, 0); /*0x1d63ee0*/\n    GameProgressSaveModule___c_TypeInfo->static_fields->__9__36_8 = (struct System_Func_Chapter__bool__o *)_9__36_8; /*0x1d63eec*/\n  }\n  object__32951596 = (__int64)System_Linq_Enumerable__First_object__32951596( /*0x1d63efc*/\n                                chapters,\n                                (System_Func_TSource__bool__o *)_9__36_8,\n                                (const MethodInfo_1F6CD2C *)Method_System_Linq_Enumerable_First_Chapter___);\n  if ( !object__32951596 ) /*0x1d63f00*/\n    goto LABEL_33; /*0x1d63f00*/\n  v33 = *(_QWORD *)(object__32951596 + 24); /*0x1d63f04*/\n  if ( !v33 ) /*0x1d63f08*/\n    goto LABEL_33; /*0x1d63f08*/\n  GameProgressSaveModule.__c_TypeInfo_1 = GameProgressSaveModule___c_TypeInfo; /*0x1d63f0c*/\n  source = *(System_Collections_Generic_IEnumerable_TSource__o **)(v33 + 48); /*0x1d63f10*/\n  if ( !GameProgressSaveModule___c_TypeInfo->_2.cctor_finished ) /*0x1d63f14*/\n  {\n    j_il2cpp_runtime_class_init_0(v30, v31, v32); /*0x1d63f1c*/\n    GameProgressSaveModule.__c_TypeInfo_1 = GameProgressSaveModule___c_TypeInfo; /*0x1d63f20*/\n  }\n  _9__36_9 = (System_Func_object__object__o *)GameProgressSaveModule.__c_TypeInfo_1->static_fields->__9__36_9; /*0x1d63f30*/\n  if ( !_9__36_9 ) /*0x1d63f3c*/\n  {\n    if ( !GameProgressSaveModule.__c_TypeInfo_1->_2.cctor_finished ) /*0x1d63f40*/\n    {\n      j_il2cpp_runtime_class_init_0(v30, v31, v32); /*0x1d63f48*/\n      GameProgressSaveModule.__c_TypeInfo_1 = GameProgressSaveModule___c_TypeInfo; /*0x1d63f4c*/\n    }\n    __1 = (Il2CppObject *)GameProgressSaveModule.__c_TypeInfo_1->static_fields->__9; /*0x1d63f5c*/\n    _9__36_9 = (System_Func_object__object__o *)sub_1B624E8(System_Func_ChapterSongItem__string__TypeInfo); /*0x1d63f78*/\n    System_Func_object__object____ctor(_9__36_9, __1, Method_GameProgressSaveModule___c__Apply_b__36_9__, 0); /*0x1d63f80*/\n    GameProgressSaveModule___c_TypeInfo->static_fields->__9__36_9 = (struct System_Func_ChapterSongItem__string__o *)_9__36_9; /*0x1d63f8c*/\n  }\n  source_1 = (System_Collections_Generic_IEnumerable_TSource__o *)System_Linq_Enumerable__Select_object__object_( /*0x1d63f9c*/\n                                                                    source,\n                                                                    (System_Func_TSource__TResult__o *)_9__36_9,\n                                                                    (const MethodInfo_1F747E0 *)Method_System_Linq_Enumerable_Select_ChapterSongItem__string___);\n  object__32951596 = (__int64)System_Linq_Enumerable__ToArray_object_( /*0x1d63fa4*/\n                                source_1,\n                                (const MethodInfo_1F7ABAC *)Method_System_Linq_Enumerable_ToArray_string___);\n  if ( !object__32951596 ) /*0x1d63fa8*/\nLABEL_33:\n    sub_1B624F8(object__32951596, v21); /*0x1d64064*/\n  v40 = *(_QWORD *)(object__32951596 + 24); /*0x1d63fac*/\n  object__32951596_1 = object__32951596; /*0x1d63fb0*/\n  if ( (int)v40 >= 1 ) /*0x1d63fb8*/\n  {\n    v42 = 0; /*0x1d63fcc*/\n    do /*0x1d64044*/\n    {\n      if ( v42 >= (unsigned int)v40 ) /*0x1d63fdc*/\n        goto LABEL_32; /*0x1d63fdc*/\n      object__32951596 = (__int64)System_String__Concat_53483572( /*0x1d63ff0*/\n                                    (System_String_o *)StringLiteral_2560,\n                                    *(System_String_o **)(object__32951596_1 + 32 + 8 * v42),\n                                    (System_String_o *)StringLiteral_9940,\n                                    0);\n      chapter8SongUnlocked = this->fields.chapter8SongUnlocked; /*0x1d63ff4*/\n      if ( !chapter8SongUnlocked ) /*0x1d63ff8*/\n        goto LABEL_33; /*0x1d63ff8*/\n      if ( v42 >= LODWORD(chapter8SongUnlocked->max_length) ) /*0x1d64004*/\nLABEL_32:\n        sub_1B62500(object__32951596, v21, v39); /*0x1d64060*/\n      object__32951596_2 = (System_String_o *)object__32951596; /*0x1d64008*/\n      value = chapter8SongUnlocked->m_Items[v42]; /*0x1d64014*/\n      if ( !SaveManagement_TypeInfo->_2.cctor_finished ) /*0x1d64018*/\n        j_il2cpp_runtime_class_init_0(v43, v44, v45); /*0x1d64020*/\n      SaveManagement__SaveBool(object__32951596_2, value, 0); /*0x1d64034*/\n      LODWORD(v40) = *(_DWORD *)(object__32951596_1 + 24); /*0x1d64038*/\n      ++v42; /*0x1d6403c*/\n    }\n    while ( (__int64)v42 < (int)v40 ); /*0x1d64044*/\n  }\n}",
+    "line_count": 171,
+    "total_lines": 171,
+    "truncated": false,
+    "cursor": {
+      "done": true
+    },
+    "refs": [
+      {
+        "addr": "0x1b622a0",
+        "name": "sub_1B622A0"
+      },
+      {
+        "addr": "0x428ff60",
+        "name": "Method$System.Linq.Enumerable.First_Chapter_()"
+      },
+      {
+        "addr": "0x4290188",
+        "name": "Method$System.Linq.Enumerable.Select_ChapterSongItem__string_()"
+      },
+      {
+        "addr": "0x42904d0",
+        "name": "Method$System.Linq.Enumerable.ToArray_string_()"
+      },
+      {
+        "addr": "0x4267020",
+        "name": "System.Func_ChapterSongItem__string__TypeInfo"
+      },
+      {
+        "addr": "0x4267000",
+        "name": "System.Func_Chapter__bool__TypeInfo"
+      },
+      {
+        "addr": "0x42708c0",
+        "name": "SaveManagement_TypeInfo"
+      },
+      {
+        "addr": "0x429e0c0",
+        "name": "Method$GameProgressSaveModule.__c._Apply_b__36_8()"
+      },
+      {
+        "addr": "0x429e0c8",
+        "name": "Method$GameProgressSaveModule.__c._Apply_b__36_9()"
+      },
+      {
+        "addr": "0x42746c8",
+        "name": "GameProgressSaveModule.__c_TypeInfo"
+      },
+      {
+        "addr": "0x42b97a0",
+        "name": "StringLiteral_11900"
+      },
+      {
+        "addr": "0x42b97b0",
+        "name": "StringLiteral_11902"
+      },
+      {
+        "addr": "0x42a73c0",
+        "name": "StringLiteral_2560"
+      },
+      {
+        "addr": "0x42b5a60",
+        "name": "StringLiteral_9940"
+      },
+      {
+        "addr": "0x42b97b8",
+        "name": "StringLiteral_11903"
+      },
+      {
+        "addr": "0x446e98c",
+        "name": "byte_446E98C"
+      },
+      {
+        "addr": "0x1b623d4",
+        "name": "j_il2cpp_runtime_class_init_0"
+      },
+      {
+        "addr": "0x1cc311c",
+        "name": "SaveManagement$$SaveBool"
+      },
+      {
+        "addr": "0x426d508",
+        "name": "GameInformation_TypeInfo"
+      },
+      {
+        "addr": "0x446e372",
+        "name": "byte_446E372"
+      },
+      {
+        "addr": "0x1b624e8",
+        "name": "sub_1B624E8"
+      },
+      {
+        "addr": "0x2c4920c",
+        "name": "System.Func_object__bool_$$.ctor"
+      },
+      {
+        "addr": "0x1f6cd2c",
+        "name": "System.Linq.Enumerable$$First_object__32951596"
+      },
+      {
+        "addr": "0x2c49884",
+        "name": "System.Func_object__object_$$.ctor"
+      },
+      {
+        "addr": "0x1f747e0",
+        "name": "System.Linq.Enumerable$$Select_object__object_"
+      },
+      {
+        "addr": "0x1f7abac",
+        "name": "System.Linq.Enumerable$$ToArray_object_"
+      },
+      {
+        "addr": "0x1b624f8",
+        "name": "sub_1B624F8"
+      },
+      {
+        "addr": "0x3301834",
+        "name": "System.String$$Concat_53483572"
+      },
+      {
+        "addr": "0x1b62500",
+        "name": "sub_1B62500"
+      }
+    ]
+  },
+  "save1": {
+    "addr": "0x1D6356C",
+    "code": "void GameProgressSaveModule___Apply_g__SaveGameProgressKeys_36_0(\n        GameProgressSaveModule_o *this,\n        const MethodInfo *method)\n{\n  float v2; // s0\n  float v3; // s1\n  float v4; // s2\n  __int64 v6; // x1\n  __int64 v7; // x1\n  __int64 v8; // x1\n  __int64 v9; // x1\n  __int64 v10; // x1\n  __int64 v11; // x1\n  __int64 v12; // x1\n  __int64 v13; // x1\n  __int64 v14; // x1\n  __int64 StringLiteral_1230; // x28\n  __int64 StringLiteral_1263; // x29\n  _BOOL4 isFirstRun; // w27\n  System_String_o *StringLiteral_5716; // x20\n  System_String_o *StringLiteral_1263_1; // x1\n\n  if ( (byte_446E987 & 1) == 0 ) /*0x1d635b0*/\n  {\n    sub_1B622A0(&SaveManagement_TypeInfo, method); /*0x1d635bc*/\n    sub_1B622A0(&StringLiteral_5716, v6); /*0x1d635c8*/\n    sub_1B622A0(&StringLiteral_4780, v7); /*0x1d635d4*/\n    sub_1B622A0(&StringLiteral_12716, v8); /*0x1d635e0*/\n    sub_1B622A0(&StringLiteral_3141, v9); /*0x1d635ec*/\n    sub_1B622A0(&StringLiteral_2005, v10); /*0x1d635f8*/\n    sub_1B622A0(&StringLiteral_14682, v11); /*0x1d63604*/\n    sub_1B622A0(&StringLiteral_2004, v12); /*0x1d63610*/\n    sub_1B622A0(&StringLiteral_1263, v13); /*0x1d6361c*/\n    sub_1B622A0(&StringLiteral_1230, v14); /*0x1d63628*/\n    byte_446E987 = 1; /*0x1d63630*/\n  }\n  StringLiteral_1230 = StringLiteral_1230; /*0x1d63650*/\n  StringLiteral_1263 = StringLiteral_1263; /*0x1d63654*/\n  isFirstRun = this->fields.isFirstRun; /*0x1d63664*/\n  StringLiteral_5716 = (System_String_o *)StringLiteral_5716; /*0x1d63668*/\n  if ( !SaveManagement_TypeInfo->_2.cctor_finished ) /*0x1d6366c*/\n    j_il2cpp_runtime_class_init_0(v2, v3, v4); /*0x1d63680*/\n  if ( isFirstRun ) /*0x1d63688*/\n    StringLiteral_1263_1 = (System_String_o *)StringLiteral_1263; /*0x1d63688*/\n  else\n    StringLiteral_1263_1 = (System_String_o *)StringLiteral_1230; /*0x1d63688*/\n  SaveManagement__SaveString(StringLiteral_5716, StringLiteral_1263_1, 0); /*0x1d63694*/\n  SaveManagement__SaveBool((System_String_o *)StringLiteral_12716, this->fields.legacyChapterFinished, 0); /*0x1d636a4*/\n  SaveManagement__SaveString((System_String_o *)StringLiteral_4780, this->fields.completed, 0); /*0x1d636b4*/\n  SaveManagement__SaveInt((System_String_o *)StringLiteral_14682, this->fields.songsUpdateInfo, 0); /*0x1d636c4*/\n  SaveManagement__SaveInt((System_String_o *)StringLiteral_3141, this->fields.challengeModeRank, 0); /*0x1d636d4*/\n  SaveManagement__SaveBool((System_String_o *)StringLiteral_2004, this->fields.alreadyShowCollectionTip, 0); /*0x1d636e4*/\n  SaveManagement__SaveBool((System_String_o *)StringLiteral_2005, this->fields.alreadyShowAutoUnlockINTip, 0); /*0x1d6370c*/\n}",
+    "line_count": 54,
+    "total_lines": 54,
+    "truncated": false,
+    "cursor": {
+      "done": true
+    },
+    "refs": [
+      {
+        "addr": "0x1b622a0",
+        "name": "sub_1B622A0"
+      },
+      {
+        "addr": "0x42708c0",
+        "name": "SaveManagement_TypeInfo"
+      },
+      {
+        "addr": "0x42ad660",
+        "name": "StringLiteral_5716"
+      },
+      {
+        "addr": "0x42ab920",
+        "name": "StringLiteral_4780"
+      },
+      {
+        "addr": "0x42bb120",
+        "name": "StringLiteral_12716"
+      },
+      {
+        "addr": "0x42a85e8",
+        "name": "StringLiteral_3141"
+      },
+      {
+        "addr": "0x42a6268",
+        "name": "StringLiteral_2005"
+      },
+      {
+        "addr": "0x42bee90",
+        "name": "StringLiteral_14682"
+      },
+      {
+        "addr": "0x42a6260",
+        "name": "StringLiteral_2004"
+      },
+      {
+        "addr": "0x42a4b38",
+        "name": "StringLiteral_1263"
+      },
+      {
+        "addr": "0x42a4a30",
+        "name": "StringLiteral_1230"
+      },
+      {
+        "addr": "0x446e987",
+        "name": "byte_446E987"
+      },
+      {
+        "addr": "0x1b623d4",
+        "name": "j_il2cpp_runtime_class_init_0"
+      },
+      {
+        "addr": "0x1cc33dc",
+        "name": "SaveManagement$$SaveString"
+      },
+      {
+        "addr": "0x1cc311c",
+        "name": "SaveManagement$$SaveBool"
+      },
+      {
+        "addr": "0x1cc31d0",
+        "name": "SaveManagement$$SaveInt"
+      }
+    ]
+  },
+  "save2": {
+    "addr": "0x1D64C90",
+    "code": "void GameProgressSaveModule___LoadFromLocal_g__LoadGameProgressKeys_38_0(\n        GameProgressSaveModule_o *this,\n        const MethodInfo *method)\n{\n  float v2; // s0\n  float v3; // s1\n  float v4; // s2\n  __int64 v6; // x1\n  __int64 v7; // x1\n  __int64 v8; // x1\n  __int64 v9; // x1\n  __int64 v10; // x1\n  __int64 v11; // x1\n  __int64 v12; // x1\n  __int64 v13; // x1\n  __int64 v14; // x1\n  System_String_o *String; // x0\n\n  if ( (byte_446E98F & 1) == 0 ) /*0x1d64cbc*/\n  {\n    sub_1B622A0(&SaveManagement_TypeInfo, method); /*0x1d64cc8*/\n    sub_1B622A0(&StringLiteral_5716, v6); /*0x1d64cd4*/\n    sub_1B622A0(&StringLiteral_4780, v7); /*0x1d64ce0*/\n    sub_1B622A0(&StringLiteral_12716, v8); /*0x1d64cec*/\n    sub_1B622A0(&StringLiteral_3141, v9); /*0x1d64cf8*/\n    sub_1B622A0(&StringLiteral_2005, v10); /*0x1d64d04*/\n    sub_1B622A0(&StringLiteral_14682, v11); /*0x1d64d10*/\n    sub_1B622A0(&StringLiteral_2004, v12); /*0x1d64d1c*/\n    sub_1B622A0(&StringLiteral_1, v13); /*0x1d64d28*/\n    sub_1B622A0(&StringLiteral_1230, v14); /*0x1d64d34*/\n    byte_446E98F = 1; /*0x1d64d3c*/\n  }\n  if ( !SaveManagement_TypeInfo->_2.cctor_finished ) /*0x1d64d7c*/\n    j_il2cpp_runtime_class_init_0(v2, v3, v4); /*0x1d64d94*/\n  String = SaveManagement__LoadString((System_String_o *)StringLiteral_5716, (System_String_o *)StringLiteral_1230, 0); /*0x1d64da4*/\n  this->fields.isFirstRun = System_String__op_Inequality(String, (System_String_o *)StringLiteral_1230, 0); /*0x1d64db8*/\n  this->fields.legacyChapterFinished = SaveManagement__LoadBool((System_String_o *)StringLiteral_12716, 0, 0); /*0x1d64dd0*/\n  this->fields.completed = SaveManagement__LoadString( /*0x1d64de4*/\n                             (System_String_o *)StringLiteral_4780,\n                             (System_String_o *)StringLiteral_1,\n                             0);\n  this->fields.songsUpdateInfo = SaveManagement__LoadInt((System_String_o *)StringLiteral_14682, -1, 0); /*0x1d64df8*/\n  this->fields.challengeModeRank = SaveManagement__LoadInt((System_String_o *)StringLiteral_3141, 0, 0); /*0x1d64e0c*/\n  this->fields.alreadyShowCollectionTip = SaveManagement__LoadBool((System_String_o *)StringLiteral_2004, 0, 0); /*0x1d64e24*/\n  this->fields.alreadyShowAutoUnlockINTip = SaveManagement__LoadBool((System_String_o *)StringLiteral_2005, 0, 0); /*0x1d64e3c*/\n}",
+    "line_count": 46,
+    "total_lines": 46,
+    "truncated": false,
+    "cursor": {
+      "done": true
+    },
+    "refs": [
+      {
+        "addr": "0x1b622a0",
+        "name": "sub_1B622A0"
+      },
+      {
+        "addr": "0x42708c0",
+        "name": "SaveManagement_TypeInfo"
+      },
+      {
+        "addr": "0x42ad660",
+        "name": "StringLiteral_5716"
+      },
+      {
+        "addr": "0x42ab920",
+        "name": "StringLiteral_4780"
+      },
+      {
+        "addr": "0x42bb120",
+        "name": "StringLiteral_12716"
+      },
+      {
+        "addr": "0x42a85e8",
+        "name": "StringLiteral_3141"
+      },
+      {
+        "addr": "0x42a6268",
+        "name": "StringLiteral_2005"
+      },
+      {
+        "addr": "0x42bee90",
+        "name": "StringLiteral_14682"
+      },
+      {
+        "addr": "0x42a6260",
+        "name": "StringLiteral_2004"
+      },
+      {
+        "addr": "0x42a23c8",
+        "name": "StringLiteral_1"
+      },
+      {
+        "addr": "0x42a4a30",
+        "name": "StringLiteral_1230"
+      },
+      {
+        "addr": "0x446e98f",
+        "name": "byte_446E98F"
+      },
+      {
+        "addr": "0x1b623d4",
+        "name": "j_il2cpp_runtime_class_init_0"
+      },
+      {
+        "addr": "0x1cc42c8",
+        "name": "SaveManagement$$LoadString"
+      },
+      {
+        "addr": "0x3301328",
+        "name": "System.String$$op_Inequality"
+      },
+      {
+        "addr": "0x1cc3458",
+        "name": "SaveManagement$$LoadBool"
+      },
+      {
+        "addr": "0x1cc3e68",
+        "name": "SaveManagement$$LoadInt"
+      }
+    ]
+  }
+}

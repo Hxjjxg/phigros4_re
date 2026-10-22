@@ -1,0 +1,126 @@
+{
+  "chapterCode": "MainStory9",
+  "songInfo": {
+    "title": "\\ChapterMainStory9Title",
+    "subTitle": "\\ChapterMainStory9SubTitle",
+    "banner": "Chapter 9",
+    "songs": [
+      {
+        "songsId": "AboutTheUniverse.SOTUIMIssionary.0",
+        "unlockType": 2,
+        "unlockInfo": [
+          "C9AboutTheUniverseUnlocked"
+        ],
+        "secretType": 0,
+        "secretInfo": []
+      },
+      {
+        "songsId": "Implexrough.Silentroommommy.0",
+        "unlockType": 2,
+        "unlockInfo": [
+          "C9ImplexroughUnlocked"
+        ],
+        "secretType": 0,
+        "secretInfo": []
+      },
+      {
+        "songsId": "Evanescent.LeaF.0",
+        "unlockType": 2,
+        "unlockInfo": [
+          "C9EvanescentUnlocked"
+        ],
+        "secretType": 0,
+        "secretInfo": []
+      },
+      {
+        "songsId": "EntrancetotheChaos.打打だいずvssiromaru.0",
+        "unlockType": 2,
+        "unlockInfo": [
+          "C9EntranceToTheChaosUnlocked"
+        ],
+        "secretType": 0,
+        "secretInfo": []
+      },
+      {
+        "songsId": "ExoplanetaryMirage.かめりあ.0",
+        "unlockType": 2,
+        "unlockInfo": [
+          "C9ExoplanetaryMirageUnlocked"
+        ],
+        "secretType": 0,
+        "secretInfo": []
+      },
+      {
+        "songsId": "TrueHomeTrueWorldRework.816ThreeNumbers.0",
+        "unlockType": 2,
+        "unlockInfo": [
+          "C9S6Unlocked"
+        ],
+        "secretType": 0,
+        "secretInfo": []
+      },
+      {
+        "songsId": "Ametrine.GRYSCLMIssionary.0",
+        "unlockType": 2,
+        "unlockInfo": [
+          "C9AmetrineUnlocked"
+        ],
+        "secretType": 0,
+        "secretInfo": []
+      },
+      {
+        "songsId": "Petrichor.voidMournfinale.0",
+        "unlockType": 2,
+        "unlockInfo": [
+          "C9PetrichorUnlocked"
+        ],
+        "secretType": 0,
+        "secretInfo": []
+      },
+      {
+        "songsId": "ハテ.rNFrums.0",
+        "unlockType": 2,
+        "unlockInfo": [
+          "C9HateUnlocked"
+        ],
+        "secretType": 0,
+        "secretInfo": []
+      },
+      {
+        "songsId": "DesultorySignals.technoplanet.0",
+        "unlockType": 2,
+        "unlockInfo": [
+          "C9DesultorySignalsUnlocked"
+        ],
+        "secretType": 0,
+        "secretInfo": []
+      },
+      {
+        "songsId": "Message.くるぶっこちゃん.0",
+        "unlockType": 2,
+        "unlockInfo": [
+          "C9MessageUnlocked"
+        ],
+        "secretType": 0,
+        "secretInfo": []
+      },
+      {
+        "songsId": "WhatdoyouwantmorethanaHappyending.Apo11oHALOprogramft安月名莉子大瀬良あい.0",
+        "unlockType": 2,
+        "unlockInfo": [
+          "C9HappyEndingUnlocked"
+        ],
+        "secretType": 0,
+        "secretInfo": []
+      }
+    ]
+  },
+  "unlockInfo": {
+    "unlockMode": 1,
+    "unlockFlag": "DistortedFate.Sakuzyo.0",
+    "unlockTip": "",
+    "fakeCoverFlag": "",
+    "fakeCoverCode": "",
+    "fakeCoverBlurCode": ""
+  }
+}

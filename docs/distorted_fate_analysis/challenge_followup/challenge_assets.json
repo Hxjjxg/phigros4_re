@@ -1,0 +1,4385 @@
+[
+  {
+    "asset": "sharedassets6.assets",
+    "path_id": 391,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 108
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "Chapter",
+    "gameobject_id": 108,
+    "components": [
+      {
+        "path_id": 285,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 391,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 108
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 158,
+        "type": "Animation"
+      },
+      {
+        "path_id": 232,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 443,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 108
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 3733,
+    "script": "ChapterSelector",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 40
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 108
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "ChapterSelector",
+    "gameobject_id": 40,
+    "components": [
+      {
+        "path_id": 1193,
+        "type": "Transform"
+      },
+      {
+        "path_id": 3733,
+        "type": "MonoBehaviour",
+        "script": "ChapterSelector",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 40
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 108
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4067,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 284
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "OverRapid",
+    "gameobject_id": 284,
+    "components": [
+      {
+        "path_id": 2677,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4067,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 284
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1201,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2350,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5055,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 284
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4069,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 286
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "Lanota",
+    "gameobject_id": 286,
+    "components": [
+      {
+        "path_id": 2679,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4069,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 286
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1202,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2351,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5054,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 286
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4078,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 297
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "MainStory5",
+    "gameobject_id": 297,
+    "components": [
+      {
+        "path_id": 2690,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4078,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 297
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1203,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2352,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5053,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 297
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4147,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 378
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "TEA12",
+    "gameobject_id": 378,
+    "components": [
+      {
+        "path_id": 2771,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4147,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 378
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1204,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2348,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5061,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 378
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4151,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 381
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "SideStory2",
+    "gameobject_id": 381,
+    "components": [
+      {
+        "path_id": 2774,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4151,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 381
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1205,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2349,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5060,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 381
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4173,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 404
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "CHUNITHM",
+    "gameobject_id": 404,
+    "components": [
+      {
+        "path_id": 2797,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4173,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 404
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1206,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2344,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5059,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 404
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4181,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 416
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "Ongeki",
+    "gameobject_id": 416,
+    "components": [
+      {
+        "path_id": 2809,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4181,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 416
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1207,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2345,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5058,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 416
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4193,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 428
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "MainStory7",
+    "gameobject_id": 428,
+    "components": [
+      {
+        "path_id": 2821,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4193,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 428
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1208,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2346,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5057,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 428
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4198,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 434
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "TAKUMI3",
+    "gameobject_id": 434,
+    "components": [
+      {
+        "path_id": 2827,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4198,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 434
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1209,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2347,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5056,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 434
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4213,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 453
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "EGTS",
+    "gameobject_id": 453,
+    "components": [
+      {
+        "path_id": 2846,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4213,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 453
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1210,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2342,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5047,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 453
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4225,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 465
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "ImmaculeeSekai",
+    "gameobject_id": 465,
+    "components": [
+      {
+        "path_id": 2858,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4225,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 465
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1211,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2343,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5046,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 465
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4255,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 497
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "MainStory9",
+    "gameobject_id": 497,
+    "components": [
+      {
+        "path_id": 2890,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4255,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 497
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1212,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2341,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5045,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 497
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4274,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 516
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "MainStoryLegacy",
+    "gameobject_id": 516,
+    "components": [
+      {
+        "path_id": 2909,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4274,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 516
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1213,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2339,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5052,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 516
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4300,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 547
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "WAVEAT",
+    "gameobject_id": 547,
+    "components": [
+      {
+        "path_id": 2940,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4300,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 547
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1214,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2340,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5051,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 547
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4319,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 565
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "ParadigmReboot",
+    "gameobject_id": 565,
+    "components": [
+      {
+        "path_id": 2958,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4319,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 565
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1215,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2336,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5050,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 565
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4327,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 575
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "JMT",
+    "gameobject_id": 575,
+    "components": [
+      {
+        "path_id": 2968,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4327,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 575
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1216,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2337,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5049,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 575
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4331,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 580
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "RhythmMaster",
+    "gameobject_id": 580,
+    "components": [
+      {
+        "path_id": 2973,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4331,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 580
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1217,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2338,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5048,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 580
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4354,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 608
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "Rotaeno",
+    "gameobject_id": 608,
+    "components": [
+      {
+        "path_id": 3001,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4354,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 608
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1218,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2367,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5074,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 608
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4365,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 619
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "Single",
+    "gameobject_id": 619,
+    "components": [
+      {
+        "path_id": 3012,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4365,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 619
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1219,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2368,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5073,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 619
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4381,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 638
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "AllSong",
+    "gameobject_id": 638,
+    "hierarchy": {
+      "name": "AllSong",
+      "gameobject_id": 638,
+      "components": [
+        {
+          "path_id": 3031,
+          "type": "RectTransform"
+        },
+        {
+          "path_id": 4381,
+          "type": "MonoBehaviour",
+          "script": "ChapterInfo",
+          "raw_strings": [
+            "AllSong",
+            "Assets/Tracks/#ChapterCover/AllSong.jpg",
+            "Assets/Tracks/#ChapterCover/AllSongBlur.jpg"
+          ]
+        },
+        {
+          "path_id": 1220,
+          "type": "Animation"
+        },
+        {
+          "path_id": 2369,
+          "type": "Canvas"
+        },
+        {
+          "path_id": 5072,
+          "type": "MonoBehaviour",
+          "script": "GraphicRaycaster",
+          "raw_strings": []
+        },
+        {
+          "path_id": 4382,
+          "type": "MonoBehaviour",
+          "script": "RemoveAllSongControl",
+          "raw_strings": []
+        }
+      ],
+      "children": [
+        {
+          "name": "Image (5)",
+          "gameobject_id": 72,
+          "components": [
+            {
+              "path_id": 2623,
+              "type": "RectTransform"
+            },
+            {
+              "path_id": 1340,
+              "type": "CanvasRenderer"
+            },
+            {
+              "path_id": 5095,
+              "type": "MonoBehaviour",
+              "script": "Image",
+              "raw_strings": []
+            }
+          ],
+          "children": []
+        },
+        {
+          "name": "Image (4)",
+          "gameobject_id": 212,
+          "components": [
+            {
+              "path_id": 3425,
+              "type": "RectTransform"
+            },
+            {
+              "path_id": 2108,
+              "type": "CanvasRenderer"
+            },
+            {
+              "path_id": 4976,
+              "type": "MonoBehaviour",
+              "script": "Image",
+              "raw_strings": []
+            }
+          ],
+          "children": []
+        },
+        {
+          "name": "Image (3)",
+          "gameobject_id": 192,
+          "components": [
+            {
+              "path_id": 3385,
+              "type": "RectTransform"
+            },
+            {
+              "path_id": 2144,
+              "type": "CanvasRenderer"
+            },
+            {
+              "path_id": 4660,
+              "type": "MonoBehaviour",
+              "script": "Image",
+              "raw_strings": []
+            }
+          ],
+          "children": []
+        },
+        {
+          "name": "Image (2)",
+          "gameobject_id": 1113,
+          "components": [
+            {
+              "path_id": 3464,
+              "type": "RectTransform"
+            },
+            {
+              "path_id": 2308,
+              "type": "CanvasRenderer"
+            },
+            {
+              "path_id": 3936,
+              "type": "MonoBehaviour",
+              "script": "Image",
+              "raw_strings": []
+            }
+          ],
+          "children": []
+        },
+        {
+          "name": "Image (1)",
+          "gameobject_id": 1017,
+          "components": [
+            {
+              "path_id": 3352,
+              "type": "RectTransform"
+            },
+            {
+              "path_id": 2275,
+              "type": "CanvasRenderer"
+            },
+            {
+              "path_id": 4791,
+              "type": "MonoBehaviour",
+              "script": "Image",
+              "raw_strings": []
+            }
+          ],
+          "children": []
+        },
+        {
+          "name": "Image",
+          "gameobject_id": 110,
+          "components": [
+            {
+              "path_id": 2418,
+              "type": "RectTransform"
+            },
+            {
+              "path_id": 2051,
+              "type": "CanvasRenderer"
+            },
+            {
+              "path_id": 4805,
+              "type": "MonoBehaviour",
+              "script": "Image",
+              "raw_strings": []
+            }
+          ],
+          "children": []
+        },
+        {
+          "name": "Mask",
+          "gameobject_id": 597,
+          "components": [
+            {
+              "path_id": 2990,
+              "type": "RectTransform"
+            },
+            {
+              "path_id": 1712,
+              "type": "CanvasRenderer"
+            },
+            {
+              "path_id": 4348,
+              "type": "MonoBehaviour",
+              "script": "LeanPolygon",
+              "raw_strings": []
+            },
+            {
+              "path_id": 4347,
+              "type": "MonoBehaviour",
+              "script": "Mask",
+              "raw_strings": []
+            }
+          ],
+          "children": [
+            {
+              "name": "Cover",
+              "gameobject_id": 410,
+              "components": [
+                {
+                  "path_id": 2803,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1543,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 4175,
+                  "type": "MonoBehaviour",
+                  "script": "Image",
+                  "raw_strings": []
+                },
+                {
+                  "path_id": 4739,
+                  "type": "MonoBehaviour",
+                  "script": "AddressableImageLoaderWithLowResPreview",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "Image",
+              "gameobject_id": 1050,
+              "components": [
+                {
+                  "path_id": 2466,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 2044,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 5126,
+                  "type": "MonoBehaviour",
+                  "script": "Image",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "Image (1)",
+              "gameobject_id": 1154,
+              "components": [
+                {
+                  "path_id": 3482,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 2235,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 4839,
+                  "type": "MonoBehaviour",
+                  "script": "Image",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "CoverBlur",
+              "gameobject_id": 703,
+              "components": [
+                {
+                  "path_id": 3096,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1804,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 4437,
+                  "type": "MonoBehaviour",
+                  "script": "Image",
+                  "raw_strings": []
+                },
+                {
+                  "path_id": 3865,
+                  "type": "MonoBehaviour",
+                  "script": "AddressableImageLoader",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "Locked",
+              "gameobject_id": 998,
+              "components": [
+                {
+                  "path_id": 2495,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1357,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 3877,
+                  "type": "MonoBehaviour",
+                  "script": "Image",
+                  "raw_strings": []
+                }
+              ],
+              "children": [
+                {
+                  "name": "Background",
+                  "gameobject_id": 940,
+                  "components": [
+                    {
+                      "path_id": 2532,
+                      "type": "RectTransform"
+                    },
+                    {
+                      "path_id": 2182,
+                      "type": "CanvasRenderer"
+                    },
+                    {
+                      "path_id": 4050,
+                      "type": "MonoBehaviour",
+                      "script": "Image",
+                      "raw_strings": []
+                    }
+                  ],
+                  "children": []
+                },
+                {
+                  "name": "Text",
+                  "gameobject_id": 141,
+                  "components": [
+                    {
+                      "path_id": 2575,
+                      "type": "RectTransform"
+                    },
+                    {
+                      "path_id": 1410,
+                      "type": "CanvasRenderer"
+                    },
+                    {
+                      "path_id": 4930,
+                      "type": "MonoBehaviour",
+                      "script": "Text",
+                      "raw_strings": [
+                        "Locked"
+                      ]
+                    },
+                    {
+                      "path_id": 3630,
+                      "type": "CanvasGroup"
+                    }
+                  ],
+                  "children": []
+                },
+                {
+                  "name": "TipText",
+                  "gameobject_id": 1079,
+                  "components": [
+                    {
+                      "path_id": 2644,
+                      "type": "RectTransform"
+                    },
+                    {
+                      "path_id": 1291,
+                      "type": "CanvasRenderer"
+                    },
+                    {
+                      "path_id": 3837,
+                      "type": "MonoBehaviour",
+                      "script": "Text",
+                      "raw_strings": []
+                    },
+                    {
+                      "path_id": 3576,
+                      "type": "CanvasGroup"
+                    }
+                  ],
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Banner",
+          "gameobject_id": 848,
+          "components": [
+            {
+              "path_id": 3241,
+              "type": "RectTransform"
+            },
+            {
+              "path_id": 1934,
+              "type": "CanvasRenderer"
+            },
+            {
+              "path_id": 4569,
+              "type": "MonoBehaviour",
+              "script": "Text",
+              "raw_strings": [
+                "Phigros"
+              ]
+            },
+            {
+              "path_id": 3681,
+              "type": "CanvasGroup"
+            }
+          ],
+          "children": []
+        },
+        {
+          "name": "MoreInfo",
+          "gameobject_id": 658,
+          "components": [
+            {
+              "path_id": 3051,
+              "type": "RectTransform"
+            },
+            {
+              "path_id": 3600,
+              "type": "CanvasGroup"
+            }
+          ],
+          "children": [
+            {
+              "name": "Infobar",
+              "gameobject_id": 28,
+              "components": [
+                {
+                  "path_id": 2390,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1257,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 3714,
+                  "type": "MonoBehaviour",
+                  "script": "LeanPolygon",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "Infobar (1)",
+              "gameobject_id": 5,
+              "components": [
+                {
+                  "path_id": 2374,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1246,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 3690,
+                  "type": "MonoBehaviour",
+                  "script": "LeanPolygon",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "Shadow",
+              "gameobject_id": 46,
+              "components": [
+                {
+                  "path_id": 2406,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1269,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 3741,
+                  "type": "MonoBehaviour",
+                  "script": "LeanPolygon",
+                  "raw_strings": []
+                },
+                {
+                  "path_id": 3740,
+                  "type": "MonoBehaviour",
+                  "script": "TrueShadow",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "ClassMode",
+              "gameobject_id": 17,
+              "components": [
+                {
+                  "path_id": 2383,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1251,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 3703,
+                  "type": "MonoBehaviour",
+                  "script": "LeanPolygon",
+                  "raw_strings": []
+                },
+                {
+                  "path_id": 3702,
+                  "type": "MonoBehaviour",
+                  "script": "Button",
+                  "raw_strings": [
+                    "Normal",
+                    "Highlighted",
+                    "Pressed",
+                    "Selected",
+                    "Disabled",
+                    "LoadSongSelector",
+                    "UnityEngine.Object, UnityEngine",
+                    "ChallengeMode"
+                  ]
+                }
+              ],
+              "children": [
+                {
+                  "name": "Text",
+                  "gameobject_id": 24,
+                  "components": [
+                    {
+                      "path_id": 2388,
+                      "type": "RectTransform"
+                    },
+                    {
+                      "path_id": 1255,
+                      "type": "CanvasRenderer"
+                    },
+                    {
+                      "path_id": 3710,
+                      "type": "MonoBehaviour",
+                      "script": "Text",
+                      "raw_strings": [
+                        "\\ChangeModeTitle"
+                      ]
+                    },
+                    {
+                      "path_id": 3709,
+                      "type": "MonoBehaviour",
+                      "script": "MultiLanguageFromTextBase",
+                      "raw_strings": []
+                    }
+                  ],
+                  "children": []
+                }
+              ]
+            },
+            {
+              "name": "Play",
+              "gameobject_id": 394,
+              "components": [
+                {
+                  "path_id": 2787,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1530,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 4164,
+                  "type": "MonoBehaviour",
+                  "script": "LeanPolygon",
+                  "raw_strings": []
+                },
+                {
+                  "path_id": 3989,
+                  "type": "MonoBehaviour",
+                  "script": "Button",
+                  "raw_strings": [
+                    "Normal",
+                    "Highlighted",
+                    "Pressed",
+                    "Selected",
+                    "Disabled"
+                  ]
+                }
+              ],
+              "children": [
+                {
+                  "name": "Text",
+                  "gameobject_id": 705,
+                  "components": [
+                    {
+                      "path_id": 3098,
+                      "type": "RectTransform"
+                    },
+                    {
+                      "path_id": 1806,
+                      "type": "CanvasRenderer"
+                    },
+                    {
+                      "path_id": 4439,
+                      "type": "MonoBehaviour",
+                      "script": "Text",
+                      "raw_strings": [
+                        "\\AllSongsTitle"
+                      ]
+                    },
+                    {
+                      "path_id": 4440,
+                      "type": "MonoBehaviour",
+                      "script": "MultiLanguageFromTextBase",
+                      "raw_strings": []
+                    }
+                  ],
+                  "children": []
+                }
+              ]
+            },
+            {
+              "name": "SubTitle",
+              "gameobject_id": 603,
+              "components": [
+                {
+                  "path_id": 2996,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1717,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 5024,
+                  "type": "MonoBehaviour",
+                  "script": "MultiLanguageFromTextBase",
+                  "raw_strings": []
+                },
+                {
+                  "path_id": 3975,
+                  "type": "MonoBehaviour",
+                  "script": "Text",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "Title",
+              "gameobject_id": 579,
+              "components": [
+                {
+                  "path_id": 2972,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1695,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 4716,
+                  "type": "MonoBehaviour",
+                  "script": "MultiLanguageFromTextBase",
+                  "raw_strings": []
+                },
+                {
+                  "path_id": 3777,
+                  "type": "MonoBehaviour",
+                  "script": "Text",
+                  "raw_strings": []
+                },
+                {
+                  "path_id": 3705,
+                  "type": "MonoBehaviour",
+                  "script": "MultiLanguageFromTextBase",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "statusTitle",
+              "gameobject_id": 41,
+              "components": [
+                {
+                  "path_id": 2402,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1265,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 3734,
+                  "type": "MonoBehaviour",
+                  "script": "Text",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "AllNum",
+              "gameobject_id": 759,
+              "components": [
+                {
+                  "path_id": 3152,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1853,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 4488,
+                  "type": "MonoBehaviour",
+                  "script": "Text",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "ClearNum",
+              "gameobject_id": 440,
+              "components": [
+                {
+                  "path_id": 2833,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1570,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 4203,
+                  "type": "MonoBehaviour",
+                  "script": "Text",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "FullCombo",
+              "gameobject_id": 648,
+              "components": [
+                {
+                  "path_id": 3041,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1756,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 4391,
+                  "type": "MonoBehaviour",
+                  "script": "Text",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "PhiNum",
+              "gameobject_id": 867,
+              "components": [
+                {
+                  "path_id": 3260,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1951,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 4587,
+                  "type": "MonoBehaviour",
+                  "script": "Text",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "AllText",
+              "gameobject_id": 794,
+              "components": [
+                {
+                  "path_id": 3187,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1884,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 4519,
+                  "type": "MonoBehaviour",
+                  "script": "Text",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "ClearText",
+              "gameobject_id": 849,
+              "components": [
+                {
+                  "path_id": 3242,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1935,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 4570,
+                  "type": "MonoBehaviour",
+                  "script": "Text",
+                  "raw_strings": [
+                    "Clear"
+                  ]
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "FullComboText",
+              "gameobject_id": 675,
+              "components": [
+                {
+                  "path_id": 3068,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1781,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 4414,
+                  "type": "MonoBehaviour",
+                  "script": "Text",
+                  "raw_strings": [
+                    "Full Combo"
+                  ]
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "PhiText",
+              "gameobject_id": 331,
+              "components": [
+                {
+                  "path_id": 2724,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1475,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 4108,
+                  "type": "MonoBehaviour",
+                  "script": "Text",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Open",
+          "gameobject_id": 254,
+          "components": [
+            {
+              "path_id": 3535,
+              "type": "RectTransform"
+            },
+            {
+              "path_id": 2194,
+              "type": "CanvasRenderer"
+            },
+            {
+              "path_id": 4944,
+              "type": "MonoBehaviour",
+              "script": "Image",
+              "raw_strings": []
+            },
+            {
+              "path_id": 4882,
+              "type": "MonoBehaviour",
+              "script": "Button",
+              "raw_strings": [
+                "Normal",
+                "Highlighted",
+                "Pressed",
+                "Selected",
+                "Disabled"
+              ]
+            }
+          ],
+          "children": []
+        }
+      ]
+    },
+    "components": [
+      {
+        "path_id": 3031,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4381,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 638
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1220,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2369,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5072,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 638
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 4382,
+        "type": "MonoBehaviour",
+        "script": "RemoveAllSongControl",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 638
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 438
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4382,
+    "script": "RemoveAllSongControl",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 638
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 438
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "AllSong",
+    "gameobject_id": 638,
+    "hierarchy": {
+      "name": "AllSong",
+      "gameobject_id": 638,
+      "components": [
+        {
+          "path_id": 3031,
+          "type": "RectTransform"
+        },
+        {
+          "path_id": 4381,
+          "type": "MonoBehaviour",
+          "script": "ChapterInfo",
+          "raw_strings": [
+            "AllSong",
+            "Assets/Tracks/#ChapterCover/AllSong.jpg",
+            "Assets/Tracks/#ChapterCover/AllSongBlur.jpg"
+          ]
+        },
+        {
+          "path_id": 1220,
+          "type": "Animation"
+        },
+        {
+          "path_id": 2369,
+          "type": "Canvas"
+        },
+        {
+          "path_id": 5072,
+          "type": "MonoBehaviour",
+          "script": "GraphicRaycaster",
+          "raw_strings": []
+        },
+        {
+          "path_id": 4382,
+          "type": "MonoBehaviour",
+          "script": "RemoveAllSongControl",
+          "raw_strings": []
+        }
+      ],
+      "children": [
+        {
+          "name": "Image (5)",
+          "gameobject_id": 72,
+          "components": [
+            {
+              "path_id": 2623,
+              "type": "RectTransform"
+            },
+            {
+              "path_id": 1340,
+              "type": "CanvasRenderer"
+            },
+            {
+              "path_id": 5095,
+              "type": "MonoBehaviour",
+              "script": "Image",
+              "raw_strings": []
+            }
+          ],
+          "children": []
+        },
+        {
+          "name": "Image (4)",
+          "gameobject_id": 212,
+          "components": [
+            {
+              "path_id": 3425,
+              "type": "RectTransform"
+            },
+            {
+              "path_id": 2108,
+              "type": "CanvasRenderer"
+            },
+            {
+              "path_id": 4976,
+              "type": "MonoBehaviour",
+              "script": "Image",
+              "raw_strings": []
+            }
+          ],
+          "children": []
+        },
+        {
+          "name": "Image (3)",
+          "gameobject_id": 192,
+          "components": [
+            {
+              "path_id": 3385,
+              "type": "RectTransform"
+            },
+            {
+              "path_id": 2144,
+              "type": "CanvasRenderer"
+            },
+            {
+              "path_id": 4660,
+              "type": "MonoBehaviour",
+              "script": "Image",
+              "raw_strings": []
+            }
+          ],
+          "children": []
+        },
+        {
+          "name": "Image (2)",
+          "gameobject_id": 1113,
+          "components": [
+            {
+              "path_id": 3464,
+              "type": "RectTransform"
+            },
+            {
+              "path_id": 2308,
+              "type": "CanvasRenderer"
+            },
+            {
+              "path_id": 3936,
+              "type": "MonoBehaviour",
+              "script": "Image",
+              "raw_strings": []
+            }
+          ],
+          "children": []
+        },
+        {
+          "name": "Image (1)",
+          "gameobject_id": 1017,
+          "components": [
+            {
+              "path_id": 3352,
+              "type": "RectTransform"
+            },
+            {
+              "path_id": 2275,
+              "type": "CanvasRenderer"
+            },
+            {
+              "path_id": 4791,
+              "type": "MonoBehaviour",
+              "script": "Image",
+              "raw_strings": []
+            }
+          ],
+          "children": []
+        },
+        {
+          "name": "Image",
+          "gameobject_id": 110,
+          "components": [
+            {
+              "path_id": 2418,
+              "type": "RectTransform"
+            },
+            {
+              "path_id": 2051,
+              "type": "CanvasRenderer"
+            },
+            {
+              "path_id": 4805,
+              "type": "MonoBehaviour",
+              "script": "Image",
+              "raw_strings": []
+            }
+          ],
+          "children": []
+        },
+        {
+          "name": "Mask",
+          "gameobject_id": 597,
+          "components": [
+            {
+              "path_id": 2990,
+              "type": "RectTransform"
+            },
+            {
+              "path_id": 1712,
+              "type": "CanvasRenderer"
+            },
+            {
+              "path_id": 4348,
+              "type": "MonoBehaviour",
+              "script": "LeanPolygon",
+              "raw_strings": []
+            },
+            {
+              "path_id": 4347,
+              "type": "MonoBehaviour",
+              "script": "Mask",
+              "raw_strings": []
+            }
+          ],
+          "children": [
+            {
+              "name": "Cover",
+              "gameobject_id": 410,
+              "components": [
+                {
+                  "path_id": 2803,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1543,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 4175,
+                  "type": "MonoBehaviour",
+                  "script": "Image",
+                  "raw_strings": []
+                },
+                {
+                  "path_id": 4739,
+                  "type": "MonoBehaviour",
+                  "script": "AddressableImageLoaderWithLowResPreview",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "Image",
+              "gameobject_id": 1050,
+              "components": [
+                {
+                  "path_id": 2466,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 2044,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 5126,
+                  "type": "MonoBehaviour",
+                  "script": "Image",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "Image (1)",
+              "gameobject_id": 1154,
+              "components": [
+                {
+                  "path_id": 3482,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 2235,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 4839,
+                  "type": "MonoBehaviour",
+                  "script": "Image",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "CoverBlur",
+              "gameobject_id": 703,
+              "components": [
+                {
+                  "path_id": 3096,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1804,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 4437,
+                  "type": "MonoBehaviour",
+                  "script": "Image",
+                  "raw_strings": []
+                },
+                {
+                  "path_id": 3865,
+                  "type": "MonoBehaviour",
+                  "script": "AddressableImageLoader",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "Locked",
+              "gameobject_id": 998,
+              "components": [
+                {
+                  "path_id": 2495,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1357,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 3877,
+                  "type": "MonoBehaviour",
+                  "script": "Image",
+                  "raw_strings": []
+                }
+              ],
+              "children": [
+                {
+                  "name": "Background",
+                  "gameobject_id": 940,
+                  "components": [
+                    {
+                      "path_id": 2532,
+                      "type": "RectTransform"
+                    },
+                    {
+                      "path_id": 2182,
+                      "type": "CanvasRenderer"
+                    },
+                    {
+                      "path_id": 4050,
+                      "type": "MonoBehaviour",
+                      "script": "Image",
+                      "raw_strings": []
+                    }
+                  ],
+                  "children": []
+                },
+                {
+                  "name": "Text",
+                  "gameobject_id": 141,
+                  "components": [
+                    {
+                      "path_id": 2575,
+                      "type": "RectTransform"
+                    },
+                    {
+                      "path_id": 1410,
+                      "type": "CanvasRenderer"
+                    },
+                    {
+                      "path_id": 4930,
+                      "type": "MonoBehaviour",
+                      "script": "Text",
+                      "raw_strings": [
+                        "Locked"
+                      ]
+                    },
+                    {
+                      "path_id": 3630,
+                      "type": "CanvasGroup"
+                    }
+                  ],
+                  "children": []
+                },
+                {
+                  "name": "TipText",
+                  "gameobject_id": 1079,
+                  "components": [
+                    {
+                      "path_id": 2644,
+                      "type": "RectTransform"
+                    },
+                    {
+                      "path_id": 1291,
+                      "type": "CanvasRenderer"
+                    },
+                    {
+                      "path_id": 3837,
+                      "type": "MonoBehaviour",
+                      "script": "Text",
+                      "raw_strings": []
+                    },
+                    {
+                      "path_id": 3576,
+                      "type": "CanvasGroup"
+                    }
+                  ],
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Banner",
+          "gameobject_id": 848,
+          "components": [
+            {
+              "path_id": 3241,
+              "type": "RectTransform"
+            },
+            {
+              "path_id": 1934,
+              "type": "CanvasRenderer"
+            },
+            {
+              "path_id": 4569,
+              "type": "MonoBehaviour",
+              "script": "Text",
+              "raw_strings": [
+                "Phigros"
+              ]
+            },
+            {
+              "path_id": 3681,
+              "type": "CanvasGroup"
+            }
+          ],
+          "children": []
+        },
+        {
+          "name": "MoreInfo",
+          "gameobject_id": 658,
+          "components": [
+            {
+              "path_id": 3051,
+              "type": "RectTransform"
+            },
+            {
+              "path_id": 3600,
+              "type": "CanvasGroup"
+            }
+          ],
+          "children": [
+            {
+              "name": "Infobar",
+              "gameobject_id": 28,
+              "components": [
+                {
+                  "path_id": 2390,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1257,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 3714,
+                  "type": "MonoBehaviour",
+                  "script": "LeanPolygon",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "Infobar (1)",
+              "gameobject_id": 5,
+              "components": [
+                {
+                  "path_id": 2374,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1246,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 3690,
+                  "type": "MonoBehaviour",
+                  "script": "LeanPolygon",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "Shadow",
+              "gameobject_id": 46,
+              "components": [
+                {
+                  "path_id": 2406,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1269,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 3741,
+                  "type": "MonoBehaviour",
+                  "script": "LeanPolygon",
+                  "raw_strings": []
+                },
+                {
+                  "path_id": 3740,
+                  "type": "MonoBehaviour",
+                  "script": "TrueShadow",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "ClassMode",
+              "gameobject_id": 17,
+              "components": [
+                {
+                  "path_id": 2383,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1251,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 3703,
+                  "type": "MonoBehaviour",
+                  "script": "LeanPolygon",
+                  "raw_strings": []
+                },
+                {
+                  "path_id": 3702,
+                  "type": "MonoBehaviour",
+                  "script": "Button",
+                  "raw_strings": [
+                    "Normal",
+                    "Highlighted",
+                    "Pressed",
+                    "Selected",
+                    "Disabled",
+                    "LoadSongSelector",
+                    "UnityEngine.Object, UnityEngine",
+                    "ChallengeMode"
+                  ]
+                }
+              ],
+              "children": [
+                {
+                  "name": "Text",
+                  "gameobject_id": 24,
+                  "components": [
+                    {
+                      "path_id": 2388,
+                      "type": "RectTransform"
+                    },
+                    {
+                      "path_id": 1255,
+                      "type": "CanvasRenderer"
+                    },
+                    {
+                      "path_id": 3710,
+                      "type": "MonoBehaviour",
+                      "script": "Text",
+                      "raw_strings": [
+                        "\\ChangeModeTitle"
+                      ]
+                    },
+                    {
+                      "path_id": 3709,
+                      "type": "MonoBehaviour",
+                      "script": "MultiLanguageFromTextBase",
+                      "raw_strings": []
+                    }
+                  ],
+                  "children": []
+                }
+              ]
+            },
+            {
+              "name": "Play",
+              "gameobject_id": 394,
+              "components": [
+                {
+                  "path_id": 2787,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1530,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 4164,
+                  "type": "MonoBehaviour",
+                  "script": "LeanPolygon",
+                  "raw_strings": []
+                },
+                {
+                  "path_id": 3989,
+                  "type": "MonoBehaviour",
+                  "script": "Button",
+                  "raw_strings": [
+                    "Normal",
+                    "Highlighted",
+                    "Pressed",
+                    "Selected",
+                    "Disabled"
+                  ]
+                }
+              ],
+              "children": [
+                {
+                  "name": "Text",
+                  "gameobject_id": 705,
+                  "components": [
+                    {
+                      "path_id": 3098,
+                      "type": "RectTransform"
+                    },
+                    {
+                      "path_id": 1806,
+                      "type": "CanvasRenderer"
+                    },
+                    {
+                      "path_id": 4439,
+                      "type": "MonoBehaviour",
+                      "script": "Text",
+                      "raw_strings": [
+                        "\\AllSongsTitle"
+                      ]
+                    },
+                    {
+                      "path_id": 4440,
+                      "type": "MonoBehaviour",
+                      "script": "MultiLanguageFromTextBase",
+                      "raw_strings": []
+                    }
+                  ],
+                  "children": []
+                }
+              ]
+            },
+            {
+              "name": "SubTitle",
+              "gameobject_id": 603,
+              "components": [
+                {
+                  "path_id": 2996,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1717,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 5024,
+                  "type": "MonoBehaviour",
+                  "script": "MultiLanguageFromTextBase",
+                  "raw_strings": []
+                },
+                {
+                  "path_id": 3975,
+                  "type": "MonoBehaviour",
+                  "script": "Text",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "Title",
+              "gameobject_id": 579,
+              "components": [
+                {
+                  "path_id": 2972,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1695,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 4716,
+                  "type": "MonoBehaviour",
+                  "script": "MultiLanguageFromTextBase",
+                  "raw_strings": []
+                },
+                {
+                  "path_id": 3777,
+                  "type": "MonoBehaviour",
+                  "script": "Text",
+                  "raw_strings": []
+                },
+                {
+                  "path_id": 3705,
+                  "type": "MonoBehaviour",
+                  "script": "MultiLanguageFromTextBase",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "statusTitle",
+              "gameobject_id": 41,
+              "components": [
+                {
+                  "path_id": 2402,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1265,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 3734,
+                  "type": "MonoBehaviour",
+                  "script": "Text",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "AllNum",
+              "gameobject_id": 759,
+              "components": [
+                {
+                  "path_id": 3152,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1853,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 4488,
+                  "type": "MonoBehaviour",
+                  "script": "Text",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "ClearNum",
+              "gameobject_id": 440,
+              "components": [
+                {
+                  "path_id": 2833,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1570,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 4203,
+                  "type": "MonoBehaviour",
+                  "script": "Text",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "FullCombo",
+              "gameobject_id": 648,
+              "components": [
+                {
+                  "path_id": 3041,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1756,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 4391,
+                  "type": "MonoBehaviour",
+                  "script": "Text",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "PhiNum",
+              "gameobject_id": 867,
+              "components": [
+                {
+                  "path_id": 3260,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1951,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 4587,
+                  "type": "MonoBehaviour",
+                  "script": "Text",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "AllText",
+              "gameobject_id": 794,
+              "components": [
+                {
+                  "path_id": 3187,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1884,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 4519,
+                  "type": "MonoBehaviour",
+                  "script": "Text",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "ClearText",
+              "gameobject_id": 849,
+              "components": [
+                {
+                  "path_id": 3242,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1935,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 4570,
+                  "type": "MonoBehaviour",
+                  "script": "Text",
+                  "raw_strings": [
+                    "Clear"
+                  ]
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "FullComboText",
+              "gameobject_id": 675,
+              "components": [
+                {
+                  "path_id": 3068,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1781,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 4414,
+                  "type": "MonoBehaviour",
+                  "script": "Text",
+                  "raw_strings": [
+                    "Full Combo"
+                  ]
+                }
+              ],
+              "children": []
+            },
+            {
+              "name": "PhiText",
+              "gameobject_id": 331,
+              "components": [
+                {
+                  "path_id": 2724,
+                  "type": "RectTransform"
+                },
+                {
+                  "path_id": 1475,
+                  "type": "CanvasRenderer"
+                },
+                {
+                  "path_id": 4108,
+                  "type": "MonoBehaviour",
+                  "script": "Text",
+                  "raw_strings": []
+                }
+              ],
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Open",
+          "gameobject_id": 254,
+          "components": [
+            {
+              "path_id": 3535,
+              "type": "RectTransform"
+            },
+            {
+              "path_id": 2194,
+              "type": "CanvasRenderer"
+            },
+            {
+              "path_id": 4944,
+              "type": "MonoBehaviour",
+              "script": "Image",
+              "raw_strings": []
+            },
+            {
+              "path_id": 4882,
+              "type": "MonoBehaviour",
+              "script": "Button",
+              "raw_strings": [
+                "Normal",
+                "Highlighted",
+                "Pressed",
+                "Selected",
+                "Disabled"
+              ]
+            }
+          ],
+          "children": []
+        }
+      ]
+    },
+    "components": [
+      {
+        "path_id": 3031,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4381,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 638
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1220,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2369,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5072,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 638
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 4382,
+        "type": "MonoBehaviour",
+        "script": "RemoveAllSongControl",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 638
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 438
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4383,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 639
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "SHINOBI  SLASH",
+    "gameobject_id": 639,
+    "components": [
+      {
+        "path_id": 3032,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4383,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 639
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1221,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2370,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5071,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 639
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4417,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 678
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "MUSEDASH",
+    "gameobject_id": 678,
+    "components": [
+      {
+        "path_id": 3071,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4417,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 678
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1222,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2365,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5070,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 678
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4423,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 687
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "KALPA",
+    "gameobject_id": 687,
+    "components": [
+      {
+        "path_id": 3080,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4423,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 687
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1223,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2366,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5069,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 687
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4444,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 710
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "SideStory1",
+    "gameobject_id": 710,
+    "components": [
+      {
+        "path_id": 3103,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4444,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 710
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1224,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2363,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5079,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 710
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4463,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 730
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "SideStory4",
+    "gameobject_id": 730,
+    "components": [
+      {
+        "path_id": 3123,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4463,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 730
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1225,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2364,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5078,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 730
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4484,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 755
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "Maimai",
+    "gameobject_id": 755,
+    "components": [
+      {
+        "path_id": 3148,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4484,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 755
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1226,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2360,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5077,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 755
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4491,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 762
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "RST",
+    "gameobject_id": 762,
+    "components": [
+      {
+        "path_id": 3155,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4491,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 762
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1227,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2361,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5076,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 762
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4494,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 766
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "HyuN",
+    "gameobject_id": 766,
+    "components": [
+      {
+        "path_id": 3159,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4494,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 766
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1228,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2362,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5075,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 766
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4511,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 784
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "MainStory8",
+    "gameobject_id": 784,
+    "components": [
+      {
+        "path_id": 3177,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4511,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 784
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1229,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2358,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5065,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 784
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4527,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 805
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "Cytus2",
+    "gameobject_id": 805,
+    "components": [
+      {
+        "path_id": 3198,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4527,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 805
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1230,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2359,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5064,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 805
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4560,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 840
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "Liminality",
+    "gameobject_id": 840,
+    "components": [
+      {
+        "path_id": 3233,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4560,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 840
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1231,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2356,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5063,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 840
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4577,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 856
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "MainStory6",
+    "gameobject_id": 856,
+    "components": [
+      {
+        "path_id": 3249,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4577,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 856
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1232,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2357,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5062,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 856
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4596,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 877
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "Good",
+    "gameobject_id": 877,
+    "components": [
+      {
+        "path_id": 3270,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4596,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 877
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1233,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2355,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5068,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 877
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4616,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 900
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "Camellia",
+    "gameobject_id": 900,
+    "components": [
+      {
+        "path_id": 3293,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4616,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 900
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1234,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2353,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5067,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 900
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  },
+  {
+    "asset": "level6",
+    "path_id": 4632,
+    "script": "ChapterInfo",
+    "tree": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 916
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 535
+      },
+      "m_Name": ""
+    },
+    "gameobject_name": "SideStory3",
+    "gameobject_id": 916,
+    "components": [
+      {
+        "path_id": 3309,
+        "type": "RectTransform"
+      },
+      {
+        "path_id": 4632,
+        "type": "MonoBehaviour",
+        "script": "ChapterInfo",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 916
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 535
+          },
+          "m_Name": ""
+        }
+      },
+      {
+        "path_id": 1235,
+        "type": "Animation"
+      },
+      {
+        "path_id": 2354,
+        "type": "Canvas"
+      },
+      {
+        "path_id": 5066,
+        "type": "MonoBehaviour",
+        "script": "GraphicRaycaster",
+        "tree": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 916
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1431
+          },
+          "m_Name": ""
+        }
+      }
+    ]
+  }
+]

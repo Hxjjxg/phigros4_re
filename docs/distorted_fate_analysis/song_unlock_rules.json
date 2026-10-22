@@ -1,0 +1,49 @@
+{
+  "songsId": "DistortedFate.Sakuzyo.0",
+  "songsKey": "Distorted Fate",
+  "songsName": "Distorted Fate",
+  "songsTitle": "",
+  "difficulty": [
+    8.100000381469727,
+    13.5,
+    16.299999237060547,
+    17.399999618530273
+  ],
+  "illustrator": "knife美工刀",
+  "charter": [
+    "De Fiance",
+    "Doubt Ful",
+    "Divination Fortune",
+    "unDefined Future"
+  ],
+  "composer": "Sakuzyo",
+  "levels": [
+    "EZ",
+    "HD",
+    "IN",
+    "AT"
+  ],
+  "previewTime": 99.4000015258789,
+  "previewEndTime": 119.4000015258789,
+  "unlockInfo": [
+    {
+      "unlockType": 0,
+      "unlockInfo": []
+    },
+    {
+      "unlockType": 0,
+      "unlockInfo": []
+    },
+    {
+      "unlockType": 0,
+      "unlockInfo": []
+    },
+    {
+      "unlockType": 2,
+      "unlockInfo": [
+        "chapter8Passed",
+        "DistortedFateINSGrade"
+      ]
+    }
+  ]
+}

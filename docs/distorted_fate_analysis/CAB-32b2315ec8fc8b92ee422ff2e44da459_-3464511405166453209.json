@@ -1,0 +1,109 @@
+{
+  "m_GameObject": {
+    "m_FileID": 0,
+    "m_PathID": -8062308329256768529
+  },
+  "m_Enabled": 1,
+  "m_Script": {
+    "m_FileID": 0,
+    "m_PathID": 4368047665392227665
+  },
+  "m_Name": "",
+  "coverEffectCurve": {
+    "m_Curve": [
+      {
+        "time": 0.0,
+        "value": 0.0,
+        "inSlope": 0.00185777444858104,
+        "outSlope": 0.00185777444858104,
+        "weightedMode": 3,
+        "inWeight": 0.0,
+        "outWeight": 0.9986612200737
+      },
+      {
+        "time": 1.0,
+        "value": 1.0,
+        "inSlope": 295.9510192871094,
+        "outSlope": 295.9510192871094,
+        "weightedMode": 3,
+        "inWeight": 0.0016863346099853516,
+        "outWeight": 0.0
+      }
+    ],
+    "m_PreInfinity": 2,
+    "m_PostInfinity": 2,
+    "m_RotationOrder": 4
+  },
+  "colorEffectCurve": {
+    "m_Curve": [
+      {
+        "time": 0.0,
+        "value": 0.0,
+        "inSlope": 1.0,
+        "outSlope": 1.0,
+        "weightedMode": 0,
+        "inWeight": 0.0,
+        "outWeight": 0.0
+      },
+      {
+        "time": 1.0,
+        "value": 1.0,
+        "inSlope": 1.0,
+        "outSlope": 1.0,
+        "weightedMode": 0,
+        "inWeight": 0.0,
+        "outWeight": 0.0
+      }
+    ],
+    "m_PreInfinity": 2,
+    "m_PostInfinity": 2,
+    "m_RotationOrder": 4
+  },
+  "redFlash": {
+    "m_FileID": 0,
+    "m_PathID": 5662003481814082430
+  },
+  "startColor": {
+    "r": 1.0,
+    "g": 1.0,
+    "b": 1.0,
+    "a": 1.0
+  },
+  "endColor": {
+    "r": 0.8500000238418579,
+    "g": 0.0,
+    "b": 0.0,
+    "a": 1.0
+  },
+  "lockAnimImage": {
+    "m_FileID": 0,
+    "m_PathID": -1362023641280597864
+  },
+  "lockAnimMaxAlpha": 0.5,
+  "lockColorAnimTime": 1.0,
+  "lockAnimCurve": {
+    "m_Curve": [
+      {
+        "time": 0.0,
+        "value": 0.0,
+        "inSlope": 297.050048828125,
+        "outSlope": 297.050048828125,
+        "weightedMode": 3,
+        "inWeight": 0.0,
+        "outWeight": 0.0016863406635820866
+      },
+      {
+        "time": 1.0,
+        "value": 1.0,
+        "inSlope": 0.00181258050724864,
+        "outSlope": 0.00181258050724864,
+        "weightedMode": 3,
+        "inWeight": 1.0,
+        "outWeight": 0.0
+      }
+    ],
+    "m_PreInfinity": 2,
+    "m_PostInfinity": 2,
+    "m_RotationOrder": 4
+  }
+}

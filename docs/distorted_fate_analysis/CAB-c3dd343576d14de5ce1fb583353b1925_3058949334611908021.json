@@ -1,0 +1,314 @@
+{
+  "m_GameObject": {
+    "m_FileID": 0,
+    "m_PathID": -3388566621063373325
+  },
+  "m_Enabled": 1,
+  "m_Script": {
+    "m_FileID": 0,
+    "m_PathID": 6356465870946358056
+  },
+  "m_Name": "",
+  "lumiShaderVariantCollection": {
+    "m_FileID": 0,
+    "m_PathID": 3367281334741444700
+  },
+  "particles": {
+    "m_FileID": 0,
+    "m_PathID": 8184116872752333798
+  },
+  "message": {
+    "m_FileID": 0,
+    "m_PathID": 6156187978444373439
+  },
+  "ambientAudio": {
+    "m_FileID": 0,
+    "m_PathID": 6247495199789909344
+  },
+  "targetMessageIndex": 1,
+  "glitchSettings": {
+    "m_FileID": 0,
+    "m_PathID": 6058070594711456684
+  },
+  "escSettings": {
+    "m_FileID": 0,
+    "m_PathID": 4644067466585122434
+  },
+  "startEffectTime": 130.5,
+  "explosionTime": 133.0,
+  "stopTime": 150.0,
+  "eventStartTime": 86.08699798583984,
+  "eventEndTime": 96.52100372314453,
+  "scoreCheckTime": 130.4340057373047,
+  "ezTargetScore": 744344.0,
+  "hdTargetScore": 736919.0,
+  "inTargetScore": 853090.0,
+  "blackMaskOpacity": {
+    "keys": [
+      {
+        "time": 0.0,
+        "separated": 0,
+        "value": 0.0,
+        "endValue": 0.0,
+        "startValue": 0.0,
+        "easeType": 0,
+        "animationCurve": {
+          "m_Curve": [],
+          "m_PreInfinity": 2,
+          "m_PostInfinity": 2,
+          "m_RotationOrder": 4
+        }
+      },
+      {
+        "time": 86.0,
+        "separated": 0,
+        "value": 0.0,
+        "endValue": 0.0,
+        "startValue": 0.0,
+        "easeType": 0,
+        "animationCurve": {
+          "m_Curve": [],
+          "m_PreInfinity": 2,
+          "m_PostInfinity": 2,
+          "m_RotationOrder": 4
+        }
+      },
+      {
+        "time": 87.0,
+        "separated": 0,
+        "value": 0.5,
+        "endValue": 0.0,
+        "startValue": 0.0,
+        "easeType": 0,
+        "animationCurve": {
+          "m_Curve": [],
+          "m_PreInfinity": 2,
+          "m_PostInfinity": 2,
+          "m_RotationOrder": 4
+        }
+      },
+      {
+        "time": 95.5,
+        "separated": 0,
+        "value": 0.5,
+        "endValue": 0.0,
+        "startValue": 0.0,
+        "easeType": 0,
+        "animationCurve": {
+          "m_Curve": [],
+          "m_PreInfinity": 2,
+          "m_PostInfinity": 2,
+          "m_RotationOrder": 4
+        }
+      },
+      {
+        "time": 96.5,
+        "separated": 0,
+        "value": 0.0,
+        "endValue": 0.0,
+        "startValue": 0.0,
+        "easeType": 0,
+        "animationCurve": {
+          "m_Curve": [],
+          "m_PreInfinity": 2,
+          "m_PostInfinity": 2,
+          "m_RotationOrder": 4
+        }
+      },
+      {
+        "time": 130.5,
+        "separated": 0,
+        "value": 0.0,
+        "endValue": 0.0,
+        "startValue": 0.0,
+        "easeType": 0,
+        "animationCurve": {
+          "m_Curve": [],
+          "m_PreInfinity": 2,
+          "m_PostInfinity": 2,
+          "m_RotationOrder": 4
+        }
+      },
+      {
+        "time": 133.0,
+        "separated": 0,
+        "value": 0.5,
+        "endValue": 0.0,
+        "startValue": 0.0,
+        "easeType": 2,
+        "animationCurve": {
+          "m_Curve": [],
+          "m_PreInfinity": 2,
+          "m_PostInfinity": 2,
+          "m_RotationOrder": 4
+        }
+      },
+      {
+        "time": 153.0,
+        "separated": 0,
+        "value": 0.5,
+        "endValue": 0.0,
+        "startValue": 0.0,
+        "easeType": 0,
+        "animationCurve": {
+          "m_Curve": [],
+          "m_PreInfinity": 2,
+          "m_PostInfinity": 2,
+          "m_RotationOrder": 4
+        }
+      },
+      {
+        "time": 154.0,
+        "separated": 0,
+        "value": 0.0,
+        "endValue": 0.0,
+        "startValue": 0.0,
+        "easeType": 0,
+        "animationCurve": {
+          "m_Curve": [],
+          "m_PreInfinity": 2,
+          "m_PostInfinity": 2,
+          "m_RotationOrder": 4
+        }
+      }
+    ]
+  },
+  "blackBgOpacity": {
+    "keys": [
+      {
+        "time": 0.0,
+        "separated": 0,
+        "value": 0.0,
+        "endValue": 0.0,
+        "startValue": 0.0,
+        "easeType": 0,
+        "animationCurve": {
+          "m_Curve": [],
+          "m_PreInfinity": 2,
+          "m_PostInfinity": 2,
+          "m_RotationOrder": 4
+        }
+      },
+      {
+        "time": 86.0,
+        "separated": 0,
+        "value": 0.0,
+        "endValue": 0.0,
+        "startValue": 0.0,
+        "easeType": 0,
+        "animationCurve": {
+          "m_Curve": [],
+          "m_PreInfinity": 2,
+          "m_PostInfinity": 2,
+          "m_RotationOrder": 4
+        }
+      },
+      {
+        "time": 87.0,
+        "separated": 0,
+        "value": 0.5,
+        "endValue": 0.0,
+        "startValue": 0.0,
+        "easeType": 0,
+        "animationCurve": {
+          "m_Curve": [],
+          "m_PreInfinity": 2,
+          "m_PostInfinity": 2,
+          "m_RotationOrder": 4
+        }
+      },
+      {
+        "time": 95.5,
+        "separated": 0,
+        "value": 0.5,
+        "endValue": 0.0,
+        "startValue": 0.0,
+        "easeType": 0,
+        "animationCurve": {
+          "m_Curve": [],
+          "m_PreInfinity": 2,
+          "m_PostInfinity": 2,
+          "m_RotationOrder": 4
+        }
+      },
+      {
+        "time": 96.5,
+        "separated": 0,
+        "value": 0.0,
+        "endValue": 0.0,
+        "startValue": 0.0,
+        "easeType": 0,
+        "animationCurve": {
+          "m_Curve": [],
+          "m_PreInfinity": 2,
+          "m_PostInfinity": 2,
+          "m_RotationOrder": 4
+        }
+      },
+      {
+        "time": 130.5,
+        "separated": 0,
+        "value": 0.0,
+        "endValue": 0.0,
+        "startValue": 0.0,
+        "easeType": 0,
+        "animationCurve": {
+          "m_Curve": [],
+          "m_PreInfinity": 2,
+          "m_PostInfinity": 2,
+          "m_RotationOrder": 4
+        }
+      },
+      {
+        "time": 133.0,
+        "separated": 0,
+        "value": 0.5,
+        "endValue": 0.0,
+        "startValue": 0.0,
+        "easeType": 2,
+        "animationCurve": {
+          "m_Curve": [],
+          "m_PreInfinity": 2,
+          "m_PostInfinity": 2,
+          "m_RotationOrder": 4
+        }
+      },
+      {
+        "time": 153.0,
+        "separated": 0,
+        "value": 0.5,
+        "endValue": 0.0,
+        "startValue": 0.0,
+        "easeType": 0,
+        "animationCurve": {
+          "m_Curve": [],
+          "m_PreInfinity": 2,
+          "m_PostInfinity": 2,
+          "m_RotationOrder": 4
+        }
+      },
+      {
+        "time": 154.0,
+        "separated": 0,
+        "value": 0.800000011920929,
+        "endValue": 0.0,
+        "startValue": 0.0,
+        "easeType": 0,
+        "animationCurve": {
+          "m_Curve": [],
+          "m_PreInfinity": 2,
+          "m_PostInfinity": 2,
+          "m_RotationOrder": 4
+        }
+      }
+    ]
+  },
+  "blackMask": {
+    "m_FileID": 0,
+    "m_PathID": 8662504733331204398
+  },
+  "blackBg": {
+    "m_FileID": 0,
+    "m_PathID": -6331601387742906044
+  }
+}
